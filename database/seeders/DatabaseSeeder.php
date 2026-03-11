@@ -1,5 +1,7 @@
 <?php
+
 namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Setting;
@@ -11,8 +13,11 @@ use App\Models\PricingPlan;
 use App\Models\PricingFeature;
 use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder {
-    public function run(): void {
+class DatabaseSeeder extends Seeder
+{
+    public function run(): void
+    {
+
         // Admin user
         User::create([
             'name' => 'Admin',
@@ -23,73 +28,72 @@ class DatabaseSeeder extends Seeder {
         // General settings
         $settings = [
 
-            // ── Site Information ──────────────────────────────────
-            'site_name'          => 'SK Artistic',
-            'site_tagline'       => 'Designing without borders',
-            'site_email'         => 'info@skartistic.com',
-            'site_phone'         => '+92 334 2247807',
-            'site_address'       => 'Pakistan',
-            'site_logo'          => '',
-            'footer_copyright'   => '© 2026 Sk Artistic (SMC-PVT-LTD)',
+            // Site Information
+            'site_name'        => 'SK Artistic',
+            'site_tagline'     => 'Designing without borders',
+            'site_email'       => 'info@skartistic.com',
+            'site_phone'       => '+92 334 2247807',
+            'site_address'     => 'Pakistan',
+            'site_logo'        => '',
+            'footer_copyright' => '© 2026 Sk Artistic (SMC-PVT-LTD)',
 
-            // ── Hero Section ──────────────────────────────────────
-            // OLD keys removed:
-            //   'hero_title'    → split into hero_line1
-            //   'hero_btn_text' → renamed to hero_btn1
-            'hero_line1'            => 'Transforming Visions Into',
-            'hero_animated_words'   => 'Seamless Designs,Digital Creation,Innovative Ideas,Impactful Solutions',
-            'hero_subtitle'         => 'From idea to execution, we deliver consistent, smart, and beautifully crafted design work.',
-            'hero_btn1'             => 'Schedule a Meeting',
-            'hero_btn2'             => 'Our Work',
-            'hero_trust_text'       => 'clients worldwide.',
+            // Hero Section
+            'hero_line1'          => 'Transforming Visions Into',
+            'hero_animated_words' => 'Seamless Designs,Digital Creation,Innovative Ideas,Impactful Solutions',
+            'hero_subtitle'       => 'From idea to execution, we deliver consistent, smart, and beautifully crafted design work.',
+            'hero_btn1'           => 'Schedule a Meeting',
+            'hero_btn2'           => 'Our Work',
+            'hero_trust_text'     => 'clients worldwide.',
 
-            // ── Promo Video / Device Section ─────────────────────
-            'promo_video'           => '',   // YouTube/Vimeo URL  e.g. https://youtube.com/watch?v=xxx
-            'promo_video_file'      => '',   // Uploaded MP4/WebM path
-            'promo_image'           => '',   // Poster / fallback image path
+            // Promo Video Section
+            'promo_video'      => '',
+            'promo_video_file' => '',
+            'promo_image'      => '',
 
-            // ── Marquee Band ──────────────────────────────────────
-            'marquee_words'         => 'Web Development,UI / UX Design,Mobile Apps,Brand Identity,Backend APIs,Motion Design,Graphic Design,Integrations',
+            // Marquee
+            'marquee_words' => 'Web Development,UI / UX Design,Mobile Apps,Brand Identity,Backend APIs,Motion Design,Graphic Design,Integrations',
 
-            // ── Statistics ────────────────────────────────────────
-            'stats_clients'      => '70+',
-            'stats_projects'     => '65+',
-            'stats_reviews'      => '60+',
-            'stats_revenue'      => '46+',
+            // Statistics
+            'stats_clients'  => '70+',
+            'stats_projects' => '65+',
+            'stats_reviews'  => '60+',
+            'stats_revenue'  => '46+',
 
-            // ── Social Media ──────────────────────────────────────
-            'social_instagram'   => 'https://www.instagram.com/sk_artistic/',
-            'social_whatsapp'    => 'https://chat.whatsapp.com/DtIJAyavExEJ1k98hNpxBa',
-            'social_pinterest'   => 'http://www.pinterest.com/Sk_Artistic/',
-            'social_youtube'     => 'http://www.youtube.com/@SkArtisticc',
-            'social_linkedin'    => '',   // e.g. https://linkedin.com/company/skartistic
-            'social_twitter'     => '',   // e.g. https://x.com/skartistic
+            // Social Media
+            'social_instagram' => 'https://www.instagram.com/sk_artistic/',
+            'social_whatsapp'  => 'https://chat.whatsapp.com/DtIJAyavExEJ1k98hNpxBa',
+            'social_pinterest' => 'http://www.pinterest.com/Sk_Artistic/',
+            'social_youtube'   => 'http://www.youtube.com/@SkArtisticc',
+            'social_linkedin'  => '',
+            'social_twitter'   => '',
 
-            // ── SEO & Meta ────────────────────────────────────────
-            'meta_title'         => 'SK Artistic — Beyond Ordinary',
-            'meta_description'   => 'Full-cycle digital agency crafting websites, apps, and brands that dominate.',
-            'og_image'           => '',   // 1200×630px social share image path
-
+            // SEO
+            'meta_title'       => 'SK Artistic — Beyond Ordinary',
+            'meta_description' => 'Full-cycle digital agency crafting websites, apps, and brands that dominate.',
+            'og_image'         => '',
         ];
 
         foreach ($settings as $key => $value) {
-            App\Models\Setting::set($key, $value);
+            Setting::set($key, $value);
         }
+
 
         // Theme defaults
         $theme = [
-            'primary_color' => '#6c2bd9',
+            'primary_color'   => '#6c2bd9',
             'secondary_color' => '#a855f7',
-            'accent_color' => '#f59e0b',
-            'text_color' => '#1f2937',
-            'bg_color' => '#ffffff',
-            'dark_bg' => '#0f0f1a',
-            'font_family' => 'Inter',
-            'border_radius' => '8px',
+            'accent_color'    => '#f59e0b',
+            'text_color'      => '#1f2937',
+            'bg_color'        => '#ffffff',
+            'dark_bg'         => '#0f0f1a',
+            'font_family'     => 'Inter',
+            'border_radius'   => '8px',
         ];
+
         foreach ($theme as $key => $value) {
             ThemeSetting::set($key, $value);
         }
+
 
         // Services
         $services = [
@@ -102,9 +106,14 @@ class DatabaseSeeder extends Seeder {
             ['title' => 'Prototyping & Wireframing', 'slug' => 'prototyping-wireframing', 'icon' => '📐', 'short_description' => 'Rapid prototypes and wireframes to validate ideas.'],
             ['title' => 'Front-End Frameworks', 'slug' => 'front-end-frameworks', 'icon' => '💻', 'short_description' => 'React, Vue, Angular — we build fast frontends.'],
         ];
+
         foreach ($services as $i => $s) {
-            Service::create(array_merge($s, ['is_published' => true, 'sort_order' => $i]));
+            Service::create(array_merge($s, [
+                'is_published' => true,
+                'sort_order'   => $i
+            ]));
         }
+
 
         // Testimonials
         $testimonials = [
@@ -112,9 +121,13 @@ class DatabaseSeeder extends Seeder {
             ['client_name' => 'Ahmed Raza', 'client_position' => 'Entrepreneur', 'review' => 'SK Artistic provided us with designs that truly stand out. The quality of their work is outstanding.', 'rating' => 5],
             ['client_name' => 'Hina Ali', 'client_position' => 'Business Owner', 'review' => 'Working with SK Artistic was effortless. They understood my requirements and delivered beyond my expectations.', 'rating' => 5],
         ];
+
         foreach ($testimonials as $t) {
-            Testimonial::create(array_merge($t, ['is_published' => true]));
+            Testimonial::create(array_merge($t, [
+                'is_published' => true
+            ]));
         }
+
 
         // FAQs
         $faqs = [
@@ -124,9 +137,14 @@ class DatabaseSeeder extends Seeder {
             ['question' => 'How long does it take to complete a project?', 'answer' => 'Project timelines vary depending on complexity. Simple projects can take a few weeks, while larger projects may take several months.'],
             ['question' => 'Do you support clients after project completion?', 'answer' => 'Yes, SK Artistic offers ongoing support and maintenance to ensure your software and design assets remain up-to-date and fully functional.'],
         ];
+
         foreach ($faqs as $i => $f) {
-            Faq::create(array_merge($f, ['is_published' => true, 'sort_order' => $i]));
+            Faq::create(array_merge($f, [
+                'is_published' => true,
+                'sort_order'   => $i
+            ]));
         }
+
 
         // Pricing Plans
         $plans = [
@@ -134,16 +152,30 @@ class DatabaseSeeder extends Seeder {
             ['name' => 'Most Popular', 'badge' => 'Prototype', 'tagline' => 'Advanced Web & App', 'price' => null, 'is_featured' => true, 'sort_order' => 1],
             ['name' => 'Professional', 'badge' => 'PixelMaster', 'tagline' => 'Expert Web & App', 'price' => null, 'is_featured' => false, 'sort_order' => 2],
         ];
+
         $planFeatures = [
             0 => ['Basic website development (5 pages)', 'Responsive UI/UX design', 'Basic graphic design', 'Basic SEO setup', 'Contact & inquiry forms', 'One website revision', 'Email support'],
             1 => ['Enterprise website development', 'Advanced interactive UI/UX', 'Mobile apps with API integration', 'Complete branding package', 'Advanced SEO & analytics', 'Multi-language support', 'Unlimited revisions', 'Priority support'],
             2 => ['Full website development (15 pages)', 'Advanced UI/UX & prototyping', 'Mobile app development', 'Custom branding & design', 'SEO optimization', 'Payment gateway integration', 'CMS integration', 'Two revisions', 'Email & chat support'],
         ];
+
         foreach ($plans as $i => $plan) {
-            $p = PricingPlan::create(array_merge($plan, ['is_published' => true]));
+
+            $p = PricingPlan::create(array_merge($plan, [
+                'is_published' => true
+            ]));
+
             foreach ($planFeatures[$i] as $j => $feature) {
-                PricingFeature::create(['pricing_plan_id' => $p->id, 'feature' => $feature, 'included' => true, 'sort_order' => $j]);
+
+                PricingFeature::create([
+                    'pricing_plan_id' => $p->id,
+                    'feature'         => $feature,
+                    'included'        => true,
+                    'sort_order'      => $j
+                ]);
+
             }
         }
+
     }
 }
