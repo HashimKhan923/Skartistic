@@ -6,17 +6,19 @@
   <div class="container">
     <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><span>Portfolio</span></div>
     <h1>OUR <span class="g">WORK.</span></h1>
-    <p>{{ $portfolios->total() }}+ projects shipped. Here are the ones we're most proud of.</p>
-  </div>
+<p>{{ $portfolios->count() }}+ projects shipped. Here are the ones we're most proud of.</p>  </div>
 </div>
 <section class="section">
   <div class="container">
     @if(isset($categories) && $categories->count())
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:56px" class="reveal">
       <a href="{{ route('portfolio') }}" style="font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:10px 22px;border:1px solid {{ !request('category') ? 'rgba(0,245,255,.5)' : 'var(--rim2)' }};color:{{ !request('category') ? 'var(--cyan)' : 'var(--dim)' }};background:{{ !request('category') ? 'rgba(0,245,255,.05)' : 'transparent' }};transition:all .25s;cursor:none">All</a>
-      @foreach($categories as $cat)
-      <a href="{{ route('portfolio',['category'=>$cat->slug]) }}" style="font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:10px 22px;border:1px solid {{ request('category')==$cat->slug ? 'rgba(0,245,255,.5)' : 'var(--rim2)' }};color:{{ request('category')==$cat->slug ? 'var(--cyan)' : 'var(--dim)' }};background:{{ request('category')==$cat->slug ? 'rgba(0,245,255,.05)' : 'transparent' }};transition:all .25s;cursor:none">{{ $cat->name }}</a>
-      @endforeach
+        @foreach($categories as $cat)
+        <a href="{{ route('portfolio',['category'=>$cat]) }}"
+          style="font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:10px 22px;border:1px solid {{ request('category')==$cat ? 'rgba(0,245,255,.5)' : 'var(--rim2)' }};color:{{ request('category')==$cat ? 'var(--cyan)' : 'var(--dim)' }};background:{{ request('category')==$cat ? 'rgba(0,245,255,.05)' : 'transparent' }};transition:all .25s;cursor:none">
+          {{ ucfirst($cat) }}
+        </a>
+        @endforeach
     </div>
     @endif
     <div class="port-grid reveal">

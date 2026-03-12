@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <style>
 .device-section {
   position: relative; z-index: 1;
-  padding: 0 40px 80px;
+  padding: 0 40px 100px;
   background: var(--void);
   display: flex; align-items: center; justify-content: center;
 }
@@ -293,20 +293,14 @@ document.addEventListener('DOMContentLoaded', function () {
     0 2px 0 rgba(42,34,99,.06) inset,
     0 40px 100px rgba(42,34,99,.16),
     0 8px 32px rgba(42,34,99,.09);
-  transform: perspective(1400px) rotateX(8deg) scale(1.01);
+  /* NO CSS animation here — JS controls transform entirely */
   transform-origin: center top;
-  animation: device-in 1s .4s both;
   will-change: transform;
+  opacity: 0; /* starts hidden, JS fades in after load */
+  transition: opacity .6s ease;
 }
-@keyframes device-in {
-  from { opacity:0; transform: perspective(1400px) rotateX(20deg) scale(.95) translateY(50px); }
-  to   { opacity:1; transform: perspective(1400px) rotateX(8deg) scale(1.01); }
-}
-/* Disable CSS hover transform while JS scroll is controlling it */
-.device-frame.js-scroll:hover {
-  transform: none; /* JS handles it */
-  box-shadow: 0 40px 100px rgba(42,34,99,.16), 0 8px 32px rgba(42,34,99,.09);
-}.device-inner {
+.device-frame.ready { opacity: 1 }
+.device-inner {
   width: 100%; height: 100%;
   border-radius: 18px;
   background: rgba(42,34,99,.03);
@@ -317,9 +311,9 @@ document.addEventListener('DOMContentLoaded', function () {
   border-radius: 12px; overflow: hidden;
   background: var(--deep);
 }
-.device-screen video {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
+.device-screen video  { width:100%; height:100%; object-fit:cover; display:block }
+.device-screen iframe { width:100%; height:100%; border:none; display:block }
+
 /* Fallback animated mockup */
 .device-fallback {
   width: 100%; height: 100%;
@@ -420,39 +414,47 @@ document.addEventListener('DOMContentLoaded', function () {
   var frame = document.querySelector('.device-frame');
   if (!frame) return;
 
-  // Mark frame so CSS hover is overridden by JS
-  frame.classList.add('js-scroll');
-
-  var MAX_ROTATE = 8;    // degrees at top (same as Nyntax initial state)
-  var MIN_ROTATE = 0;    // degrees when fully scrolled into view
+  var MAX_ROTATE = 12;   // tilt when frame first enters viewport
+  var MIN_ROTATE = 0;    // flat when frame centre crosses viewport centre
   var MAX_SCALE  = 1.02;
   var MIN_SCALE  = 1.00;
 
-  function update() {
-    var rect     = frame.getBoundingClientRect();
-    var vh       = window.innerHeight;
+  function setTransform(rotateX, scale) {
+    frame.style.transform =
+      'perspective(1400px) rotateX(' + rotateX.toFixed(4) + 'deg) scale(' + scale.toFixed(5) + ')';
+  }
 
-    // progress: 0 = element top just entered viewport bottom
-    //           1 = element fully scrolled past viewport center
-    var progress = 1 - (rect.top / vh);
+  function update() {
+    var rect = frame.getBoundingClientRect();
+    var vh   = window.innerHeight;
+
+    /*
+      progress calculation (matches Nyntax):
+        0  → top of frame is AT the bottom of the viewport (just entering)
+        1  → top of frame has reached the vertical centre of the viewport
+      We clamp so it never goes negative or above 1.
+    */
+    var progress = 1 - (rect.top / (vh * 0.5));
     progress = Math.max(0, Math.min(1, progress));
 
-    // Ease: slow start, quick flatten
-    var eased = progress < 0.5
-      ? 2 * progress * progress
-      : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+    // Smooth ease-out so it slows as it flattens
+    var eased = 1 - Math.pow(1 - progress, 3);
 
     var rotateX = MAX_ROTATE - (MAX_ROTATE - MIN_ROTATE) * eased;
     var scale   = MAX_SCALE  - (MAX_SCALE  - MIN_SCALE)  * eased;
 
-    // Match Nyntax: scale(x) rotateX(ydeg)
-    frame.style.transform = 'perspective(1400px) scale(' + scale.toFixed(5) + ') rotateX(' + rotateX.toFixed(4) + 'deg)';
+    setTransform(rotateX, scale);
   }
 
-  // Initial call
-  update();
+  // On page load: apply initial tilted state immediately, then fade in
+  setTransform(MAX_ROTATE, MAX_SCALE);
+  // Small delay so opacity transition plays after transform is set
+  requestAnimationFrame(function () {
+    frame.classList.add('ready');
+    update(); // recalculate in case page loaded scrolled down
+  });
 
-  // Throttled scroll listener using rAF
+  // Throttled rAF scroll listener
   var ticking = false;
   window.addEventListener('scroll', function () {
     if (!ticking) {
@@ -464,7 +466,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }, { passive: true });
 
-  // Also update on resize
   window.addEventListener('resize', update, { passive: true });
 })();
 </script>

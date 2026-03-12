@@ -185,6 +185,9 @@
         <a href="{{ route('admin.services.index') }}" class="nav-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
             <div class="nav-item-icon">⚡</div> Services
         </a>
+        <a href="{{ route('admin.about') }}" class="nav-item {{ request()->routeIs('admin.about') ? 'active' : '' }}">
+            <div class="nav-item-icon">⚡</div> About Us
+        </a>
         <a href="{{ route('admin.blog.index') }}" class="nav-item {{ request()->routeIs('admin.blog.*') ? 'active' : '' }}">
             <div class="nav-item-icon">✏️</div> Blog Posts
         </a>

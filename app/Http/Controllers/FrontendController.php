@@ -57,9 +57,17 @@ class FrontendController extends Controller
 
     public function about()
     {
-        $data = $this->sharedData();
-        $team = TeamMember::where('is_published', true)->orderBy('sort_order')->take(8)->get();
-        return view('frontend.about', array_merge($data, compact('team')));
+        $data     = $this->sharedData();
+        $about    = \App\Models\About::firstOrCreate([]);
+        $awards   = \App\Models\Award::where('is_active', true)->orderBy('sort_order')->get();
+        $values   = \App\Models\CoreValue::where('is_active', true)->orderBy('sort_order')->get();
+        $founders = \App\Models\Founder::where('is_active', true)->orderBy('sort_order')->get();
+        $faqs     = \App\Models\Faq::where('is_published', true)->orderBy('sort_order')->get();
+        $team     = \App\Models\TeamMember::where('is_published', true)->orderBy('sort_order')->take(8)->get();
+
+        return view('frontend.about', array_merge($data, compact(
+            'about', 'awards', 'values', 'founders', 'faqs', 'team'
+        )));
     }
 
     public function team()
@@ -69,15 +77,26 @@ class FrontendController extends Controller
         return view('frontend.team', array_merge($data, compact('team')));
     }
 
-    public function portfolio(Request $request)
-    {
-        $data = $this->sharedData();
-        $query = Portfolio::where('is_published', true)->orderBy('sort_order');
-        if ($request->category) $query->where('category', $request->category);
-        $portfolios = $query->get();
-        $categories = Portfolio::where('is_published', true)->whereNotNull('category')->distinct()->pluck('category');
-        return view('frontend.portfolio', array_merge($data, compact('portfolios','categories')));
+public function portfolio(Request $request)
+{
+    $data = $this->sharedData();
+
+    $query = Portfolio::where('is_published', true)
+        ->orderBy('sort_order');
+
+    if ($request->category) {
+        $query->where('category', $request->category);
     }
+
+    $portfolios = $query->paginate(12); // IMPORTANT
+
+    $categories = Portfolio::where('is_published', true)
+        ->whereNotNull('category')
+        ->distinct()
+        ->pluck('category');
+
+    return view('frontend.portfolio', array_merge($data, compact('portfolios','categories')));
+}
 
     public function portfolioDetail($slug)
     {
