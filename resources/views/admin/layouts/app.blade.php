@@ -238,9 +238,9 @@
         <a href="{{ route('admin.settings') }}" class="nav-item {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
             <div class="nav-item-icon">⚙️</div> General Settings
         </a>
-        <a href="{{ route('admin.theme') }}" class="nav-item {{ request()->routeIs('admin.theme') ? 'active' : '' }}">
+        <!-- <a href="{{ route('admin.theme') }}" class="nav-item {{ request()->routeIs('admin.theme') ? 'active' : '' }}">
             <div class="nav-item-icon">🎨</div> Theme & Colors
-        </a>
+        </a> -->
         <a href="{{ route('admin.seo.index') }}" class="nav-item {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
             <div class="nav-item-icon">🔍</div> SEO Manager
         </a>
