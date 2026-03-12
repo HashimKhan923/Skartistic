@@ -1182,7 +1182,6 @@ footer {
     
     @if(!empty($settings['site_logo']))
       <img src="{{ asset($settings['site_logo']) }}" alt="{{ $settings['site_name'] ?? 'SK Artistic' }}" style="-webkit-text-fill-color:unset;background:none;height:36px;">
-    asset($settings['site_logo'])
     @else
     <div class="nav-logo-glyph"><span>SK</span></div>
       {{ $settings['site_name'] ?? 'SK ARTISTIC' }}
