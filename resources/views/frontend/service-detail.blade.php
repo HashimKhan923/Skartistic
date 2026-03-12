@@ -1,7 +1,6 @@
 @extends('frontend.layouts.app')
 @section('title', ($service->tag_label ?? $service->title).' — '.($settings['site_name'] ?? 'SK Artistic'))
 @section('meta_description', $service->short_description)
-@php use Illuminate\Support\Facades\Storage; @endphp
 
 @section('content')
 <style>
@@ -415,7 +414,7 @@
 
         @if($service->banner_image)
         <div style="margin-top:56px;border-radius:20px;overflow:hidden;border:1px solid var(--sv-border);box-shadow:0 24px 80px rgba(0,0,0,.10);animation:sv-fadeUp .8s .4s ease both;">
-            <img src="{{ Storage::disk('public')->url($service->banner_image) }}"
+            <img src="{{ asset($service->banner_image) }}"
                  alt="{{ $service->title }}"
                  style="width:100%;max-height:500px;object-fit:cover;display:block;">
         </div>
@@ -449,7 +448,7 @@
                 <div class="sv-offer-card-desc">{{ $feat['description'] ?? '' }}</div>
                 <div class="sv-offer-visual">
                     @if(!empty($feat['image']))
-                        <img src="{{ Storage::disk('public')->url($feat['image']) }}" alt="{{ $feat['title'] }}" style="width:100%;height:100%;object-fit:cover;">
+                        <img src="{{ asset($feat['image']) }}" alt="{{ $feat['title'] }}" style="width:100%;height:100%;object-fit:cover;">
                     @elseif(!empty($feat['emoji']))
                         {{ $feat['emoji'] }}
                     @else
@@ -575,7 +574,7 @@
             {{-- Image --}}
             <div class="sv-work-img-wrap sv-reveal-s" style="animation-delay:{{ $i * 0.12 }}s">
                 @if(!empty($proj['image']))
-                    <img src="{{ Storage::disk('public')->url($proj['image']) }}" alt="{{ $proj['title'] ?? '' }}">
+                    <img src="{{ asset($proj['image']) }}" alt="{{ $proj['title'] ?? '' }}">
                 @else
                     <div class="sv-work-img-placeholder">🎨</div>
                 @endif

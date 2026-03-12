@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ServiceController extends Controller
@@ -19,7 +18,7 @@ class ServiceController extends Controller
 
     public function create()
     {
-        return view('admin.services.form');
+        return view('admin.services.edit');
     }
 
     public function store(Request $request)
@@ -31,7 +30,7 @@ class ServiceController extends Controller
 
     public function edit(Service $service)
     {
-        return view('admin.services.form', compact('service'));
+        return view('admin.services.edit', compact('service'));
     }
 
     public function update(Request $request, Service $service)
@@ -45,6 +44,25 @@ class ServiceController extends Controller
     {
         $service->delete();
         return redirect()->route('admin.services.index')->with('success', 'Service deleted.');
+    }
+
+    /* ─── upload helper ─── */
+    private function uploadFile($file, string $folder): string
+    {
+        $dir = public_path('uploads/' . $folder);
+        if (!file_exists($dir)) mkdir($dir, 0755, true);
+
+        $name = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+        $file->move($dir, $name);
+
+        return 'uploads/' . $folder . '/' . $name;  // relative path stored in DB
+    }
+
+    private function deleteFile(?string $path): void
+    {
+        if ($path && file_exists(public_path($path))) {
+            unlink(public_path($path));
+        }
     }
 
     /* ─── shared prepare ─── */
@@ -66,16 +84,15 @@ class ServiceController extends Controller
 
         // ── Banner image ──
         if ($request->hasFile('banner_image')) {
-            if ($service->banner_image) Storage::disk('public')->delete($service->banner_image);
-            $data['banner_image'] = $request->file('banner_image')->store('services/banners', 'public');
+            $this->deleteFile($service->banner_image);
+            $data['banner_image'] = $this->uploadFile($request->file('banner_image'), 'services/banners');
         }
 
         // ── Offer features ──
         $offerFeats = $request->input('offer_features', []);
         foreach ($offerFeats as $i => &$feat) {
             if ($request->hasFile("offer_feature_images.$i")) {
-                $feat['image'] = $request->file("offer_feature_images.$i")
-                    ->store('services/features', 'public');
+                $feat['image'] = $this->uploadFile($request->file("offer_feature_images.$i"), 'services/features');
             }
         }
         $data['offer_features'] = array_values(array_filter($offerFeats, fn($f) => !empty($f['title'])));
@@ -97,15 +114,13 @@ class ServiceController extends Controller
         // ── Featured projects ──
         $projs = $request->input('featured_projects', []);
         foreach ($projs as $i => &$proj) {
-            // handle comma-separated features
             if (!empty($proj['features_raw'])) {
                 $proj['features'] = array_map('trim', explode(',', $proj['features_raw']));
             }
             unset($proj['features_raw']);
 
             if ($request->hasFile("proj_images.$i")) {
-                $proj['image'] = $request->file("proj_images.$i")
-                    ->store('services/projects', 'public');
+                $proj['image'] = $this->uploadFile($request->file("proj_images.$i"), 'services/projects');
             }
         }
         $data['featured_projects'] = array_values(array_filter($projs, fn($p) => !empty($p['title'])));
