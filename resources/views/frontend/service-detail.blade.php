@@ -416,7 +416,7 @@
         <div style="margin-top:56px;border-radius:20px;overflow:hidden;border:1px solid var(--sv-border);box-shadow:0 24px 80px rgba(0,0,0,.10);animation:sv-fadeUp .8s .4s ease both;">
             <img src="{{ asset($service->banner_image) }}"
                  alt="{{ $service->title }}"
-                 style="width:100%;max-height:500px;object-fit:cover;display:block;">
+                 style="width:100%;max-height:500px;display:block;">
         </div>
         @endif
     </div>
