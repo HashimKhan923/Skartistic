@@ -126,15 +126,27 @@
    2. WHAT WE OFFER
    ════════════════════════════ */
 .sv-offer { background:#fff; }
+
+/* Default 3-col grid for 1-3 cards */
 .sv-offer-grid {
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:24px;
     margin-top:60px;
 }
-/* 4 cards → 2×2 */
-.sv-offer-grid.sv-grid-4 { grid-template-columns:repeat(3,1fr); }
-.sv-offer-grid.sv-grid-4 .sv-offer-card:first-child { grid-column: span 1; }
+
+/* 4-card: left tall | middle 2 stacked | right tall */
+.sv-offer-grid-4 {
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    grid-template-rows:auto auto;
+    gap:24px;
+    margin-top:60px;
+}
+.sv-offer-grid-4 .sv-offer-card:nth-child(1) { grid-row: 1 / 3; }  /* left tall */
+.sv-offer-grid-4 .sv-offer-card:nth-child(2) { grid-column:2; grid-row:1; }
+.sv-offer-grid-4 .sv-offer-card:nth-child(3) { grid-column:3; grid-row:1 / 3; } /* right tall */
+.sv-offer-grid-4 .sv-offer-card:nth-child(4) { grid-column:2; grid-row:2; }
 
 .sv-offer-card {
     border:1px solid var(--sv-border);
@@ -143,6 +155,7 @@
     background:#fff;
     transition:all .35s;
     position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
 }
 .sv-offer-card::after {
     content:''; position:absolute;
@@ -150,88 +163,109 @@
     background:linear-gradient(135deg,rgba(124,58,237,.04),transparent);
     opacity:0; transition:opacity .3s;
 }
-.sv-offer-card:hover { box-shadow:0 20px 60px rgba(0,0,0,.09); transform:translateY(-6px); border-color:rgba(124,58,237,.25); }
+.sv-offer-card:hover { box-shadow:0 20px 60px rgba(0,0,0,.09); transform:translateY(-4px); border-color:rgba(124,58,237,.25); }
 .sv-offer-card:hover::after { opacity:1; }
 .sv-offer-card-title { font-size:17px; font-weight:800; color:var(--sv-text); margin-bottom:10px; }
 .sv-offer-card-desc  { font-size:14px; color:var(--sv-text-2); line-height:1.65; margin-bottom:24px; }
 .sv-offer-visual {
     border-radius:12px;
     background:var(--sv-bg-2);
-    min-height:180px;
-    display:flex; align-items:center; justify-content:center;
+    flex:1;
+    min-height:160px;
+    display:flex; align-items:flex-end; justify-content:center;
     border:1px solid var(--sv-border);
     overflow:hidden;
     transition:transform .4s;
     position:relative;
 }
-.sv-offer-card:hover .sv-offer-visual { transform:scale(1.02); }
+.sv-offer-card:hover .sv-offer-visual { transform:scale(1.01); }
 
-/* ── Rich visual: uploaded image ── */
+/* ── uploaded image ── */
 .sv-offer-visual img { width:100%; height:100%; object-fit:cover; display:block; }
 
-/* ── Rich visual: phone mockup (card 1) ── */
+/* ── Phone mockup visual ── */
 .sv-vis-phone {
-    width:100%; padding:16px 20px;
+    width:100%; height:100%; min-height:220px;
     display:flex; align-items:flex-end; justify-content:center;
-    background:linear-gradient(160deg,#f8faff 0%,#eef2ff 100%);
-    min-height:180px;
+    padding-bottom:0;
+    background:linear-gradient(160deg,#f0f4ff 0%,#e8eeff 100%);
 }
-.sv-vis-phone-inner {
-    width:160px; background:#1a1a2e; border-radius:18px;
-    padding:14px 12px 18px; box-shadow:0 16px 40px rgba(0,0,0,.25);
-    position:relative;
+.sv-vis-phone-device {
+    width:170px;
+    background:#1a1a2e;
+    border-radius:20px 20px 0 0;
+    padding:16px 14px 0;
+    box-shadow:0 -8px 40px rgba(124,58,237,.2);
 }
-.sv-vis-phone-bar { height:4px; border-radius:2px; margin-bottom:8px; background:#2d2d4e; }
-.sv-vis-phone-row { display:flex; align-items:center; gap:6px; margin-bottom:6px; }
-.sv-vis-phone-dot { width:20px; height:20px; border-radius:50%; flex-shrink:0; }
-.sv-vis-phone-line { height:7px; border-radius:3px; flex:1; background:#2d2d4e; }
-.sv-vis-phone-badge { display:inline-block; padding:2px 7px; border-radius:4px; font-size:9px; font-weight:700; }
+.sv-vis-phone-topbar {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:12px;
+}
+.sv-vis-phone-topbar span { font-size:9px; color:#6b7280; font-weight:600; }
+.sv-vis-phone-check {
+    display:flex; align-items:center; gap:6px;
+    background:#252545; border-radius:6px;
+    padding:6px 8px; margin-bottom:8px;
+}
+.sv-vis-phone-check-dot { width:14px; height:14px; border-radius:50%; background:#22c55e; flex-shrink:0; }
+.sv-vis-phone-check-text { font-size:8px; color:#fff; font-weight:600; }
+.sv-vis-phone-row { display:flex; align-items:center; gap:6px; margin-bottom:7px; }
+.sv-vis-phone-avatar { width:18px; height:18px; border-radius:50%; background:#7c3aed; flex-shrink:0; }
+.sv-vis-phone-lines { flex:1; display:flex; flex-direction:column; gap:3px; }
+.sv-vis-phone-line { height:5px; border-radius:2px; background:#2d2d4e; }
+.sv-vis-phone-badges { display:flex; gap:4px; margin-bottom:10px; }
+.sv-vis-phone-badge-ip { padding:2px 7px; border-radius:4px; background:rgba(124,58,237,.3); color:#a78bfa; font-size:8px; font-weight:700; }
+.sv-vis-phone-badge-lw { padding:2px 7px; border-radius:4px; background:rgba(34,197,94,.3); color:#4ade80; font-size:8px; font-weight:700; }
+.sv-vis-phone-desc { background:#252545; border-radius:6px; padding:7px 8px; margin-bottom:0; }
+.sv-vis-phone-desc-line { height:5px; border-radius:2px; background:#3d3d5e; margin-bottom:3px; }
+.sv-vis-phone-desc-line:last-child { width:70%; margin-bottom:0; }
 
-/* ── Rich visual: performance bars (card 2) ── */
+/* ── Performance bars visual ── */
 .sv-vis-perf {
-    width:100%; padding:20px 24px;
-    background:#fff; min-height:180px;
+    width:100%; padding:20px 22px;
+    background:#fff; min-height:160px;
     display:flex; flex-direction:column; justify-content:center;
+    align-items:stretch;
 }
-.sv-vis-perf-num { font-size:28px; font-weight:900; color:var(--sv-purple); line-height:1; }
-.sv-vis-perf-num span { font-size:14px; font-weight:500; color:var(--sv-text-3); }
-.sv-vis-perf-badge { display:inline-block; padding:3px 8px; border-radius:20px; background:#dcfce7; color:#16a34a; font-size:11px; font-weight:700; margin-left:8px; }
-.sv-vis-bars { display:flex; gap:5px; align-items:flex-end; margin-top:12px; height:60px; }
-.sv-vis-bar {
-    flex:1; border-radius:3px 3px 0 0;
-    background:linear-gradient(to top,var(--sv-purple),#a78bfa);
-    transition:height .4s ease;
-}
+.sv-vis-perf-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px; }
+.sv-vis-perf-num { font-size:26px; font-weight:900; color:var(--sv-purple); line-height:1; }
+.sv-vis-perf-num sup { font-size:13px; font-weight:500; color:var(--sv-text-3); }
+.sv-vis-perf-badge { padding:3px 8px; border-radius:20px; background:#dcfce7; color:#16a34a; font-size:11px; font-weight:700; }
+.sv-vis-bars { display:flex; gap:4px; align-items:flex-end; height:56px; }
+.sv-vis-bar { flex:1; border-radius:3px 3px 0 0; background:linear-gradient(to top,var(--sv-purple),#a78bfa); }
 
-/* ── Rich visual: score circles (card 3) ── */
+/* ── Score circles visual ── */
 .sv-vis-scores {
-    width:100%; padding:16px;
+    width:100%; padding:20px 16px;
     display:grid; grid-template-columns:1fr 1fr;
-    gap:12px; background:#fff; min-height:180px;
-    align-content:center;
+    gap:16px 12px; background:#fff;
+    min-height:220px; align-content:center;
 }
-.sv-vis-circle-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.sv-vis-circle-wrap { display:flex; flex-direction:column; align-items:center; gap:8px; }
 .sv-vis-circle {
-    width:64px; height:64px; border-radius:50%;
-    border:4px solid #22c55e;
+    width:72px; height:72px; border-radius:50%;
+    border:5px solid #22c55e;
     display:flex; align-items:center; justify-content:center;
-    font-size:13px; font-weight:900; color:var(--sv-text);
+    font-size:14px; font-weight:900; color:var(--sv-text);
+    background:#fff;
 }
-.sv-vis-circle-label { font-size:11px; color:var(--sv-text-2); font-weight:600; text-align:center; }
+.sv-vis-circle-label { font-size:11px; color:var(--sv-text-2); font-weight:600; text-align:center; line-height:1.3; }
 
-/* ── Rich visual: security icons (card 4) ── */
+/* ── Security icons visual ── */
 .sv-vis-security {
-    width:100%; padding:20px;
-    background:#fff; min-height:180px;
+    width:100%; padding:18px 20px;
+    background:#fff; min-height:100px;
     display:flex; flex-direction:column; justify-content:center;
 }
-.sv-vis-sec-icons { display:flex; align-items:center; gap:0; margin-top:16px; }
+.sv-vis-sec-icons { display:flex; align-items:center; gap:0; margin-top:14px; }
 .sv-vis-sec-icon {
-    width:44px; height:44px; border-radius:50%;
+    width:46px; height:46px; border-radius:50%;
     background:var(--sv-purple); color:#fff;
     display:flex; align-items:center; justify-content:center;
     font-size:18px; flex-shrink:0;
+    box-shadow:0 4px 12px rgba(124,58,237,.3);
 }
+.sv-vis-sec-icon.mid { background:#5b21b6; width:52px; height:52px; font-size:22px; }
 .sv-vis-sec-line { flex:1; height:2px; background:var(--sv-border); }
 
 /* ════════════════════════════
@@ -444,6 +478,11 @@
 /* ── Responsive ── */
 @media(max-width:1024px){
     .sv-offer-grid { grid-template-columns:1fr 1fr; }
+    .sv-offer-grid-4 { grid-template-columns:1fr 1fr; }
+    .sv-offer-grid-4 .sv-offer-card:nth-child(1),
+    .sv-offer-grid-4 .sv-offer-card:nth-child(3) { grid-row: auto; }
+    .sv-offer-grid-4 .sv-offer-card:nth-child(2),
+    .sv-offer-grid-4 .sv-offer-card:nth-child(4) { grid-column: auto; grid-row: auto; }
     .sv-process-step { grid-template-columns:200px 1fr; gap:40px; }
     .sv-work-project { gap:48px; }
 }
@@ -451,7 +490,9 @@
     .sv-container { padding:0 20px; }
     .sv-section { padding:64px 0; }
     .sv-hero { padding:80px 0 64px; }
-    .sv-offer-grid { grid-template-columns:1fr; }
+    .sv-offer-grid,
+    .sv-offer-grid-4 { grid-template-columns:1fr; }
+    .sv-offer-grid-4 .sv-offer-card { grid-column:auto !important; grid-row:auto !important; }
     .sv-process-step { grid-template-columns:1fr; gap:24px; }
     .sv-process-left { position:static; }
     .sv-process-connector { display:none; }
@@ -515,54 +556,58 @@
 
         @if($service->offer_features && count($service->offer_features))
         @php $featCount = count($service->offer_features); @endphp
-        <div class="sv-offer-grid {{ $featCount >= 4 ? 'sv-grid-4' : '' }}">
+        <div class="{{ $featCount === 4 ? 'sv-offer-grid-4' : 'sv-offer-grid' }}">
             @foreach($service->offer_features as $i => $feat)
             <div class="sv-offer-card sv-reveal-s" style="animation-delay:{{ $i * 0.1 }}s">
                 <div class="sv-offer-card-title">{{ $feat['title'] ?? '' }}</div>
                 <div class="sv-offer-card-desc">{{ $feat['description'] ?? '' }}</div>
                 <div class="sv-offer-visual">
                     @if(!empty($feat['image']))
-                        {{-- Uploaded image takes priority --}}
                         <img src="{{ asset($feat['image']) }}" alt="{{ $feat['title'] }}">
                     @elseif($i % 4 === 0)
-                        {{-- Card 1: Phone mockup --}}
+                        {{-- Phone mockup --}}
                         <div class="sv-vis-phone">
-                            <div class="sv-vis-phone-inner">
-                                <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
-                                    <div style="width:8px;height:8px;border-radius:50%;background:#22c55e"></div>
-                                    <div style="height:7px;border-radius:3px;flex:1;background:#2d2d4e"></div>
-                                    <div style="width:16px;height:7px;border-radius:3px;background:#3d3d5e"></div>
+                            <div class="sv-vis-phone-device">
+                                <div class="sv-vis-phone-topbar">
+                                    <span>✓ Mark Completed</span>
+                                    <span>✕</span>
                                 </div>
-                                @foreach([['#7c3aed','In Progress'],['#22c55e','Low']] as $badge)
+                                <div class="sv-vis-phone-check">
+                                    <div class="sv-vis-phone-check-dot"></div>
+                                    <div class="sv-vis-phone-check-text">Schedule Me An Appointment</div>
+                                </div>
                                 <div class="sv-vis-phone-row">
-                                    <div class="sv-vis-phone-dot" style="background:#2d2d4e"></div>
-                                    <div class="sv-vis-phone-line"></div>
-                                    <span class="sv-vis-phone-badge" style="background:{{ $badge[0] }}22;color:{{ $badge[0] }}">{{ $badge[1] }}</span>
+                                    <div class="sv-vis-phone-avatar"></div>
+                                    <div class="sv-vis-phone-lines">
+                                        <div class="sv-vis-phone-line" style="width:80%"></div>
+                                        <div class="sv-vis-phone-line" style="width:55%"></div>
+                                    </div>
                                 </div>
-                                @endforeach
-                                <div style="margin-top:8px;height:6px;border-radius:3px;background:#2d2d4e;width:80%"></div>
-                                <div style="margin-top:4px;height:6px;border-radius:3px;background:#2d2d4e;width:60%"></div>
-                                <div style="margin-top:10px;padding:8px;background:#252540;border-radius:8px">
-                                    <div style="height:5px;border-radius:2px;background:#3d3d5e;width:90%;margin-bottom:4px"></div>
-                                    <div style="height:5px;border-radius:2px;background:#3d3d5e;width:70%"></div>
+                                <div class="sv-vis-phone-badges">
+                                    <span class="sv-vis-phone-badge-ip">In Progress</span>
+                                    <span class="sv-vis-phone-badge-lw">Low</span>
+                                </div>
+                                <div class="sv-vis-phone-desc">
+                                    <div class="sv-vis-phone-desc-line"></div>
+                                    <div class="sv-vis-phone-desc-line"></div>
                                 </div>
                             </div>
                         </div>
                     @elseif($i % 4 === 1)
-                        {{-- Card 2: Performance bars --}}
+                        {{-- Performance bars --}}
                         <div class="sv-vis-perf">
-                            <div style="display:flex;align-items:baseline;gap:4px">
-                                <div class="sv-vis-perf-num">1.04<span>s</span></div>
+                            <div class="sv-vis-perf-header">
+                                <div class="sv-vis-perf-num">1.04<sup>s</sup></div>
                                 <span class="sv-vis-perf-badge">-22%</span>
                             </div>
                             <div class="sv-vis-bars">
-                                @foreach([100,90,95,85,100,80,95,90,70,60,55,50,45,40,35] as $h)
-                                <div class="sv-vis-bar" style="height:{{ $h }}%;opacity:{{ $h > 70 ? 1 : (0.3 + $h/200) }}"></div>
+                                @foreach([100,92,96,88,100,82,95,90,72,62,56,50,44,38,32] as $h)
+                                <div class="sv-vis-bar" style="height:{{ $h }}%;opacity:{{ $h > 65 ? 1 : max(0.25, $h/100) }}"></div>
                                 @endforeach
                             </div>
                         </div>
                     @elseif($i % 4 === 2)
-                        {{-- Card 3: Score circles --}}
+                        {{-- Score circles --}}
                         <div class="sv-vis-scores">
                             @foreach([['Performance','100%'],['Accessibility','100%'],['Best Practices','100%'],['SEO','100%']] as $sc)
                             <div class="sv-vis-circle-wrap">
@@ -572,15 +617,12 @@
                             @endforeach
                         </div>
                     @else
-                        {{-- Card 4+: Security / shield icons --}}
+                        {{-- Security icons --}}
                         <div class="sv-vis-security">
-                            <div style="font-size:13px;color:var(--sv-text-2);line-height:1.6">
-                                {{ Str::limit($feat['description'] ?? 'Protected by industry-standard encryption and security practices.', 80) }}
-                            </div>
                             <div class="sv-vis-sec-icons">
                                 <div class="sv-vis-sec-icon">🌐</div>
                                 <div class="sv-vis-sec-line"></div>
-                                <div class="sv-vis-sec-icon" style="background:#5b21b6">🛡️</div>
+                                <div class="sv-vis-sec-icon mid">🛡️</div>
                                 <div class="sv-vis-sec-line"></div>
                                 <div class="sv-vis-sec-icon">🔐</div>
                             </div>
