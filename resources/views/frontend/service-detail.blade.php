@@ -1,6 +1,7 @@
 @extends('frontend.layouts.app')
 @section('title', ($service->tag_label ?? $service->title).' — '.($settings['site_name'] ?? 'SK Artistic'))
 @section('meta_description', $service->short_description)
+@php use Illuminate\Support\Str; @endphp
 
 @section('content')
 <style>
@@ -131,6 +132,10 @@
     gap:24px;
     margin-top:60px;
 }
+/* 4 cards → 2×2 */
+.sv-offer-grid.sv-grid-4 { grid-template-columns:repeat(3,1fr); }
+.sv-offer-grid.sv-grid-4 .sv-offer-card:first-child { grid-column: span 1; }
+
 .sv-offer-card {
     border:1px solid var(--sv-border);
     border-radius:var(--sv-radius);
@@ -152,14 +157,82 @@
 .sv-offer-visual {
     border-radius:12px;
     background:var(--sv-bg-2);
-    min-height:140px;
+    min-height:180px;
     display:flex; align-items:center; justify-content:center;
-    font-size:2.5rem;
     border:1px solid var(--sv-border);
     overflow:hidden;
     transition:transform .4s;
+    position:relative;
 }
 .sv-offer-card:hover .sv-offer-visual { transform:scale(1.02); }
+
+/* ── Rich visual: uploaded image ── */
+.sv-offer-visual img { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* ── Rich visual: phone mockup (card 1) ── */
+.sv-vis-phone {
+    width:100%; padding:16px 20px;
+    display:flex; align-items:flex-end; justify-content:center;
+    background:linear-gradient(160deg,#f8faff 0%,#eef2ff 100%);
+    min-height:180px;
+}
+.sv-vis-phone-inner {
+    width:160px; background:#1a1a2e; border-radius:18px;
+    padding:14px 12px 18px; box-shadow:0 16px 40px rgba(0,0,0,.25);
+    position:relative;
+}
+.sv-vis-phone-bar { height:4px; border-radius:2px; margin-bottom:8px; background:#2d2d4e; }
+.sv-vis-phone-row { display:flex; align-items:center; gap:6px; margin-bottom:6px; }
+.sv-vis-phone-dot { width:20px; height:20px; border-radius:50%; flex-shrink:0; }
+.sv-vis-phone-line { height:7px; border-radius:3px; flex:1; background:#2d2d4e; }
+.sv-vis-phone-badge { display:inline-block; padding:2px 7px; border-radius:4px; font-size:9px; font-weight:700; }
+
+/* ── Rich visual: performance bars (card 2) ── */
+.sv-vis-perf {
+    width:100%; padding:20px 24px;
+    background:#fff; min-height:180px;
+    display:flex; flex-direction:column; justify-content:center;
+}
+.sv-vis-perf-num { font-size:28px; font-weight:900; color:var(--sv-purple); line-height:1; }
+.sv-vis-perf-num span { font-size:14px; font-weight:500; color:var(--sv-text-3); }
+.sv-vis-perf-badge { display:inline-block; padding:3px 8px; border-radius:20px; background:#dcfce7; color:#16a34a; font-size:11px; font-weight:700; margin-left:8px; }
+.sv-vis-bars { display:flex; gap:5px; align-items:flex-end; margin-top:12px; height:60px; }
+.sv-vis-bar {
+    flex:1; border-radius:3px 3px 0 0;
+    background:linear-gradient(to top,var(--sv-purple),#a78bfa);
+    transition:height .4s ease;
+}
+
+/* ── Rich visual: score circles (card 3) ── */
+.sv-vis-scores {
+    width:100%; padding:16px;
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:12px; background:#fff; min-height:180px;
+    align-content:center;
+}
+.sv-vis-circle-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.sv-vis-circle {
+    width:64px; height:64px; border-radius:50%;
+    border:4px solid #22c55e;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:900; color:var(--sv-text);
+}
+.sv-vis-circle-label { font-size:11px; color:var(--sv-text-2); font-weight:600; text-align:center; }
+
+/* ── Rich visual: security icons (card 4) ── */
+.sv-vis-security {
+    width:100%; padding:20px;
+    background:#fff; min-height:180px;
+    display:flex; flex-direction:column; justify-content:center;
+}
+.sv-vis-sec-icons { display:flex; align-items:center; gap:0; margin-top:16px; }
+.sv-vis-sec-icon {
+    width:44px; height:44px; border-radius:50%;
+    background:var(--sv-purple); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; flex-shrink:0;
+}
+.sv-vis-sec-line { flex:1; height:2px; background:var(--sv-border); }
 
 /* ════════════════════════════
    3. TECH STACK
@@ -416,7 +489,7 @@
         <div style="margin-top:56px;border-radius:20px;overflow:hidden;border:1px solid var(--sv-border);box-shadow:0 24px 80px rgba(0,0,0,.10);animation:sv-fadeUp .8s .4s ease both;">
             <img src="{{ asset($service->banner_image) }}"
                  alt="{{ $service->title }}"
-                 style="width:100%;max-height:500px;display:block;">
+                 style="width:100%;max-height:500px;object-fit:cover;display:block;">
         </div>
         @endif
     </div>
@@ -441,18 +514,77 @@
         </div>
 
         @if($service->offer_features && count($service->offer_features))
-        <div class="sv-offer-grid">
+        @php $featCount = count($service->offer_features); @endphp
+        <div class="sv-offer-grid {{ $featCount >= 4 ? 'sv-grid-4' : '' }}">
             @foreach($service->offer_features as $i => $feat)
             <div class="sv-offer-card sv-reveal-s" style="animation-delay:{{ $i * 0.1 }}s">
                 <div class="sv-offer-card-title">{{ $feat['title'] ?? '' }}</div>
                 <div class="sv-offer-card-desc">{{ $feat['description'] ?? '' }}</div>
                 <div class="sv-offer-visual">
                     @if(!empty($feat['image']))
-                        <img src="{{ asset($feat['image']) }}" alt="{{ $feat['title'] }}" style="width:100%;height:100%;object-fit:cover;">
-                    @elseif(!empty($feat['emoji']))
-                        {{ $feat['emoji'] }}
+                        {{-- Uploaded image takes priority --}}
+                        <img src="{{ asset($feat['image']) }}" alt="{{ $feat['title'] }}">
+                    @elseif($i % 4 === 0)
+                        {{-- Card 1: Phone mockup --}}
+                        <div class="sv-vis-phone">
+                            <div class="sv-vis-phone-inner">
+                                <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+                                    <div style="width:8px;height:8px;border-radius:50%;background:#22c55e"></div>
+                                    <div style="height:7px;border-radius:3px;flex:1;background:#2d2d4e"></div>
+                                    <div style="width:16px;height:7px;border-radius:3px;background:#3d3d5e"></div>
+                                </div>
+                                @foreach([['#7c3aed','In Progress'],['#22c55e','Low']] as $badge)
+                                <div class="sv-vis-phone-row">
+                                    <div class="sv-vis-phone-dot" style="background:#2d2d4e"></div>
+                                    <div class="sv-vis-phone-line"></div>
+                                    <span class="sv-vis-phone-badge" style="background:{{ $badge[0] }}22;color:{{ $badge[0] }}">{{ $badge[1] }}</span>
+                                </div>
+                                @endforeach
+                                <div style="margin-top:8px;height:6px;border-radius:3px;background:#2d2d4e;width:80%"></div>
+                                <div style="margin-top:4px;height:6px;border-radius:3px;background:#2d2d4e;width:60%"></div>
+                                <div style="margin-top:10px;padding:8px;background:#252540;border-radius:8px">
+                                    <div style="height:5px;border-radius:2px;background:#3d3d5e;width:90%;margin-bottom:4px"></div>
+                                    <div style="height:5px;border-radius:2px;background:#3d3d5e;width:70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    @elseif($i % 4 === 1)
+                        {{-- Card 2: Performance bars --}}
+                        <div class="sv-vis-perf">
+                            <div style="display:flex;align-items:baseline;gap:4px">
+                                <div class="sv-vis-perf-num">1.04<span>s</span></div>
+                                <span class="sv-vis-perf-badge">-22%</span>
+                            </div>
+                            <div class="sv-vis-bars">
+                                @foreach([100,90,95,85,100,80,95,90,70,60,55,50,45,40,35] as $h)
+                                <div class="sv-vis-bar" style="height:{{ $h }}%;opacity:{{ $h > 70 ? 1 : (0.3 + $h/200) }}"></div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @elseif($i % 4 === 2)
+                        {{-- Card 3: Score circles --}}
+                        <div class="sv-vis-scores">
+                            @foreach([['Performance','100%'],['Accessibility','100%'],['Best Practices','100%'],['SEO','100%']] as $sc)
+                            <div class="sv-vis-circle-wrap">
+                                <div class="sv-vis-circle">{{ $sc[1] }}</div>
+                                <div class="sv-vis-circle-label">{{ $sc[0] }}</div>
+                            </div>
+                            @endforeach
+                        </div>
                     @else
-                        ✨
+                        {{-- Card 4+: Security / shield icons --}}
+                        <div class="sv-vis-security">
+                            <div style="font-size:13px;color:var(--sv-text-2);line-height:1.6">
+                                {{ Str::limit($feat['description'] ?? 'Protected by industry-standard encryption and security practices.', 80) }}
+                            </div>
+                            <div class="sv-vis-sec-icons">
+                                <div class="sv-vis-sec-icon">🌐</div>
+                                <div class="sv-vis-sec-line"></div>
+                                <div class="sv-vis-sec-icon" style="background:#5b21b6">🛡️</div>
+                                <div class="sv-vis-sec-line"></div>
+                                <div class="sv-vis-sec-icon">🔐</div>
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>
