@@ -48,7 +48,7 @@
       <div class="reveal-r">
         <div style="background:var(--panel);border:1px solid var(--rim);border-top:2px solid var(--cyan);padding:48px">
           @if(session('success'))<div class="flash-success"><span class="icon">✓</span><span class="msg">{{ session('success') }}</span></div>@endif
-          <form action="{{ route('contact.send') }}" method="POST">
+          <form action="{{ route('contact.submit') }}" method="POST">
             @csrf
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div class="field-wrap"><label>Your Name</label><input type="text" name="name" class="field-input" placeholder="John Doe" value="{{ old('name') }}">@error('name')<span class="field-error">{{ $message }}</span>@enderror</div>

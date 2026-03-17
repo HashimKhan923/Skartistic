@@ -34,7 +34,7 @@ class AboutController extends Controller
         $values   = CoreValue::orderBy('sort_order')->get();
         $founders = Founder::orderBy('sort_order')->get();
         $faqs     = Faq::where('is_published', true)->orderBy('sort_order')->get();
-        return view('admin.about.edit', compact('about', 'awards', 'values', 'founders', 'faqs'));
+        return view('admin.about', compact('about', 'awards', 'values', 'founders', 'faqs'));
     }
 
     public function update(Request $request)
@@ -133,7 +133,7 @@ class AboutController extends Controller
             Faq::create(['question' => $data['question'], 'answer' => $data['answer'] ?? '', 'is_published' => true, 'sort_order' => Faq::max('sort_order') + 1]);
         }
 
-        return redirect()->route('admin.about.edit')->with('success', 'About page saved successfully!');
+        return redirect()->route('admin.about')->with('success', 'About page saved successfully!');
     }
 
     public function deleteAward(Request $request)
@@ -141,13 +141,13 @@ class AboutController extends Controller
         $award = Award::findOrFail($request->id);
         $this->deleteFile($award->logo_path);
         $award->delete();
-        return redirect()->route('admin.about.edit')->with('success', 'Award removed.');
+        return redirect()->route('admin.about')->with('success', 'Award removed.');
     }
 
     public function deleteValue(Request $request)
     {
         CoreValue::findOrFail($request->id)->delete();
-        return redirect()->route('admin.about.edit')->with('success', 'Value removed.');
+        return redirect()->route('admin.about')->with('success', 'Value removed.');
     }
 
     public function deleteFounder(Request $request)
@@ -155,12 +155,12 @@ class AboutController extends Controller
         $founder = Founder::findOrFail($request->id);
         $this->deleteFile($founder->photo);
         $founder->delete();
-        return redirect()->route('admin.about.edit')->with('success', 'Founder removed.');
+        return redirect()->route('admin.about')->with('success', 'Founder removed.');
     }
 
     public function deleteFaq(Request $request)
     {
         Faq::findOrFail($request->id)->delete();
-        return redirect()->route('admin.about.edit')->with('success', 'FAQ removed.');
+        return redirect()->route('admin.about')->with('success', 'FAQ removed.');
     }
 }
