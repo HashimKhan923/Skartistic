@@ -35,7 +35,7 @@ class FrontendController extends Controller
         $services = Service::where('is_published', true)->orderBy('sort_order')->get();
         $testimonials = Testimonial::where('is_published', true)->orderBy('sort_order')->get();
         $faqs = Faq::where('is_published', true)->orderBy('sort_order')->get();
-        $pricing_plans = PricingPlan::with('features')->where('is_published', true)->orderBy('sort_order')->get();
+        $pricing_plans = PricingPlan::where('is_published', true)->orderBy('sort_order')->get();
         $featured_portfolios = Portfolio::where('is_published', true)->where('is_featured', true)->orderBy('sort_order')->take(6)->get();
         $client_logos = ClientLogo::where('is_published', true)->orderBy('sort_order')->get();
         return view('frontend.home', array_merge($data, compact('services','testimonials','faqs','pricing_plans','featured_portfolios','client_logos')));
