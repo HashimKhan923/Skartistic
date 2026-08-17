@@ -44,7 +44,8 @@
 
         /* ── MAIN CONTENT ── */
         .main{margin-left:var(--sidebar-w);padding-top:var(--top);min-height:100vh}
-        .content{padding:28px 32px;max-width:1400px}
+        .content{padding:28px 32px;max-width:1400px;animation:content-in .45s cubic-bezier(.25,.46,.45,.94) both}
+        @keyframes content-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
         /* ── ALERTS ── */
         .alert{padding:14px 18px;border-radius:12px;margin-bottom:22px;font-size:14px;display:flex;align-items:center;gap:10px;font-weight:500}
@@ -52,7 +53,8 @@
         .alert-danger{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);color:#991b1b}
 
         /* ── CARDS ── */
-        .card{background:#fff;border-radius:16px;border:1px solid #e8ecf0;overflow:hidden}
+        .card{background:#fff;border-radius:16px;border:1px solid #e8ecf0;overflow:hidden;transition:box-shadow .25s,border-color .25s}
+        .card:hover{box-shadow:0 8px 30px rgba(30,41,59,.06);border-color:#dde3ee}
         .card-head{padding:20px 24px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center}
         .card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:#1e293b}
         .card-body{padding:24px}
@@ -60,8 +62,13 @@
 
         /* ── STAT BOXES ── */
         .stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;margin-bottom:24px}
-        .stat-box{background:#fff;border-radius:16px;border:1px solid #e8ecf0;padding:24px;position:relative;overflow:hidden}
-        .stat-box::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;background:var(--box-color,rgba(124,58,237,.07));transform:translate(20px,-20px)}
+        .stat-box{background:#fff;border-radius:16px;border:1px solid #e8ecf0;padding:24px;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;animation:content-in .5s cubic-bezier(.25,.46,.45,.94) both}
+        .stats-row .stat-box:nth-child(1){animation-delay:.04s} .stats-row .stat-box:nth-child(2){animation-delay:.08s}
+        .stats-row .stat-box:nth-child(3){animation-delay:.12s} .stats-row .stat-box:nth-child(4){animation-delay:.16s}
+        .stats-row .stat-box:nth-child(5){animation-delay:.2s}  .stats-row .stat-box:nth-child(6){animation-delay:.24s}
+        .stat-box:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(30,41,59,.08)}
+        .stat-box::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;background:var(--box-color,rgba(124,58,237,.07));transform:translate(20px,-20px);transition:transform .4s}
+        .stat-box:hover::before{transform:translate(14px,-26px) scale(1.15)}
         .stat-box-icon{font-size:1.6rem;margin-bottom:12px}
         .stat-box-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--p);letter-spacing:-1px;line-height:1}
         .stat-box-lbl{font-size:13px;color:#64748b;margin-top:6px;font-weight:500}
@@ -75,10 +82,12 @@
         thead th{padding:12px 16px;text-align:left;background:#f8fafc;color:#64748b;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid #e8ecf0;white-space:nowrap}
         thead th:first-child{border-radius:8px 0 0 0}
         thead th:last-child{border-radius:0 8px 0 0}
-        tbody td{padding:15px 16px;border-bottom:1px solid #f8fafc;vertical-align:middle;color:#334155}
+        tbody tr{transition:background .15s}
+        tbody td{padding:15px 16px;border-bottom:1px solid #f8fafc;vertical-align:middle;color:#334155;transition:background .15s}
         tbody tr:last-child td{border-bottom:none}
         tbody tr:hover td{background:#f8fafc}
-        .td-img{width:40px;height:40px;border-radius:10px;object-fit:cover;background:#f1f5f9}
+        .td-img{width:40px;height:40px;border-radius:10px;object-fit:cover;background:#f1f5f9;transition:transform .25s}
+        tbody tr:hover .td-img{transform:scale(1.06)}
         .td-emoji{font-size:1.5rem}
 
         /* ── BUTTONS ── */

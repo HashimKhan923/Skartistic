@@ -13,6 +13,7 @@ use App\Models\Testimonial;
 use App\Models\Faq;
 use App\Models\PricingPlan;
 use App\Models\Career;
+use App\Models\Page;
 
 class DatabaseSeeder extends Seeder
 {
@@ -78,13 +79,13 @@ class DatabaseSeeder extends Seeder
         // THEME DEFAULTS
         // ================================================================
         $theme = [
-            'primary_color'   => '#6c2bd9',
-            'secondary_color' => '#a855f7',
-            'accent_color'    => '#f59e0b',
-            'text_color'      => '#1f2937',
-            'bg_color'        => '#ffffff',
-            'dark_bg'         => '#0f0f1a',
-            'font_family'     => 'Inter',
+            'primary_color'   => '#2A2263',
+            'secondary_color' => '#6c5ce7',
+            'accent_color'    => '#a78bfa',
+            'text_color'      => '#1a1540',
+            'bg_color'        => '#f5f3ff',
+            'dark_bg'         => '#1a1540',
+            'font_family'     => 'Syne',
             'border_radius'   => '8px',
         ];
 
@@ -341,5 +342,38 @@ class DatabaseSeeder extends Seeder
         ] as $v) {
             DB::table('core_values')->insertOrIgnore(['icon'=>$v[0],'title'=>$v[1],'description'=>$v[2],'sort_order'=>$v[3],'is_active'=>true,'created_at'=>now(),'updated_at'=>now()]);
         }
+
+        // ================================================================
+        // LEGAL PAGES — footer links to these by slug, so they must exist
+        // ================================================================
+        Page::firstOrCreate(['slug' => 'terms-conditions'], [
+            'title'   => 'Terms & Conditions',
+            'content' => '<p>Welcome to SK Artistic. By accessing our website or engaging our services, you agree to be bound by these Terms & Conditions.</p>'
+                . '<h2>Services</h2><p>SK Artistic provides digital design, development, and marketing services as outlined in individual project agreements. Scope, timelines, and deliverables are defined per engagement.</p>'
+                . '<h2>Payments</h2><p>Project payments follow the schedule agreed upon at the start of an engagement. Late payments may result in a pause of active work.</p>'
+                . '<h2>Intellectual Property</h2><p>Upon full payment, ownership of final deliverables transfers to the client, unless otherwise agreed in writing. SK Artistic retains the right to showcase completed work in its portfolio.</p>'
+                . '<h2>Limitation of Liability</h2><p>SK Artistic is not liable for indirect or consequential damages arising from the use of delivered work.</p>'
+                . '<h2>Changes to These Terms</h2><p>We may update these terms periodically. Continued use of our services after changes constitutes acceptance of the revised terms.</p>'
+                . '<p>Questions about these terms? <a href="/contact">Get in touch</a>.</p>',
+            'meta_title'       => 'Terms & Conditions',
+            'meta_description' => 'The terms and conditions governing use of SK Artistic\'s website and services.',
+            'is_published'     => true,
+            'show_in_menu'     => false,
+        ]);
+
+        Page::firstOrCreate(['slug' => 'privacy-policy'], [
+            'title'   => 'Privacy Policy',
+            'content' => '<p>Your privacy matters to us. This policy explains what information we collect and how we use it.</p>'
+                . '<h2>Information We Collect</h2><p>We collect information you provide directly, such as your name, email, and message content when you fill out a contact or audit request form. We also collect basic analytics data (page visited, referrer, device type) to understand how the site is used.</p>'
+                . '<h2>How We Use Your Information</h2><p>We use your information to respond to inquiries, deliver requested services, and improve our website. We do not sell your personal information to third parties.</p>'
+                . '<h2>Cookies</h2><p>Our website may use cookies to support core functionality such as session management. We do not use cookies for third-party advertising tracking.</p>'
+                . '<h2>Data Security</h2><p>We take reasonable measures to protect the information you share with us from unauthorized access, alteration, or disclosure.</p>'
+                . '<h2>Your Rights</h2><p>You may request access to, correction of, or deletion of your personal data at any time by contacting us.</p>'
+                . '<p>Questions about this policy? <a href="/contact">Get in touch</a>.</p>',
+            'meta_title'       => 'Privacy Policy',
+            'meta_description' => 'How SK Artistic collects, uses, and protects your personal information.',
+            'is_published'     => true,
+            'show_in_menu'     => false,
+        ]);
     }
 }

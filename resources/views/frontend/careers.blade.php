@@ -32,21 +32,67 @@
     @if(isset($jobs) && $jobs->count())
     <div class="job-list">
       @foreach($jobs as $job)
+      @php
+        $applyHref = $job->apply_url ?: ($job->apply_email ? 'mailto:'.$job->apply_email.'?subject='.urlencode('Application: '.$job->title) : route('contact'));
+      @endphp
       <div class="job-card">
         <div class="job-head">
           <div>
             <div class="job-title">{{ $job->title }}</div>
             <div class="job-tags">
               @if($job->type)<span class="job-tag">{{ $job->type }}</span>@endif
-              @if($job->is_remote)<span class="job-tag remote">Remote ✦</span>@endif
+              @if($job->location)<span class="job-tag {{ str_contains(strtolower($job->location),'remote') ? 'remote' : '' }}">{{ $job->location }}</span>@endif
               @if($job->department)<span class="job-tag">{{ $job->department }}</span>@endif
+              @if($job->experience)<span class="job-tag">{{ $job->experience }}</span>@endif
             </div>
           </div>
-          <a href="{{ route('career.detail',$job->slug) }}" class="btn-outline" style="flex-shrink:0">Apply Now →</a>
+          <a href="{{ $applyHref }}" target="{{ $job->apply_url ? '_blank' : '_self' }}" class="btn-outline" style="flex-shrink:0" onclick="event.stopPropagation()">Apply Now →</a>
         </div>
-        @if($job->short_description)
-        <div class="job-body"><div class="job-body-inner"><p>{{ $job->short_description }}</p></div></div>
-        @endif
+        <div class="job-body">
+          <div class="job-body-inner">
+            @if($job->summary)<p>{{ $job->summary }}</p>@endif
+            @if($job->description)<p>{{ $job->description }}</p>@endif
+
+            @if(!empty($job->responsibilities))
+            <div style="margin-top:8px">
+              <div style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--brand);opacity:.75;margin-bottom:12px">Responsibilities</div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+                @foreach($job->responsibilities as $item)
+                <li style="display:flex;gap:10px;font-size:14px;color:var(--muted);line-height:1.7;font-weight:300"><span style="color:var(--brand);flex-shrink:0">—</span>{{ $item }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
+
+            @if(!empty($job->requirements))
+            <div>
+              <div style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--brand);opacity:.75;margin-bottom:12px">Requirements</div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+                @foreach($job->requirements as $item)
+                <li style="display:flex;gap:10px;font-size:14px;color:var(--muted);line-height:1.7;font-weight:300"><span style="color:var(--brand);flex-shrink:0">—</span>{{ $item }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
+
+            @if(!empty($job->benefits))
+            <div>
+              <div style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--brand);opacity:.75;margin-bottom:12px">Benefits</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+                @foreach($job->benefits as $item)
+                <span style="font-size:12px;padding:6px 14px;border:1.5px solid var(--rim2);color:var(--brand);border-radius:100px">{{ $item }}</span>
+                @endforeach
+              </div>
+            </div>
+            @endif
+
+            @if($job->deadline)
+            <div style="font-size:12px;color:var(--dim);letter-spacing:1px;margin-bottom:20px">Apply before <strong style="color:var(--text)">{{ $job->deadline->format('F d, Y') }}</strong></div>
+            @endif
+
+            <a href="{{ $applyHref }}" target="{{ $job->apply_url ? '_blank' : '_self' }}" class="btn-primary" style="display:inline-flex"><span>Apply for this Role</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
       </div>
       @endforeach
     </div>

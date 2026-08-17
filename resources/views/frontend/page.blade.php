@@ -2,10 +2,18 @@
 @section('title', $page->meta_title ?? $page->title)
 @section('meta_description', $page->meta_description ?? '')
 @section('content')
-<section style="min-height:100vh;padding:120px 0 80px;">
-    <div class="container" style="max-width:900px;">
-        <h1 style="font-size:3rem;font-weight:800;margin-bottom:40px;">{{ $page->title }}</h1>
-        <div style="line-height:1.8;font-size:1.05rem;">{!! $page->content !!}</div>
+<div class="page-hero">
+  <div class="page-hero-grid"></div><div class="page-hero-orb"></div>
+  <div class="container">
+    <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><span>{{ $page->title }}</span></div>
+    <h1>{{ strtoupper($page->title) }}</h1>
+  </div>
+</div>
+<section class="section">
+  <div class="container" style="max-width:820px">
+    <div class="blog-content reveal">
+      {!! $page->content !!}
     </div>
+  </div>
 </section>
 @endsection

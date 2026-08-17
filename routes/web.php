@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\AboutController;
 Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::get('/services', [FrontendController::class, 'services'])->name('services');
 Route::get('/services/{slug}', [FrontendController::class, 'serviceDetail'])->name('service.detail');
+Route::get('/pricing', [FrontendController::class, 'pricing'])->name('pricing');
 Route::get('/about-us', [FrontendController::class, 'about'])->name('about');
 Route::get('/meet-the-team', [FrontendController::class, 'team'])->name('team');
 Route::get('/portfolio', [FrontendController::class, 'portfolio'])->name('portfolio');
@@ -88,7 +89,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Media Library
         Route::get('/media',                     [MediaController::class, 'index'])->name('media.index');
-        Route::post('/media',                    [MediaController::class, 'store'])->name('media.store');
         Route::post('/media/upload',             [MediaController::class, 'upload'])->name('media.upload');
         Route::delete('/media/{media}',          [MediaController::class, 'destroy'])->name('media.destroy');
         Route::post('/media/{media}/alt',        [MediaController::class, 'updateAlt'])->name('media.alt');

@@ -36,6 +36,9 @@
             <div class="card" style="margin-bottom:20px">
                 <div class="card-head"><div class="card-title">🎨 Color Palette</div></div>
                 <div class="card-body">
+                    <div style="background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:12.5px;color:#5b21b6;line-height:1.6">
+                        ✨ <strong>Primary</strong>, <strong>Secondary</strong> and <strong>Accent</strong> feed the live site's gradient system directly — changes here appear across buttons, headings and highlights on the public site. <strong>Text Color</strong> updates body copy. Background / Dark Background / Border Radius currently affect this preview only.
+                    </div>
                     <div class="color-grid">
                         @php
                         $colors = [
@@ -50,8 +53,8 @@
                         @foreach($colors as $c)
                         <div class="color-item">
                             <label>{{ $c['label'] }}</label>
-                            <input type="color" name="{{ $c['key'] }}" value="{{ $theme[$c['key']] ?? '#7c3aed' }}" class="color-swatch-big" onchange="updatePreview()">
-                            <input type="text" class="hex-input" value="{{ $theme[$c['key']] ?? '#7c3aed' }}" placeholder="#000000" oninput="syncColorFromHex(this)" data-for="{{ $c['key'] }}">
+                            <input type="color" name="{{ $c['key'] }}" value="{{ $theme[$c['key']] ?? '#2A2263' }}" class="color-swatch-big" onchange="updatePreview()">
+                            <input type="text" class="hex-input" value="{{ $theme[$c['key']] ?? '#2A2263' }}" placeholder="#000000" oninput="syncColorFromHex(this)" data-for="{{ $c['key'] }}">
                             <div style="font-size:11px;color:#94a3b8;margin-top:4px">{{ $c['hint'] }}</div>
                         </div>
                         @endforeach
@@ -93,6 +96,7 @@
                     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px">
                         @php
                         $presets = [
+                            ['name'=>'SK Artistic (Default)','p'=>'#2A2263','s'=>'#6c5ce7','a'=>'#a78bfa','dark'=>'#1a1540','bg'=>'#f5f3ff','text'=>'#1a1540'],
                             ['name'=>'Purple Dream','p'=>'#7c3aed','s'=>'#06b6d4','a'=>'#f59e0b','dark'=>'#050510','bg'=>'#fafafa','text'=>'#0f0f23'],
                             ['name'=>'Rose Gold','p'=>'#e11d48','s'=>'#f97316','a'=>'#eab308','dark'=>'#0f0a0a','bg'=>'#fafafa','text'=>'#1c0e0e'],
                             ['name'=>'Ocean Blue','p'=>'#2563eb','s'=>'#06b6d4','a'=>'#10b981','dark'=>'#030712','bg'=>'#f8fafc','text'=>'#0f172a'],
@@ -130,13 +134,18 @@
         <div class="card">
             <div class="card-head"><div class="card-title">👁️ Live Preview</div></div>
             <div class="card-body">
-                <div id="livePreview" style="background:#050510;border-radius:14px;padding:18px;overflow:hidden">
+                @php
+                  $pvP = $theme['primary_color'] ?? '#2A2263';
+                  $pvS = $theme['secondary_color'] ?? '#6c5ce7';
+                  $pvDark = $theme['dark_bg'] ?? '#1a1540';
+                @endphp
+                <div id="livePreview" style="background:{{ $pvDark }};border-radius:14px;padding:18px;overflow:hidden">
                     <div style="background:rgba(255,255,255,.07);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
                         <span id="prev-logo" style="font-weight:800;color:#fff;font-size:14px">SK Artistic</span>
-                        <span id="prev-btn" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700">Contact Us</span>
+                        <span id="prev-btn" style="background:linear-gradient(135deg,{{ $pvP }},{{ $pvS }});color:#fff;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700">Contact Us</span>
                     </div>
                     <div style="text-align:center;padding:16px 0">
-                        <div id="prev-title" style="font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px">Designing without borders</div>
+                        <div id="prev-title" style="font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,{{ $pvP }},{{ $pvS }});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px">Designing without borders</div>
                         <div style="color:rgba(255,255,255,.4);font-size:11px">From idea to execution...</div>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
@@ -148,7 +157,7 @@
                         @endforeach
                     </div>
                     <div style="margin-top:14px;display:flex;gap:8px">
-                        <div id="prev-primary-btn" style="flex:1;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;padding:10px;border-radius:8px;text-align:center;font-size:12px;font-weight:700">Get Started</div>
+                        <div id="prev-primary-btn" style="flex:1;background:linear-gradient(135deg,{{ $pvP }},{{ $pvS }});color:#fff;padding:10px;border-radius:8px;text-align:center;font-size:12px;font-weight:700">Get Started</div>
                         <div style="flex:1;border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:9px;border-radius:8px;text-align:center;font-size:12px;font-weight:600">Our Services</div>
                     </div>
                 </div>
@@ -157,11 +166,11 @@
                     <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Light Section Preview</div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
                         @foreach(['Service 1','Service 2'] as $s)
-                        <div id="prev-service-card" style="border:1.5px solid rgba(124,58,237,.12);border-radius:10px;padding:14px">
+                        <div id="prev-service-card" style="border:1.5px solid {{ $pvP }}20;border-radius:10px;padding:14px">
                             <div style="font-size:1.2rem;margin-bottom:8px">⚡</div>
                             <div style="font-size:12px;font-weight:700;margin-bottom:4px">{{ $s }}</div>
                             <div style="font-size:11px;color:#6b7280">Short description here</div>
-                            <div id="prev-link" style="font-size:11px;font-weight:600;color:#7c3aed;margin-top:8px">Learn more →</div>
+                            <div id="prev-link" style="font-size:11px;font-weight:600;color:{{ $pvP }};margin-top:8px">Learn more →</div>
                         </div>
                         @endforeach
                     </div>

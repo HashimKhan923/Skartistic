@@ -7,6 +7,9 @@
 <meta name="description" content="@yield('meta_description', $settings['site_tagline'] ?? 'Full-cycle digital agency building the future.')">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+@if(!empty($theme['font_family']) && $theme['font_family'] !== 'Syne')
+<link href="https://fonts.googleapis.com/css2?family={{ str_replace(' ', '+', $theme['font_family']) }}:wght@400;600;700;800&display=swap" rel="stylesheet">
+@endif
 <style>
 /* ═══════════════════════════════════════════════════════════
    TOKENS — Light Theme
@@ -40,6 +43,49 @@
   --shadow:  0 2px 24px rgba(42,34,99,.08);
   --shadow-lg: 0 8px 48px rgba(42,34,99,.12);
 }
+@if(!empty($theme))
+@php
+  // Admin-configurable overrides (Theme Settings panel) — kept optional so
+  // sites that never touch that panel still get the default brand palette above.
+  $hexToRgb = function ($hex) {
+    $hex = ltrim($hex ?? '', '#');
+    if (strlen($hex) !== 6) return null;
+    return implode(',', array_map(fn($h) => hexdec($h), str_split($hex, 2)));
+  };
+  // Hover shade blends the brand color toward the accent (matches the
+  // hand-picked default relationship of --brand -> --brand2 -> --accent).
+  $blend = function ($hexA, $hexB, $amt = 0.35) {
+    $hexA = ltrim($hexA ?? '', '#'); $hexB = ltrim($hexB ?? '', '#');
+    if (strlen($hexA) !== 6 || strlen($hexB) !== 6) return $hexA ? "#$hexA" : null;
+    $a = array_map('hexdec', str_split($hexA, 2));
+    $b = array_map('hexdec', str_split($hexB, 2));
+    [$r, $g, $bl] = array_map(fn($i) => (int) round($a[$i] + ($b[$i] - $a[$i]) * $amt), [0, 1, 2]);
+    return sprintf('#%02x%02x%02x', $r, $g, $bl);
+  };
+  $brand   = $theme['primary_color'] ?? null;
+  $accent  = $theme['secondary_color'] ?? null;
+  $magenta = $theme['accent_color'] ?? null;
+@endphp
+:root {
+  @if($brand)
+  --brand: {{ $brand }};
+  --brand2: {{ $blend($brand, $accent ?: $brand) }};
+  --cyan: {{ $brand }};
+  @endif
+  @if($accent)
+  --accent: {{ $accent }};
+  @endif
+  @if($magenta)
+  --magenta: {{ $magenta }};
+  @endif
+  @if(!empty($theme['text_color']))
+  --text: {{ $theme['text_color'] }};
+  @endif
+  @if(!empty($theme['font_family']) && $theme['font_family'] !== 'Syne')
+  --font-ui: '{{ $theme['font_family'] }}', sans-serif;
+  @endif
+}
+@endif
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 html { scroll-behavior:smooth; overflow-x:hidden }
 body { font-family:var(--font-b); color:var(--text); background:var(--void); overflow-x:hidden; cursor:none }
@@ -1026,12 +1072,92 @@ select.field-input { -webkit-appearance:none;appearance:none;color:var(--muted) 
 .job-card.open .job-body { max-height:500px }
 
 /* ═══════════════════════════════════════════════════════════
-   REVEAL ANIMATIONS
+   REVEAL ANIMATIONS — cinematic blur-in
 ═══════════════════════════════════════════════════════════ */
-.reveal   { opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s }
-.reveal-l { opacity:0;transform:translateX(-32px);transition:opacity .8s .1s,transform .8s .1s }
-.reveal-r { opacity:0;transform:translateX(32px);transition:opacity .8s .1s,transform .8s .1s }
-.reveal.vis,.reveal-l.vis,.reveal-r.vis { opacity:1;transform:none }
+.reveal   { opacity:0;transform:translateY(32px);filter:blur(6px);transition:opacity .8s,transform .8s,filter .8s }
+.reveal-l { opacity:0;transform:translateX(-32px);filter:blur(6px);transition:opacity .8s .1s,transform .8s .1s,filter .8s .1s }
+.reveal-r { opacity:0;transform:translateX(32px);filter:blur(6px);transition:opacity .8s .1s,transform .8s .1s,filter .8s .1s }
+.reveal.vis,.reveal-l.vis,.reveal-r.vis { opacity:1;transform:none;filter:blur(0) }
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE LOADER
+═══════════════════════════════════════════════════════════ */
+#page-loader {
+  position:fixed; inset:0; z-index:100000; background:var(--void);
+  display:flex; align-items:center; justify-content:center;
+  transition:opacity .6s ease, visibility .6s ease;
+}
+#page-loader.done { opacity:0; visibility:hidden; pointer-events:none }
+.pl-mark {
+  font-family:var(--font-d); font-size:2.6rem; letter-spacing:5px;
+  background:linear-gradient(135deg,var(--brand),var(--accent));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  position:relative; animation:pl-pulse 1.6s ease-in-out infinite;
+}
+@keyframes pl-pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+.pl-bar-track {
+  position:absolute; bottom:-26px; left:50%; transform:translateX(-50%);
+  width:130px; height:2px; background:var(--rim); overflow:hidden; border-radius:2px;
+}
+.pl-bar {
+  position:absolute; top:0; bottom:0; width:40%;
+  background:linear-gradient(90deg,var(--brand),var(--accent)); border-radius:2px;
+  animation:pl-sweep 1.1s ease-in-out infinite;
+}
+@keyframes pl-sweep { 0%{left:-40%} 100%{left:100%} }
+@media(prefers-reduced-motion:reduce){ #page-loader{ transition:none } }
+
+/* ═══════════════════════════════════════════════════════════
+   GRAIN TEXTURE — subtle editorial noise overlay
+═══════════════════════════════════════════════════════════ */
+#grain {
+  position:fixed; inset:-60px; z-index:9996; pointer-events:none;
+  opacity:.035; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media(max-width:900px){ #grain{ display:none } }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL TO TOP
+═══════════════════════════════════════════════════════════ */
+#to-top {
+  position:fixed; bottom:28px; right:28px; width:48px; height:48px;
+  border-radius:50%; background:var(--panel); border:1.5px solid var(--rim2);
+  display:flex; align-items:center; justify-content:center; cursor:none; z-index:500;
+  opacity:0; visibility:hidden; transform:translateY(14px) scale(.9);
+  transition:opacity .3s, transform .3s, visibility .3s, border-color .3s, box-shadow .3s;
+  box-shadow:var(--shadow); padding:0; font-family:inherit;
+}
+#to-top.show { opacity:1; visibility:visible; transform:none }
+#to-top:hover { border-color:var(--brand); box-shadow:var(--glow-c) }
+#to-top svg { width:17px; height:17px; color:var(--brand); transition:transform .25s }
+#to-top:hover svg { transform:translateY(-2px) }
+@media(max-width:900px){ #to-top{ right:16px; bottom:16px; width:42px; height:42px } }
+
+/* ═══════════════════════════════════════════════════════════
+   BUTTON SHINE SWEEP
+═══════════════════════════════════════════════════════════ */
+.btn-primary,.btn-price-fill { isolation:isolate }
+.btn-primary::after,.btn-price-fill::after {
+  content:''; position:absolute; top:0; left:-60%; width:35%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.4), transparent);
+  transform:skewX(-18deg); transition:left .65s cubic-bezier(.25,.46,.45,.94); pointer-events:none; z-index:2;
+}
+.btn-primary:hover::after,.btn-price-fill:hover::after { left:130% }
+
+/* ═══════════════════════════════════════════════════════════
+   CUSTOM SCROLLBAR
+═══════════════════════════════════════════════════════════ */
+html { scrollbar-width:thin; scrollbar-color:var(--brand) var(--void) }
+::-webkit-scrollbar { width:10px; height:10px }
+::-webkit-scrollbar-track { background:var(--void) }
+::-webkit-scrollbar-thumb { background:linear-gradient(var(--brand),var(--accent)); border-radius:10px; border:2px solid var(--void) }
+::-webkit-scrollbar-thumb:hover { background:var(--brand) }
+
+/* ═══════════════════════════════════════════════════════════
+   3D TILT CARDS (applied via JS to select card types)
+═══════════════════════════════════════════════════════════ */
+.tilt-el { transition:transform .5s cubic-bezier(.25,.46,.45,.94) }
 
 /* ═══════════════════════════════════════════════════════════
    FOOTER
@@ -1165,6 +1291,16 @@ footer {
 </head>
 <body>
 
+<!-- PAGE LOADER -->
+<div id="page-loader">
+  <div class="pl-mark">SK
+    <div class="pl-bar-track"><div class="pl-bar"></div></div>
+  </div>
+</div>
+
+<!-- GRAIN TEXTURE -->
+<div id="grain"></div>
+
 <!-- CURSOR -->
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
@@ -1175,6 +1311,11 @@ footer {
 <div class="data-line"></div>
 <!-- CANVAS BG -->
 <canvas id="bg-canvas"></canvas>
+
+<!-- SCROLL TO TOP -->
+<button id="to-top" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
 
 <!-- ═══ NAV ═══ -->
 <nav class="nav" id="navbar">
@@ -1205,6 +1346,7 @@ footer {
       </div>
     </li>
     <li><a href="{{ route('portfolio') }}" class="{{ request()->routeIs('portfolio*') ? 'active' : '' }}">Portfolio</a></li>
+    <li><a href="{{ route('pricing') }}" class="{{ request()->routeIs('pricing') ? 'active' : '' }}">Pricing</a></li>
     <li><a href="{{ route('team') }}" class="{{ request()->routeIs('team') ? 'active' : '' }}">Team</a></li>
     <li>
       <a href="{{ route('blog') }}" class="{{ request()->routeIs('blog*') ? 'active' : '' }}">
@@ -1254,9 +1396,13 @@ footer {
         <ul>
           <li><a href="{{ route('about') }}">About Us</a></li>
           <li><a href="{{ route('portfolio') }}">Portfolio</a></li>
+          <li><a href="{{ route('pricing') }}">Pricing</a></li>
           <li><a href="{{ route('blog') }}">Blog</a></li>
           <li><a href="{{ route('team') }}">Our Team</a></li>
           <li><a href="{{ route('careers') }}">Careers</a></li>
+          @foreach($menu_pages ?? [] as $mp)
+          <li><a href="{{ route('page', $mp->slug) }}">{{ $mp->title }}</a></li>
+          @endforeach
         </ul>
       </div>
       <div class="footer-col">
@@ -1264,7 +1410,7 @@ footer {
         <ul>
           <li><a href="{{ route('contact') }}">Get In Touch</a></li>
           <li><a href="{{ route('free-audit') }}" style="color:var(--magenta)">Free Audit ✦</a></li>
-          @if(!empty($settings['site_email']))<li><a href="/cdn-cgi/l/email-protection#a1dada8185d2c4d5d5c8cfc6d2fa86d2c8d5c4fec4ccc0c8cd86fc81dcdc">{{ $settings['site_email'] }}</a></li>@endif
+          @if(!empty($settings['site_email']))<li><a href="mailto:{{ $settings['site_email'] }}">{{ $settings['site_email'] }}</a></li>@endif
           @if(!empty($settings['site_phone']))<li><a href="tel:{{ $settings['site_phone'] }}">{{ $settings['site_phone'] }}</a></li>@endif
         </ul>
       </div>
@@ -1281,7 +1427,7 @@ footer {
 </footer>
 
 <!-- ═══ GLOBAL SCRIPTS ═══ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ── CANVAS PARTICLE FIELD (light version) ── */
 const cvs=document.getElementById('bg-canvas'),ctx=cvs.getContext('2d');
 let W,H,pts=[];
@@ -1352,4 +1498,49 @@ document.querySelectorAll('.hero-stats,.stats-row,.about-stats-row').forEach(el=
 /* ── LIGHTBOX ── */
 window.openLightbox=src=>{const lb=document.getElementById('lightbox');if(lb){document.getElementById('lb-img').src=src;lb.style.display='flex'}};
 window.closeLightbox=()=>{const lb=document.getElementById('lightbox');if(lb)lb.style.display='none'};
+
+/* ── PAGE LOADER ── */
+(function(){
+  const loader=document.getElementById('page-loader');
+  if(!loader) return;
+  const hide=()=>loader.classList.add('done');
+  if(document.readyState==='complete') setTimeout(hide,180);
+  else window.addEventListener('load',()=>setTimeout(hide,180));
+  setTimeout(hide,2200); // safety fallback so it never sticks
+})();
+
+/* ── SCROLL TO TOP ── */
+(function(){
+  const btn=document.getElementById('to-top');
+  if(!btn) return;
+  window.addEventListener('scroll',()=>btn.classList.toggle('show',window.scrollY>700),{passive:true});
+  btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+})();
+
+/* ── 3D TILT CARDS ── */
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(window.matchMedia('(pointer: coarse)').matches) return; // skip on touch devices
+  const sel='.svc-cell,.team-card,.blog-card,.testi-block,.benefit-box,.info-card,.stat-box,.job-card,.port-item';
+  document.querySelectorAll(sel).forEach(el=>{
+    el.classList.add('tilt-el');
+    el.addEventListener('mouseenter',()=>{ el.style.transition='transform .1s linear' });
+    el.addEventListener('mousemove',e=>{
+      const r=el.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      el.style.transform=`perspective(900px) rotateX(${-y*5}deg) rotateY(${x*5}deg) translateZ(2px)`;
+    });
+    el.addEventListener('mouseleave',()=>{
+      el.style.transition='transform .5s cubic-bezier(.25,.46,.45,.94)';
+      el.style.transform='';
+    });
+  });
+})();
+
+/* ── EXTEND MAGNETIC EFFECT TO OUTLINE BUTTONS ── */
+document.querySelectorAll('.btn-outline').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;btn.style.transform=`translate(${(e.clientX-cx)*.1}px,${(e.clientY-cy)*.1}px)`});
+  btn.addEventListener('mouseleave',()=>{btn.style.transition='transform .4s cubic-bezier(.25,.46,.45,.94)';btn.style.transform='';setTimeout(()=>btn.style.transition='',400)});
+  btn.addEventListener('mouseenter',()=>{btn.style.transition='transform .1s linear'});
+});
 </script>

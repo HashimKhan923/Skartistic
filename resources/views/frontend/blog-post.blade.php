@@ -41,12 +41,12 @@
           <p style="font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:20px;font-weight:300">Let's build your next big project together.</p>
           <a href="{{ route('contact') }}" class="btn-primary" style="display:flex;width:100%;justify-content:center"><span>Get In Touch</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
-        @if(isset($related_posts) && $related_posts->count())
+        @if(isset($related) && $related->count())
         <div style="background:var(--panel);border:1px solid var(--rim);padding:28px">
           <div style="font-family:var(--font-ui);font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;opacity:.8">Related Posts</div>
           <div style="display:flex;flex-direction:column;gap:1px">
-            @foreach($related_posts as $rel)
-            <a href="{{ route('blog.detail',$rel->slug) }}" style="display:flex;gap:12px;padding:12px;transition:background .2s;cursor:none" onmouseenter="this.style.background='rgba(0,245,255,.03)'" onmouseleave="this.style.background=''">
+            @foreach($related as $rel)
+            <a href="{{ route('blog.post',$rel->slug) }}" style="display:flex;gap:12px;padding:12px;transition:background .2s;cursor:none" onmouseenter="this.style.background='rgba(0,245,255,.03)'" onmouseleave="this.style.background=''">
               <div style="width:60px;height:50px;flex-shrink:0;overflow:hidden;background:var(--void)">@if($rel->featured_image)<img src="{{ asset('storage/'.$rel->featured_image) }}" alt="{{ $rel->title }}" style="width:100%;height:100%;object-fit:cover">@else<div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(0,245,255,.05),rgba(124,58,237,.06));display:flex;align-items:center;justify-content:center;font-size:1.1rem">✍️</div>@endif</div>
               <div><div style="font-family:var(--font-ui);font-size:.85rem;font-weight:700;color:var(--text);line-height:1.25;margin-bottom:3px;letter-spacing:.2px">{{ Str::limit($rel->title,52) }}</div><div style="font-size:11px;color:var(--dim)">{{ $rel->created_at->format('M d, Y') }}</div></div>
             </a>

@@ -15,6 +15,7 @@ use App\Models\Contact;
 use App\Models\Portfolio;
 use App\Models\ClientLogo;
 use App\Models\AuditLead;
+use App\Models\ThemeSetting;
 use App\Mail\NewContactMail;
 use App\Mail\NewAuditMail;
 use Illuminate\Support\Facades\Mail;
@@ -25,8 +26,10 @@ class FrontendController extends Controller
     {
         $settings = Setting::pluck('value', 'key')->toArray();
         $services_nav = Service::where('is_published', true)->orderBy('sort_order')->get();
-        try { \App\Models\PageView::create(["page_url"=>request()->path(),"ip_address"=>request()->ip(),"user_agent"=>request()->userAgent(),"referrer"=>request()->headers->get("referer")]); } catch (\Exception $e) {}
-        return compact('settings', 'services_nav');
+        $menu_pages = Page::where('is_published', true)->where('show_in_menu', true)->orderBy('menu_order')->get();
+        $theme = ThemeSetting::getAllForCSS();
+        // Page view tracking is handled globally by the TrackPageView middleware.
+        return compact('settings', 'services_nav', 'menu_pages', 'theme');
     }
 
     public function home()
@@ -109,8 +112,20 @@ public function portfolio(Request $request)
     public function blog(Request $request)
     {
         $data = $this->sharedData();
-        $posts = BlogPost::where('is_published', true)->latest('published_at')->paginate(9);
-        return view('frontend.blog', array_merge($data, compact('posts')));
+
+        $query = BlogPost::where('is_published', true);
+        if ($request->category) {
+            $query->where('category', $request->category);
+        }
+        $posts = $query->latest('published_at')->paginate(9);
+
+        $categories = BlogPost::where('is_published', true)
+            ->whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category');
+
+        return view('frontend.blog', array_merge($data, compact('posts', 'categories')));
     }
 
     public function blogPost($slug)
@@ -121,6 +136,14 @@ public function portfolio(Request $request)
         return view('frontend.blog-post', array_merge($data, compact('post','related')));
     }
 
+
+    public function pricing()
+    {
+        $data = $this->sharedData();
+        $pricing_plans = PricingPlan::where('is_published', true)->orderBy('sort_order')->get();
+        $faqs = Faq::where('is_published', true)->orderBy('sort_order')->get();
+        return view('frontend.pricing', array_merge($data, compact('pricing_plans', 'faqs')));
+    }
 
     public function careers()
     {
@@ -145,6 +168,8 @@ public function portfolio(Request $request)
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:30',
             'subject' => 'nullable|string|max:255',
+            'service' => 'nullable|string|max:255',
+            'budget' => 'nullable|string|max:100',
             'message' => 'required|string',
         ]);
         $contact = Contact::create($validated);
@@ -189,6 +214,6 @@ public function portfolio(Request $request)
     {
         $data = $this->sharedData();
         $page = Page::where('slug', $slug)->where('is_published', true)->firstOrFail();
-        return view('frontend.pages.dynamic', array_merge($data, compact('page')));
+        return view('frontend.page', array_merge($data, compact('page')));
     }
 }

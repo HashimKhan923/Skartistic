@@ -49,6 +49,18 @@
       <div class="field-value">{{ $contact->subject }}</div>
     </div>
     @endif
+    @if($contact->service)
+    <div class="field">
+      <div class="field-label">Service Needed</div>
+      <div class="field-value">{{ $contact->service }}</div>
+    </div>
+    @endif
+    @if($contact->budget)
+    <div class="field">
+      <div class="field-label">Budget Range</div>
+      <div class="field-value">{{ $contact->budget }}</div>
+    </div>
+    @endif
     <div class="field">
       <div class="field-label">Message</div>
       <div class="message-box">{{ $contact->message }}</div>

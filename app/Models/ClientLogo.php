@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClientLogo extends Model
 {
-        protected $fillable = ['name','logo','website','is_published','sort_order'];
+        protected $fillable = ['name','logo','website_url','is_published','sort_order'];
 
 }

@@ -33,24 +33,52 @@
           @if(session('success'))<div class="flash-success"><span class="icon">✓</span><span class="msg">{{ session('success') }}</span></div>@endif
           <div style="font-family:var(--font-d);font-size:1.8rem;letter-spacing:1px;color:var(--text);margin-bottom:6px">REQUEST YOUR <span style="color:var(--yellow)">FREE AUDIT</span></div>
           <p style="font-size:13.5px;color:var(--dim);margin-bottom:32px;font-weight:300">Fill in your details — we'll respond within 48 hours.</p>
-          <form action="{{ route('free-audit.send') }}" method="POST">
+          <form action="{{ route('audit.submit') }}" method="POST">
             @csrf
-            <div class="field-wrap"><label>Your Name</label><input type="text" name="name" class="field-input" placeholder="John Doe" value="{{ old('name') }}">@error('name')<span class="field-error">{{ $message }}</span>@enderror</div>
-            <div class="field-wrap"><label>Your Email</label><input type="email" name="email" class="field-input" placeholder="you@email.com" value="{{ old('email') }}">@error('email')<span class="field-error">{{ $message }}</span>@enderror</div>
-            <div class="field-wrap"><label>Website URL</label><input type="url" name="website" class="field-input" placeholder="https://yourwebsite.com" value="{{ old('website') }}">@error('website')<span class="field-error">{{ $message }}</span>@enderror</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field-wrap"><label>Your Name</label><input type="text" name="name" class="field-input" placeholder="John Doe" value="{{ old('name') }}">@error('name')<span class="field-error">{{ $message }}</span>@enderror</div>
+              <div class="field-wrap"><label>Your Email</label><input type="email" name="email" class="field-input" placeholder="you@email.com" value="{{ old('email') }}">@error('email')<span class="field-error">{{ $message }}</span>@enderror</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field-wrap"><label>Phone (Optional)</label><input type="tel" name="phone" class="field-input" placeholder="+1 234 567 890" value="{{ old('phone') }}"></div>
+              <div class="field-wrap"><label>Website URL</label><input type="url" name="website_url" class="field-input" placeholder="https://yourwebsite.com" value="{{ old('website_url') }}">@error('website_url')<span class="field-error">{{ $message }}</span>@enderror</div>
+            </div>
             <div class="field-wrap">
-              <label>Main Goal</label>
-              <select name="goal" class="field-input">
-                <option value="">Select a goal</option>
-                <option value="more-leads">Get more leads</option>
-                <option value="better-design">Improve design & UX</option>
-                <option value="seo">Rank higher on Google</option>
-                <option value="performance">Fix performance issues</option>
-                <option value="mobile">Improve mobile experience</option>
-                <option value="general">General improvement</option>
+              <label>Business Type</label>
+              <select name="business_type" class="field-input">
+                <option value="">Select a business type</option>
+                <option value="E-commerce" {{ old('business_type')=='E-commerce'?'selected':'' }}>E-commerce</option>
+                <option value="Service Business" {{ old('business_type')=='Service Business'?'selected':'' }}>Service Business</option>
+                <option value="SaaS / Startup" {{ old('business_type')=='SaaS / Startup'?'selected':'' }}>SaaS / Startup</option>
+                <option value="Portfolio / Blog" {{ old('business_type')=='Portfolio / Blog'?'selected':'' }}>Portfolio / Blog</option>
+                <option value="Other" {{ old('business_type')=='Other'?'selected':'' }}>Other</option>
               </select>
             </div>
-            <div class="field-wrap"><label>Anything Specific? (Optional)</label><textarea name="notes" class="field-input" rows="3" placeholder="Focus areas, biggest concerns...">{{ old('notes') }}</textarea></div>
+            <div class="field-wrap">
+              <label>Budget Range</label>
+              <select name="budget_range" class="field-input">
+                <option value="">Select a budget</option>
+                <option value="<$1k" {{ old('budget_range')=='<$1k'?'selected':'' }}>Under $1,000</option>
+                <option value="$1k-$3k" {{ old('budget_range')=='$1k-$3k'?'selected':'' }}>$1,000 – $3,000</option>
+                <option value="$3k-$10k" {{ old('budget_range')=='$3k-$10k'?'selected':'' }}>$3,000 – $10,000</option>
+                <option value="$10k+" {{ old('budget_range')=='$10k+'?'selected':'' }}>$10,000+</option>
+                <option value="discuss" {{ old('budget_range')=='discuss'?'selected':'' }}>Let's discuss</option>
+              </select>
+            </div>
+            @if(isset($services_nav) && $services_nav->count())
+            <div class="field-wrap">
+              <label>Services You're Interested In</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+                @foreach($services_nav as $s)
+                <label style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);font-weight:400;border:1.5px solid var(--rim2);border-radius:100px;padding:8px 16px;cursor:pointer">
+                  <input type="checkbox" name="services_needed[]" value="{{ $s->title }}" {{ in_array($s->title, old('services_needed', [])) ? 'checked' : '' }} style="accent-color:var(--brand)">
+                  {{ $s->title }}
+                </label>
+                @endforeach
+              </div>
+            </div>
+            @endif
+            <div class="field-wrap"><label>Goals & Focus Areas (Optional)</label><textarea name="goals" class="field-input" rows="3" placeholder="What are you hoping to achieve? Any specific concerns?">{{ old('goals') }}</textarea></div>
             <button type="submit" class="btn-primary" style="width:100%;justify-content:center;display:flex;background:linear-gradient(135deg,#d97706,#f59e0b)"><span>Get My Free Audit</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
           </form>
         </div>

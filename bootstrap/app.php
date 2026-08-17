@@ -21,6 +21,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
 
+        // Applies to every web request: resolves the active locale and
+        // records page-view analytics (used by the admin Analytics dashboard).
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\TrackPageView::class,
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
