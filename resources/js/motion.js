@@ -627,9 +627,12 @@ function runMarquee(track, isLogos) {
 
 // A few logos stay centred. Looping only reads as a marquee once the real set nearly fills the row.
 function setupLogoLoop(track) {
-    if (track.scrollWidth < window.innerWidth * 0.75) return;
-    track.classList.add('is-loop');
     const originals = Array.from(track.children);
+    // Measure the logos themselves: the row is full width however few it holds
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    const contentWidth = originals.reduce((sum, n) => sum + n.getBoundingClientRect().width + gap, -gap);
+    if (contentWidth < window.innerWidth * 0.75) return;
+    track.classList.add('is-loop');
     const addCopy = (nodes) => nodes.forEach((n) => {
         const c = n.cloneNode(true);
         c.setAttribute('aria-hidden', 'true');
