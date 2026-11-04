@@ -12,19 +12,11 @@
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
     <div>
-        <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin:0">
-            {{ isset($career) ? '✏️ Edit Job Posting' : '➕ Post New Job' }}
-        </h2>
-        <p style="font-size:13px;color:#64748b;margin:2px 0 0">Admin Panel / Careers</p>
+        <p style="font-size:13px;color:var(--a-muted);margin:2px 0 0">Admin Panel / Careers</p>
     </div>
     <a href="{{ route('admin.careers.index') }}" class="btn btn-ghost btn-sm">← Back</a>
 </div>
 
-@if($errors->any())
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:13px">
-    @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
-</div>
-@endif
 
 <form method="POST" action="{{ isset($career) ? route('admin.careers.update', $career) : route('admin.careers.store') }}">
     @csrf @if(isset($career)) @method('PUT') @endif

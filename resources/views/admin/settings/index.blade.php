@@ -11,40 +11,40 @@
 /* Key badge */
 .kb {
   display:inline-block; font-size:9.5px; font-family:monospace;
-  background:rgba(99,102,241,.08); color:#6366f1;
-  border:1px solid rgba(99,102,241,.18); padding:1px 6px;
+  background:rgba(var(--p-rgb),.08); color:var(--p);
+  border:1px solid rgba(var(--p-rgb),.18); padding:1px 6px;
   border-radius:4px; margin-left:5px; letter-spacing:.2px; vertical-align:middle;
 }
 /* Tip/note box */
 .tip {
-  font-size:12px; color:#64748b; background:#f8fafc;
-  border:1px solid #e2e8f0; border-left:3px solid #6366f1;
+  font-size:12px; color:var(--a-muted); background:var(--a-soft);
+  border:1px solid var(--a-line); border-left:3px solid var(--p);
   border-radius:0 6px 6px 0; padding:9px 14px; margin-bottom:14px; line-height:1.6;
 }
-.tip strong { color:#4f46e5 }
-.tip.warn { border-left-color:#ea580c }
-.tip.warn strong { color:#ea580c }
+.tip strong { color:var(--p) }
+.tip.warn { border-left-color:var(--s) }
+.tip.warn strong { color:var(--s) }
 
 /* Tag pill input */
 .tag-wrap {
-  border:1.5px solid #e2e8f0; border-radius:8px; padding:7px 10px;
+  border:1.5px solid var(--a-line); border-radius:8px; padding:7px 10px;
   min-height:44px; display:flex; flex-wrap:wrap; gap:6px; align-items:center;
-  background:#fff; cursor:text; transition:border-color .2s, box-shadow .2s;
+  background:var(--a-panel); cursor:text; transition:border-color .2s, box-shadow .2s;
 }
-.tag-wrap:focus-within { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.08) }
+.tag-wrap:focus-within { border-color:var(--p); box-shadow:0 0 0 3px rgba(var(--p-rgb),.08) }
 .tag-pill {
   display:inline-flex; align-items:center; gap:4px;
-  background:rgba(99,102,241,.1); color:#4338ca;
+  background:rgba(var(--p-rgb),.1); color:var(--p);
   font-size:12px; font-weight:500; padding:3px 10px 3px 12px; border-radius:100px;
   white-space:nowrap;
 }
-.tag-pill button { background:none;border:none;cursor:pointer;color:#4338ca;font-size:14px;line-height:1;padding:0 }
+.tag-pill button { background:none;border:none;cursor:pointer;color:var(--p);font-size:14px;line-height:1;padding:0 }
 .tag-pill button:hover { color:#ef4444 }
-.tag-inp { border:none;outline:none;font-size:13px;min-width:120px;flex:1;color:#1e293b;background:transparent }
+.tag-inp { border:none;outline:none;font-size:13px;min-width:120px;flex:1;color:var(--a-text);background:transparent }
 
 /* Image preview */
-.img-preview { margin-top:8px; max-height:90px; border-radius:6px; border:1px solid #e2e8f0; object-fit:cover; display:block }
-.rm-chk { font-size:12px; color:#64748b; margin-top:6px; display:flex; align-items:center; gap:5px; cursor:pointer }
+.img-preview { margin-top:8px; max-height:90px; border-radius:6px; border:1px solid var(--a-line); object-fit:cover; display:block }
+.rm-chk { font-size:12px; color:var(--a-muted); margin-top:6px; display:flex; align-items:center; gap:5px; cursor:pointer }
 </style>
 
 <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data">
@@ -218,7 +218,7 @@
         <input class="form-control" type="file" name="promo_video_file"
           accept="video/mp4,video/webm">
         @if(!empty($settings['promo_video_file']))
-          <small class="form-text" style="color:#16a34a;display:block;margin-top:6px">
+          <small class="form-text" style="color:var(--p);display:block;margin-top:6px">
             ✓ {{ basename($settings['promo_video_file']) }}
           </small>
           <label class="rm-chk">
@@ -412,11 +412,6 @@
     💾 Save All Settings
   </button>
   <a href="{{ route('home') }}" target="_blank" class="btn btn-ghost">🌐 Preview Site</a>
-  @if(session('success'))
-    <span style="font-size:13px;color:#16a34a;background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 16px;border-radius:6px">
-      ✓ {{ session('success') }}
-    </span>
-  @endif
 </div>
 
 </form>

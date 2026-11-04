@@ -10,19 +10,11 @@
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
     <div>
-        <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin:0">
-            {{ isset($faq) ? '✏️ Edit FAQ' : '➕ Add FAQ' }}
-        </h2>
-        <p style="font-size:13px;color:#64748b;margin:2px 0 0">Admin Panel / FAQs</p>
+        <p style="font-size:13px;color:var(--a-muted);margin:2px 0 0">Admin Panel / FAQs</p>
     </div>
     <a href="{{ route('admin.faqs.index') }}" class="btn btn-ghost btn-sm">← Back</a>
 </div>
 
-@if($errors->any())
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:13px">
-    @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
-</div>
-@endif
 
 <form method="POST" action="{{ isset($faq) ? route('admin.faqs.update', $faq) : route('admin.faqs.store') }}">
     @csrf @if(isset($faq)) @method('PUT') @endif
@@ -65,7 +57,7 @@
         <div class="card" style="grid-column:2">
             <div class="card-head"><div class="card-title">💡 Tips</div></div>
             <div class="card-body">
-                <p style="font-size:13px;color:#64748b;line-height:1.7;margin:0">
+                <p style="font-size:13px;color:var(--a-muted);line-height:1.7;margin:0">
                     • Keep questions short and clear<br>
                     • Answers can include full sentences<br>
                     • Use sort order to control sequence<br>

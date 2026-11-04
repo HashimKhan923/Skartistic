@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { startAurora } from './motion/aurora';
+import { splitWords, buildOdometers } from './motion/shared';
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.defaults({ ease: 'expo.out' });
@@ -20,36 +21,6 @@ window.__skMotion = true;
 let lenis = null;
 
 /* ── Helpers ──────────────────────────────────────────────── */
-
-// Wraps each word in a mask, keeping <br> and gradient <span>s intact.
-function splitWords(el) {
-    if (el.dataset.split) return $$('.si', el);
-    el.dataset.split = '1';
-    el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
-    const walk = (node) => {
-        Array.from(node.childNodes).forEach((n) => {
-            if (n.nodeType === Node.TEXT_NODE) {
-                const frag = document.createDocumentFragment();
-                n.textContent.split(/(\s+)/).forEach((part) => {
-                    if (!part) return;
-                    if (/^\s+$/.test(part)) { frag.append(' '); return; }
-                    const w = document.createElement('span');
-                    const i = document.createElement('span');
-                    w.className = 'sw';
-                    i.className = 'si';
-                    i.textContent = part;
-                    w.append(i);
-                    frag.append(w);
-                });
-                n.replaceWith(frag);
-            } else if (n.nodeType === Node.ELEMENT_NODE && n.tagName !== 'BR') {
-                walk(n);
-            }
-        });
-    };
-    walk(el);
-    return $$('.si', el);
-}
 
 const clearAfterReveal = 'transform,opacity,visibility,transition';
 
@@ -627,78 +598,61 @@ function initImages() {
 
 /* ── Odometer counters ────────────────────────────────────── */
 function initOdometers() {
-    $$('.stat-box-n,.h-stat-n,.ab-num-big').forEach((el) => {
-        const raw = el.textContent.trim();
-        const m = raw.match(/^(\D*)(\d[\d.,]*)(.*)$/);
-        if (!m) return;
-        el.setAttribute('aria-label', raw);
-        el.textContent = '';
-        const wrap = document.createElement('span');
-        wrap.className = 'odo';
-        const fixed = (t) => {
-            if (!t) return;
-            const s = document.createElement('span');
-            s.className = 'odo-fix';
-            s.textContent = t;
-            wrap.append(s);
-        };
-        fixed(m[1]);
-        const reels = [];
-        m[2].split('').forEach((ch) => {
-            if (!/\d/.test(ch)) { fixed(ch); return; }
-            const col = document.createElement('span');
-            col.className = 'odo-col';
-            const reel = document.createElement('span');
-            reel.className = 'odo-reel';
-            // Two full spins before landing, so every digit visibly rolls
-            for (let n = 0; n <= 20 + +ch; n++) {
-                const b = document.createElement('b');
-                b.textContent = String(n % 10);
-                reel.append(b);
-            }
-            col.append(reel);
-            wrap.append(col);
-            reels.push({ reel, stops: 20 + +ch });
-        });
-        fixed(m[3]);
-        el.append(wrap);
-        once(el, 'top 92%', () => {
-            reels.forEach(({ reel, stops }, i) => {
-                gsap.fromTo(reel, { yPercent: 0 }, {
-                    yPercent: -(stops / (stops + 1)) * 100,
-                    duration: 2.1 + i * 0.25, ease: 'expo.inOut',
-                });
-            });
-        });
-    });
+    buildOdometers('.stat-box-n,.h-stat-n,.ab-num-big', (el, roll) => once(el, 'top 92%', roll), gsap);
 }
 
 /* ── Marquees follow scroll speed and direction ───────────── */
-function initMarquees() {
-    $$('.marquee-track, .clients-track').forEach((track) => {
-        const isLogos = track.classList.contains('clients-track');
-        if (isLogos && track.scrollWidth < window.innerWidth) return;
-        const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: isLogos ? 40 : 28, repeat: -1 });
-        loop.totalTime(loop.duration() * 50); // room to run backwards
-        const skew = gsap.quickTo(track, 'skewX', { duration: 0.5, ease: 'power3' });
-        let settle;
-        ScrollTrigger.create({
-            start: 0, end: 'max',
-            onUpdate: (self) => {
-                const v = self.getVelocity();
-                const dir = v < 0 ? -1 : 1;
-                gsap.to(loop, { timeScale: dir * (1 + Math.min(Math.abs(v) / 260, 6)), duration: 0.25, overwrite: true });
-                if (!isLogos) skew(gsap.utils.clamp(-9, 9, v / -220));
-                clearTimeout(settle);
-                settle = setTimeout(() => {
-                    gsap.to(loop, { timeScale: dir, duration: 1.4, overwrite: true });
-                    if (!isLogos) skew(0);
-                }, 120);
-            },
-        });
-        track.addEventListener('pointerenter', () => gsap.to(loop, { timeScale: 0, duration: 0.6, overwrite: true }));
-        track.addEventListener('pointerleave', () => gsap.to(loop, { timeScale: 1, duration: 0.6, overwrite: true }));
+function runMarquee(track, isLogos) {
+    const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: isLogos ? 40 : 28, repeat: -1 });
+    loop.totalTime(loop.duration() * 50); // room to run backwards
+    const skew = gsap.quickTo(track, 'skewX', { duration: 0.5, ease: 'power3' });
+    let settle;
+    ScrollTrigger.create({
+        start: 0, end: 'max',
+        onUpdate: (self) => {
+            const v = self.getVelocity();
+            const dir = v < 0 ? -1 : 1;
+            gsap.to(loop, { timeScale: dir * (1 + Math.min(Math.abs(v) / 260, 6)), duration: 0.25, overwrite: true });
+            if (!isLogos) skew(gsap.utils.clamp(-9, 9, v / -220));
+            clearTimeout(settle);
+            settle = setTimeout(() => {
+                gsap.to(loop, { timeScale: dir, duration: 1.4, overwrite: true });
+                if (!isLogos) skew(0);
+            }, 120);
+        },
     });
+    track.addEventListener('pointerenter', () => gsap.to(loop, { timeScale: 0, duration: 0.6, overwrite: true }));
+    track.addEventListener('pointerleave', () => gsap.to(loop, { timeScale: 1, duration: 0.6, overwrite: true }));
+}
+
+// A few logos stay centred. Looping only reads as a marquee once the real set nearly fills the row.
+function setupLogoLoop(track) {
+    if (track.scrollWidth < window.innerWidth * 0.75) return;
+    track.classList.add('is-loop');
+    const originals = Array.from(track.children);
+    const addCopy = (nodes) => nodes.forEach((n) => {
+        const c = n.cloneNode(true);
+        c.setAttribute('aria-hidden', 'true');
+        c.setAttribute('tabindex', '-1');
+        track.append(c);
+    });
+    while (track.scrollWidth < window.innerWidth * 1.1) addCopy(originals);
+    addCopy(Array.from(track.children)); // two identical halves, so -50% lands seamlessly
+    runMarquee(track, true);
+}
+
+function initMarquees() {
+    const words = $('.marquee-track');
+    if (words) runMarquee(words, false);
+
+    const logos = $('.clients-track');
+    if (!logos) return;
+    // Measure real widths: an unloaded logo has none, which would over-clone or skip the loop
+    const waits = $$('img', logos).filter((i) => !i.complete).map((i) => new Promise((res) => {
+        i.addEventListener('load', res, { once: true });
+        i.addEventListener('error', res, { once: true });
+    }));
+    Promise.race([Promise.all(waits), new Promise((res) => setTimeout(res, 2500))]).then(() => safely('logo loop', () => setupLogoLoop(logos)));
 }
 
 /* ── Process: pinned step-through ─────────────────────────── */

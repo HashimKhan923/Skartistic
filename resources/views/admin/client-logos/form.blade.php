@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label class="form-label">Logo Image <span class="req">{{ isset($logo) ? '' : '*' }}</span></label>
                     @if(isset($logo) && $logo->logo)
-                    <div style="background:#f8fafc;border:1px solid #e8ecf0;border-radius:10px;padding:16px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;height:80px">
+                    <div style="background:var(--a-soft);border:1px solid var(--a-line);border-radius:10px;padding:16px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;height:80px">
                         <img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}" style="max-height:60px;max-width:180px;object-fit:contain">
                     </div>
                     @endif

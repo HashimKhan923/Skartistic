@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="svc-num">{{ str_pad($i+1,2,'0',STR_PAD_LEFT) }}</div>
         <div class="svc-icon-wrap"><span class="svc-icon">{{ $service->icon ?? '⚡' }}</span></div>
         <h3>{{ $service->title }}</h3>
-        <p>{{ $service->short_description }}</p>
+        <p>{{ $service->short_description ?: \Illuminate\Support\Str::limit($service->hero_subtitle, 150) }}</p>
         <a href="{{ route('service.detail',$service->slug) }}" class="svc-link">Explore →</a>
       </div>
       @endforeach
@@ -527,8 +527,8 @@ document.addEventListener('DOMContentLoaded', function () {
 <section class="clients">
   <div class="clients-label">Trusted by teams at</div>
   <div class="clients-track">
-    @foreach($client_logos->concat($client_logos)->concat($client_logos)->concat($client_logos) as $logo)
-      @if($logo->website_url)<a href="{{ $logo->website_url }}" target="_blank" rel="noopener"><img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}" loading="lazy"></a>@else<img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}" loading="lazy">@endif
+    @foreach($client_logos as $logo)
+      @if($logo->website_url)<a href="{{ $logo->website_url }}" target="_blank" rel="noopener"><img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}"></a>@else<img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}">@endif
     @endforeach
   </div>
 </section>

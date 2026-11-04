@@ -16,16 +16,16 @@
 }
 
 /* Repeater items */
-.rep-item { border:1px solid #e8ecf0; border-radius:10px; overflow:hidden; margin-bottom:10px }
+.rep-item { border:1px solid var(--a-line); border-radius:10px; overflow:hidden; margin-bottom:10px }
 .rep-head  {
-    padding:11px 16px; background:#f8fafc; border-bottom:1px solid #e8ecf0;
+    padding:11px 16px; background:var(--a-soft); border-bottom:1px solid var(--a-line);
     display:flex; align-items:center; justify-content:space-between;
     cursor:pointer; user-select:none;
 }
-.rep-head-label { font-size:13px; font-weight:600; color:#374151; }
+.rep-head-label { font-size:13px; font-weight:600; color:var(--a-text); }
 .rep-body  { padding:18px; display:none; }
 .rep-item.open .rep-body { display:block; }
-.rep-chev  { width:15px; height:15px; color:#94a3b8; transition:transform .2s; flex-shrink:0; }
+.rep-chev  { width:15px; height:15px; color:var(--a-dim); transition:transform .2s; flex-shrink:0; }
 .rep-item.open .rep-chev { transform:rotate(180deg); }
 
 /* Accordion for section cards */
@@ -33,7 +33,7 @@
     display:flex; align-items:center; justify-content:space-between;
     cursor:pointer; user-select:none;
 }
-.acc-chev { width:18px; height:18px; color:#94a3b8; transition:transform .25s; flex-shrink:0; }
+.acc-chev { width:18px; height:18px; color:var(--a-dim); transition:transform .25s; flex-shrink:0; }
 .acc-body  { display:none; }
 .acc-open .acc-chev  { transform:rotate(180deg); }
 .acc-open .acc-body  { display:block; }
@@ -41,35 +41,35 @@
 /* Add button */
 .rep-add {
     width:100%; padding:10px; margin-top:4px;
-    border:1.5px dashed rgba(124,58,237,.4); border-radius:8px;
-    background:none; color:#7c3aed; font-size:13px; font-weight:600;
+    border:1.5px dashed rgba(var(--p-rgb),.4); border-radius:8px;
+    background:none; color:var(--p); font-size:13px; font-weight:600;
     cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
-    font-family:'DM Sans',sans-serif; transition:background .15s;
+    font-family:var(--font-b); transition:background .15s;
 }
-.rep-add:hover { background:rgba(124,58,237,.05); }
+.rep-add:hover { background:rgba(var(--p-rgb),.05); }
 
 /* Sub-section label */
-.sub-lbl { font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1.2px; margin:0 0 10px; }
+.sub-lbl { font-size:10px; font-weight:700; color:var(--a-dim); text-transform:uppercase; letter-spacing:1.2px; margin:0 0 10px; }
 
 /* Upload box */
 .upl-box {
-    border:2px dashed #e2e8f0; border-radius:10px; padding:18px 14px;
+    border:2px dashed var(--a-line); border-radius:10px; padding:18px 14px;
     text-align:center; cursor:pointer; position:relative;
-    transition:border-color .2s; background:#fafbfc;
+    transition:border-color .2s; background:var(--a-soft);
 }
-.upl-box:hover { border-color:#7c3aed; }
+.upl-box:hover { border-color:var(--p); }
 .upl-box input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-.upl-prev { width:70px; height:70px; border-radius:8px; object-fit:cover; margin:0 auto 8px; display:block; border:1px solid #e2e8f0; }
-.upl-hint { font-size:12px; color:#94a3b8; }
-.upl-hint strong { color:#7c3aed; }
+.upl-prev { width:70px; height:70px; border-radius:8px; object-fit:cover; margin:0 auto 8px; display:block; border:1px solid var(--a-line); }
+.upl-hint { font-size:12px; color:var(--a-dim); }
+.upl-hint strong { color:var(--p); }
 .rm-chk   { font-size:12px; color:#ef4444; margin-top:6px; display:flex; align-items:center; gap:5px; cursor:pointer; }
 </style>
 
 {{-- Page header --}}
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
     <div>
-        <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#1e293b">About Page</div>
-        <div style="font-size:13px;color:#94a3b8;margin-top:3px">All sections in one place. Click any card header to expand.</div>
+        <div style="font-family:var(--font-ui);font-size:1.2rem;font-weight:800;color:var(--a-text)">About Page</div>
+        <div style="font-size:13px;color:var(--a-dim);margin-top:3px">All sections in one place. Click any card header to expand.</div>
     </div>
     <a href="{{ route('about') }}" target="_blank" class="btn btn-ghost btn-sm">👁 Preview</a>
 </div>
@@ -90,7 +90,7 @@
     <div class="card-body acc-body">
         <div class="g2col">
             <div class="form-group">
-                <label class="form-label">Tag <span style="font-weight:400;color:#94a3b8">(above title)</span></label>
+                <label class="form-label">Tag <span style="font-weight:400;color:var(--a-dim)">(above title)</span></label>
                 <input type="text" name="hero_tag" class="form-control" value="{{ old('hero_tag', $about->hero_tag ?? 'About us') }}">
             </div>
             <div class="form-group">
@@ -166,7 +166,7 @@
         <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="card-body acc-body">
-        <p style="font-size:13px;color:#64748b;margin:0 0 16px">3 photos beside the mission text. Photo 1 is wide (top), 2 &amp; 3 are square (bottom row).</p>
+        <p style="font-size:13px;color:var(--a-muted);margin:0 0 16px">3 photos beside the mission text. Photo 1 is wide (top), 2 &amp; 3 are square (bottom row).</p>
         <div class="g3col">
             @foreach([1,2,3] as $n)
             <div class="form-group">
@@ -330,7 +330,7 @@
         <svg class="acc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <div class="card-body acc-body">
-        <p style="font-size:13px;color:#64748b;margin:0 0 14px">Founders appear alternating left/right on the about page.</p>
+        <p style="font-size:13px;color:var(--a-muted);margin:0 0 14px">Founders appear alternating left/right on the about page.</p>
         <div id="list-founders">
             @foreach($founders as $i => $founder)
             <div class="rep-item open">
@@ -455,11 +455,6 @@
         💾 Save All Changes
     </button>
     <a href="{{ route('about') }}" target="_blank" class="btn btn-ghost">👁 Preview Page</a>
-    @if(session('success'))
-        <span style="font-size:13px;color:#16a34a;background:#f0fdf4;border:1px solid #bbf7d0;padding:8px 16px;border-radius:6px">
-            ✓ {{ session('success') }}
-        </span>
-    @endif
 </div>
 
 </form>

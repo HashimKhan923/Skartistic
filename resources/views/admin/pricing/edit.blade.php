@@ -11,19 +11,11 @@
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
     <div>
-        <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin:0">
-            {{ isset($plan) ? '✏️ Edit Plan' : '➕ Add Pricing Plan' }}
-        </h2>
-        <p style="font-size:13px;color:#64748b;margin:2px 0 0">Admin Panel / Pricing Plans</p>
+        <p style="font-size:13px;color:var(--a-muted);margin:2px 0 0">Admin Panel / Pricing Plans</p>
     </div>
     <a href="{{ route('admin.pricing.index') }}" class="btn btn-ghost btn-sm">← Back</a>
 </div>
 
-@if($errors->any())
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:13px">
-    @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
-</div>
-@endif
 
 <form method="POST" action="{{ isset($plan) ? route('admin.pricing.update', $plan) : route('admin.pricing.store') }}">
     @csrf @if(isset($plan)) @method('PUT') @endif
@@ -111,7 +103,7 @@
 
         {{-- Excluded features --}}
         <div class="card full">
-            <div class="card-head"><div class="card-title">❌ Excluded Features <span style="font-size:12px;font-weight:400;color:#94a3b8">(shown crossed out)</span></div></div>
+            <div class="card-head"><div class="card-title">❌ Excluded Features <span style="font-size:12px;font-weight:400;color:var(--a-dim)">(shown crossed out)</span></div></div>
             <div class="card-body">
                 <div class="form-group">
                     <textarea class="form-control" name="excluded_features_raw" rows="5"
@@ -146,7 +138,7 @@
         <div class="card">
             <div class="card-head"><div class="card-title">👁 Preview</div></div>
             <div class="card-body" id="plan-preview">
-                <p style="font-size:13px;color:#94a3b8;text-align:center;padding:20px 0">
+                <p style="font-size:13px;color:var(--a-dim);text-align:center;padding:20px 0">
                     Fill in the form to see a preview
                 </p>
             </div>
@@ -174,20 +166,20 @@ function updatePreview(){
     var feat  = document.querySelector('[name=is_featured]').checked;
 
     var featHtml = feats.slice(0,5).map(f=>`
-        <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#334155;margin-bottom:4px">
-            <span style="color:#22c55e">✓</span> ${f.trim()}
+        <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--a-text);margin-bottom:4px">
+            <span style="color:var(--p)">✓</span> ${f.trim()}
         </div>`).join('');
-    if(feats.length>5) featHtml += `<div style="font-size:12px;color:#94a3b8">+${feats.length-5} more</div>`;
+    if(feats.length>5) featHtml += `<div style="font-size:12px;color:var(--a-dim)">+${feats.length-5} more</div>`;
 
     document.getElementById('plan-preview').innerHTML = `
-        <div style="${feat?'border:2px solid #7c3aed;border-radius:10px;padding:16px':''}">
-            ${badge?`<span style="display:inline-block;padding:2px 8px;background:#f3f0ff;color:#7c3aed;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:8px">${badge}</span>`:''}
-            <div style="font-size:16px;font-weight:800;color:#0f172a;margin-bottom:6px">${name}</div>
-            <div style="font-size:26px;font-weight:900;color:#0f172a;margin-bottom:6px">
-                ${price?`$${price}<span style="font-size:13px;font-weight:400;color:#64748b">${suf}</span>`:'<span style="font-size:18px">Custom</span>'}
+        <div style="${feat?'border:2px solid var(--p);border-radius:10px;padding:16px':''}">
+            ${badge?`<span style="display:inline-block;padding:2px 8px;background:var(--a-tint);color:var(--p);border-radius:20px;font-size:11px;font-weight:700;margin-bottom:8px">${badge}</span>`:''}
+            <div style="font-size:16px;font-weight:800;color:var(--a-text);margin-bottom:6px">${name}</div>
+            <div style="font-size:26px;font-weight:900;color:var(--a-text);margin-bottom:6px">
+                ${price?`$${price}<span style="font-size:13px;font-weight:400;color:var(--a-muted)">${suf}</span>`:'<span style="font-size:18px">Custom</span>'}
             </div>
-            ${desc?`<p style="font-size:13px;color:#64748b;margin:0 0 12px">${desc}</p>`:''}
-            <div style="border-top:1px solid #f1f5f9;padding-top:10px">${featHtml||'<span style="font-size:12px;color:#94a3b8">No features yet</span>'}</div>
+            ${desc?`<p style="font-size:13px;color:var(--a-muted);margin:0 0 12px">${desc}</p>`:''}
+            <div style="border-top:1px solid var(--a-soft);padding-top:10px">${featHtml||'<span style="font-size:12px;color:var(--a-dim)">No features yet</span>'}</div>
         </div>`;
 }
 document.querySelectorAll('input,textarea,select').forEach(el=>el.addEventListener('input',updatePreview));

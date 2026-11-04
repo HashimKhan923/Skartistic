@@ -21,25 +21,25 @@
                         ['label'=>'Submitted','value'=>$lead->created_at->format('F d, Y \a\t H:i')],
                     ] as $row)
                     @if(!empty($row['value']))
-                    <div style="display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid #f8fafc">
-                        <span style="width:120px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;flex-shrink:0">{{ $row['label'] }}</span>
+                    <div style="display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--a-soft)">
+                        <span style="width:120px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--a-dim);flex-shrink:0">{{ $row['label'] }}</span>
                         @if(!empty($row['link']) && $row['value'])
                             <a href="{{ $row['link'] }}" style="color:var(--p);font-weight:600" {{ !empty($row['ext']) ? 'target="_blank"' : '' }}>{{ $row['value'] }}</a>
                         @elseif(!empty($row['bold']))
-                            <span style="font-weight:700;font-size:1.1rem;color:#1e293b">{{ $row['value'] }}</span>
+                            <span style="font-weight:700;font-size:1.1rem;color:var(--a-text)">{{ $row['value'] }}</span>
                         @else
-                            <span style="color:#374151">{{ $row['value'] }}</span>
+                            <span style="color:var(--a-text)">{{ $row['value'] }}</span>
                         @endif
                     </div>
                     @endif
                     @endforeach
 
                     @if($lead->services_needed && count((array)$lead->services_needed))
-                    <div style="padding:12px 0;border-bottom:1px solid #f8fafc">
-                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:10px">Services Needed</div>
+                    <div style="padding:12px 0;border-bottom:1px solid var(--a-soft)">
+                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--a-dim);margin-bottom:10px">Services Needed</div>
                         <div style="display:flex;flex-wrap:wrap;gap:6px">
                             @foreach((array)$lead->services_needed as $s)
-                            <span style="background:#ede9fe;color:#5b21b6;padding:5px 12px;border-radius:6px;font-size:13px;font-weight:600">{{ $s }}</span>
+                            <span style="background:var(--a-tint);color:var(--p);padding:5px 12px;border-radius:6px;font-size:13px;font-weight:600">{{ $s }}</span>
                             @endforeach
                         </div>
                     </div>
@@ -47,8 +47,8 @@
 
                     @if($lead->goals)
                     <div style="padding:16px 0">
-                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;margin-bottom:10px">Goals & Requirements</div>
-                        <div style="background:#f8fafc;border-radius:12px;padding:20px;line-height:1.8;color:#374151;font-size:15px;border-left:4px solid var(--p)">{{ $lead->goals }}</div>
+                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--a-dim);margin-bottom:10px">Goals & Requirements</div>
+                        <div style="background:var(--a-soft);border-radius:12px;padding:20px;line-height:1.8;color:var(--a-text);font-size:15px;border-left:4px solid var(--p)">{{ $lead->goals }}</div>
                     </div>
                     @endif
                 </div>

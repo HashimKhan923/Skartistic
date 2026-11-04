@@ -32,7 +32,7 @@
         <div class="svc-num">{{ str_pad($i+1,2,'0',STR_PAD_LEFT) }}</div>
         <div class="svc-icon-wrap"><span class="svc-icon">{{ $service->icon ?? '⚡' }}</span></div>
         <h3>{{ $service->title }}</h3>
-        <p>{{ $service->short_description }}</p>
+        <p>{{ $service->short_description ?: \Illuminate\Support\Str::limit($service->hero_subtitle, 150) }}</p>
         <a href="{{ route('service.detail',$service->slug) }}" class="svc-link">Explore →</a>
       </div>
       @endforeach

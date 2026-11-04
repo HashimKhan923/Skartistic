@@ -194,6 +194,24 @@ it('throttles contact and login abuse', function () {
 
 /* ── Admin ────────────────────────────────────────────────── */
 
+it('gives the admin panel and login the same theme and toggle', function () {
+    $this->get('/admin/login')->assertOk()->assertSee('id="theme-btn"', false)->assertSee('--p:#6c2bd9', false);
+    $this->withSession(['error' => 'Access denied.'])->get('/admin/login')->assertSee('Access denied.');
+    $this->actingAs(admin())->get('/admin/dashboard')->assertOk()
+        ->assertSee('id="theme-btn"', false)->assertSee('id="menu-btn"', false)->assertDontSee('#06b6d4');
+});
+
+it('shows a service description even when only the hero subtitle is set', function () {
+    Service::create(['title' => 'Motion', 'slug' => 'motion', 'hero_subtitle' => 'Fallback words here', 'is_published' => true]);
+    $this->get('/')->assertSee('Fallback words here');
+    $this->get('/services')->assertSee('Fallback words here');
+});
+
+it('renders each client logo once and lets the motion layer loop them', function () {
+    ClientLogo::create(['name' => 'Acme', 'logo' => 'clients/acme.png', 'is_published' => true]);
+    expect(substr_count($this->get('/')->getContent(), 'clients/acme.png'))->toBe(1);
+});
+
 it('redirects bare /admin and guards the panel', function () {
     $this->get('/admin')->assertRedirect('/admin/dashboard');
     $this->get('/admin/dashboard')->assertRedirect('/admin/login');

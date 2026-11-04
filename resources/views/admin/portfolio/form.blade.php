@@ -30,7 +30,7 @@
                     <textarea class="form-control" name="description" rows="3" placeholder="Brief description shown in project cards">{{ old('description', $portfolio->description ?? '') }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Full Case Study Content <span style="font-size:11px;color:#94a3b8">— HTML supported</span></label>
+                    <label class="form-label">Full Case Study Content <span style="font-size:11px;color:var(--a-dim)">— HTML supported</span></label>
                     <textarea class="form-control" name="content" rows="14" placeholder="Describe the project, challenges, solutions, results...">{{ old('content', $portfolio->content ?? '') }}</textarea>
                 </div>
                 <div class="form-grid">

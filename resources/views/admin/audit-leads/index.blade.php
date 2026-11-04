@@ -16,16 +16,16 @@
             <thead><tr><th>Name</th><th>Email</th><th>Website</th><th>Budget</th><th>Services</th><th>Date</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
             <tbody>
             @foreach($leads as $lead)
-            <tr style="{{ !$lead->is_read ? 'background:#fefcff' : '' }}">
+            <tr style="{{ !$lead->is_read ? 'background:var(--a-soft)' : '' }}">
                 <td>
-                    <div style="font-weight:{{ !$lead->is_read ? '700' : '600' }};color:#1e293b">{{ $lead->name }}</div>
-                    @if($lead->business_type)<div style="font-size:12px;color:#94a3b8">{{ $lead->business_type }}</div>@endif
+                    <div style="font-weight:{{ !$lead->is_read ? '700' : '600' }};color:var(--a-text)">{{ $lead->name }}</div>
+                    @if($lead->business_type)<div style="font-size:12px;color:var(--a-dim)">{{ $lead->business_type }}</div>@endif
                 </td>
                 <td><a href="mailto:{{ $lead->email }}" style="color:var(--p);font-size:13px">{{ $lead->email }}</a></td>
-                <td>@if($lead->website_url)<a href="{{ $lead->website_url }}" target="_blank" style="font-size:12px;color:var(--s);font-family:monospace">{{ Str::limit($lead->website_url, 30) }}</a>@else<span style="color:#94a3b8">—</span>@endif</td>
-                <td>@if($lead->budget_range)<span class="badge badge-green">{{ $lead->budget_range }}</span>@else<span style="color:#94a3b8">—</span>@endif</td>
-                <td style="font-size:12px;color:#64748b;max-width:180px">{{ implode(', ', (array)($lead->services_needed ?? [])) ?: '—' }}</td>
-                <td style="font-size:12px;color:#94a3b8;white-space:nowrap">{{ $lead->created_at->diffForHumans() }}</td>
+                <td>@if($lead->website_url)<a href="{{ $lead->website_url }}" target="_blank" style="font-size:12px;color:var(--s);font-family:monospace">{{ Str::limit($lead->website_url, 30) }}</a>@else<span style="color:var(--a-dim)">—</span>@endif</td>
+                <td>@if($lead->budget_range)<span class="badge badge-green">{{ $lead->budget_range }}</span>@else<span style="color:var(--a-dim)">—</span>@endif</td>
+                <td style="font-size:12px;color:var(--a-muted);max-width:180px">{{ implode(', ', (array)($lead->services_needed ?? [])) ?: '—' }}</td>
+                <td style="font-size:12px;color:var(--a-dim);white-space:nowrap">{{ $lead->created_at->diffForHumans() }}</td>
                 <td><span class="badge {{ $lead->is_read ? 'badge-green' : 'badge-blue' }}">{{ $lead->is_read ? 'Reviewed' : 'New' }}</span></td>
                 <td style="text-align:right">
                     <div style="display:flex;gap:6px;justify-content:flex-end">

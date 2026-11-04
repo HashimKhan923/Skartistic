@@ -761,10 +761,18 @@ body.hov #cur-ring { width:52px; height:52px; border-color:rgba(var(--accent-rgb
   display:inline-flex; align-items:center; gap:8px; margin-top:28px;
   font-family:var(--font-ui); font-size:11px; font-weight:600;
   letter-spacing:2.5px; text-transform:uppercase; color:var(--brand);
-  opacity:0; transform:translateX(-10px);
-  transition:opacity .3s, transform .3s, gap .2s;
+  transition:gap .3s var(--ease-out);
 }
-.svc-cell:hover .svc-link { opacity:1; transform:none }
+.svc-cell:hover .svc-link { gap:14px }
+/* A lone service reads as a wide banner instead of a tall empty card */
+@media(min-width:760px){
+  .svc-grid:has(> .svc-cell:only-child) .svc-cell { display:grid; grid-template-columns:auto 1fr auto; column-gap:36px; align-items:center; padding:44px 48px }
+  .svc-grid:has(> .svc-cell:only-child) .svc-num { display:none }
+  .svc-grid:has(> .svc-cell:only-child) .svc-icon-wrap { grid-column:1; grid-row:1 / span 2; margin:0 }
+  .svc-grid:has(> .svc-cell:only-child) h3 { grid-column:2; grid-row:1; margin-bottom:6px }
+  .svc-grid:has(> .svc-cell:only-child) p { grid-column:2; grid-row:2 }
+  .svc-grid:has(> .svc-cell:only-child) .svc-link { grid-column:3; grid-row:1 / span 2; margin:0 }
+}
 .svc-link:hover { gap:14px }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1346,9 +1354,12 @@ footer {
 @media(max-width:1023px){ .work-track { width:auto; overflow-x:auto; scroll-snap-type:x mandatory; padding:0 24px 16px } .work-card { scroll-snap-align:center } .work-head { padding:0 24px } }
 .clients { padding:64px 0; position:relative; z-index:1; overflow:hidden; border-top:1px solid var(--rim); border-bottom:1px solid var(--rim) }
 .clients-label { text-align:center; font-family:var(--font-ui); font-size:11px; font-weight:600; letter-spacing:4px; text-transform:uppercase; color:var(--dim); margin-bottom:32px }
-.clients-track { display:flex; width:max-content; gap:72px; align-items:center; padding-right:72px; animation:marquee 36s linear infinite }
+.clients-track { display:flex; flex-wrap:wrap; justify-content:center; gap:40px 72px; align-items:center; padding:0 24px }
+.clients-track.is-loop { flex-wrap:nowrap; justify-content:flex-start; width:max-content; padding:0 72px 0 0 }
 .clients-track img { height:40px; width:auto; max-width:170px; object-fit:contain; filter:grayscale(1); opacity:.55; transition:filter .3s,opacity .3s }
 .clients-track a:hover img,.clients-track img:hover { filter:none; opacity:1 }
+html[data-theme="dark"] .clients-track img { filter:grayscale(1) brightness(0) invert(1); opacity:.6 }
+html[data-theme="dark"] .clients-track a:hover img,html[data-theme="dark"] .clients-track img:hover { filter:grayscale(1) brightness(0) invert(1); opacity:1 }
 
 /* Footer wordmark */
 .footer-wordmark { font-family:var(--font-d); font-size:clamp(4rem,17.5vw,17rem); line-height:.8; letter-spacing:2px; color:rgba(255,255,255,.13); text-align:center; white-space:nowrap; overflow:hidden; margin-top:56px; user-select:none }

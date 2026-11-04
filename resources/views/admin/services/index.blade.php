@@ -4,7 +4,7 @@
 @section('content')
 <div class="card">
     <div class="card-head">
-        <div class="card-title">⚡ Services <span style="background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;margin-left:8px">{{ $services->count() }}</span></div>
+        <div class="card-title">⚡ Services <span style="background:var(--a-tint);color:var(--p);padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;margin-left:8px">{{ $services->count() }}</span></div>
         <a href="{{ route('admin.services.create') }}" class="btn btn-primary">+ Add Service</a>
     </div>
     @if($services->count())
@@ -16,10 +16,10 @@
             <tr>
                 <td><span class="td-emoji">{{ $s->icon ?? '⚡' }}</span></td>
                 <td>
-                    <div style="font-weight:600;color:#1e293b">{{ $s->title }}</div>
-                    <div style="font-size:12px;color:#94a3b8;margin-top:2px">{{ Str::limit($s->short_description, 60) }}</div>
+                    <div style="font-weight:600;color:var(--a-text)">{{ $s->title }}</div>
+                    <div style="font-size:12px;color:var(--a-dim);margin-top:2px">{{ Str::limit($s->short_description, 60) }}</div>
                 </td>
-                <td><code style="background:#f1f5f9;padding:3px 8px;border-radius:5px;font-size:12px">/services/{{ $s->slug }}</code></td>
+                <td><code style="background:var(--a-soft);padding:3px 8px;border-radius:5px;font-size:12px">/services/{{ $s->slug }}</code></td>
                 <td><span class="badge {{ $s->is_published ? 'badge-green' : 'badge-yellow' }}">{{ $s->is_published ? 'Published' : 'Draft' }}</span></td>
                 <td style="text-align:right">
                     <div style="display:flex;gap:6px;justify-content:flex-end">

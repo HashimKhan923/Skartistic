@@ -13,14 +13,14 @@
                 <div style="display:grid;gap:12px;margin-bottom:28px">
                     @foreach([['label'=>'From','value'=>$contact->name,'bold'=>true],['label'=>'Email','value'=>$contact->email,'link'=>'mailto:'.$contact->email],['label'=>'Phone','value'=>$contact->phone,'link'=>'tel:'.$contact->phone],['label'=>'Subject','value'=>$contact->subject],['label'=>'Service Needed','value'=>$contact->service],['label'=>'Budget Range','value'=>$contact->budget],['label'=>'Received','value'=>$contact->created_at->format('F d, Y \a\t H:i')]] as $row)
                     @if($row['value'])
-                    <div style="display:flex;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid #f8fafc">
-                        <span style="width:120px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94a3b8;flex-shrink:0">{{ $row['label'] }}</span>
-                        @if(isset($row['link']))<a href="{{ $row['link'] }}" style="color:var(--p);font-weight:600">{{ $row['value'] }}</a>@elseif(isset($row['bold']))<span style="font-weight:700;color:#1e293b;font-size:16px">{{ $row['value'] }}</span>@else<span style="color:#374151">{{ $row['value'] }}</span>@endif
+                    <div style="display:flex;align-items:baseline;gap:16px;padding:10px 0;border-bottom:1px solid var(--a-soft)">
+                        <span style="width:120px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--a-dim);flex-shrink:0">{{ $row['label'] }}</span>
+                        @if(isset($row['link']))<a href="{{ $row['link'] }}" style="color:var(--p);font-weight:600">{{ $row['value'] }}</a>@elseif(isset($row['bold']))<span style="font-weight:700;color:var(--a-text);font-size:16px">{{ $row['value'] }}</span>@else<span style="color:var(--a-text)">{{ $row['value'] }}</span>@endif
                     </div>
                     @endif
                     @endforeach
                 </div>
-                <div style="background:#f8fafc;border:1px solid #e8ecf0;border-radius:12px;padding:24px;line-height:1.85;color:#374151;font-size:15px">
+                <div style="background:var(--a-soft);border:1px solid var(--a-line);border-radius:12px;padding:24px;line-height:1.85;color:var(--a-text);font-size:15px">
                     {{ $contact->message }}
                 </div>
             </div>

@@ -4,7 +4,7 @@
 @section('content')
 <div class="card">
     <div class="card-head">
-        <div class="card-title">🎨 Portfolio Projects <span style="background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;margin-left:8px">{{ $portfolios->count() }}</span></div>
+        <div class="card-title">🎨 Portfolio Projects <span style="background:var(--a-tint);color:var(--p);padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;margin-left:8px">{{ $portfolios->count() }}</span></div>
         <a href="{{ route('admin.portfolio.create') }}" class="btn btn-primary">+ Add Project</a>
     </div>
     @if($portfolios->count())
@@ -20,22 +20,22 @@
                     @if($p->thumbnail)
                         <img src="{{ asset('storage/'.$p->thumbnail) }}" class="td-img" style="border-radius:8px">
                     @else
-                        <div style="width:48px;height:48px;background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(6,182,212,.15));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem">🎨</div>
+                        <div style="width:48px;height:48px;background:linear-gradient(135deg,rgba(var(--p-rgb),.15),rgba(var(--p-rgb),.15));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem">🎨</div>
                     @endif
                 </td>
                 <td>
-                    <div style="font-weight:600;color:#1e293b">{{ $p->title }}</div>
+                    <div style="font-weight:600;color:var(--a-text)">{{ $p->title }}</div>
                     @if($p->tags)
                     <div style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap">
                         @foreach(array_slice(explode(',',$p->tags),0,3) as $tag)
-                        <span style="background:#f1f5f9;color:#64748b;padding:2px 6px;border-radius:4px;font-size:10px">{{ trim($tag) }}</span>
+                        <span style="background:var(--a-soft);color:var(--a-muted);padding:2px 6px;border-radius:4px;font-size:10px">{{ trim($tag) }}</span>
                         @endforeach
                     </div>
                     @endif
                 </td>
-                <td style="color:#64748b;font-size:14px">{{ $p->client ?? '—' }}</td>
-                <td>@if($p->category)<span class="badge badge-purple">{{ $p->category }}</span>@else<span style="color:#94a3b8">—</span>@endif</td>
-                <td>@if($p->is_featured)<span class="badge badge-yellow">⭐ Featured</span>@else<span style="color:#94a3b8;font-size:13px">—</span>@endif</td>
+                <td style="color:var(--a-muted);font-size:14px">{{ $p->client ?? '—' }}</td>
+                <td>@if($p->category)<span class="badge badge-purple">{{ $p->category }}</span>@else<span style="color:var(--a-dim)">—</span>@endif</td>
+                <td>@if($p->is_featured)<span class="badge badge-yellow">⭐ Featured</span>@else<span style="color:var(--a-dim);font-size:13px">—</span>@endif</td>
                 <td><span class="badge {{ $p->is_published ? 'badge-green' : 'badge-yellow' }}">{{ $p->is_published ? 'Live' : 'Draft' }}</span></td>
                 <td style="text-align:right">
                     <div style="display:flex;gap:6px;justify-content:flex-end">

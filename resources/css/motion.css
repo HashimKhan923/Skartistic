@@ -26,7 +26,6 @@ html.m-on .sv-hero-h1,
 html.m-on .sv-hero-sub,
 html.m-on .sv-hero-btns,
 html.m-on .marquee-track,
-html.m-on .clients-track,
 html.m-on .nav { animation: none }
 html.m-on .ab-hero-tag, html.m-on .ab-hero h1, html.m-on .ab-hero-sub, html.m-on .sv-hero-tag, html.m-on .sv-hero-h1, html.m-on .sv-hero-sub, html.m-on .sv-hero-btns { opacity: 1 }
 html.m-on .ab-anim, html.m-on .ab-anim.ab-visible,

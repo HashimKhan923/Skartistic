@@ -12,31 +12,31 @@
 .g3col  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
 
 /* ── repeater ── */
-.rep-item   { border:1.5px solid #e2e8f0; border-radius:12px; overflow:hidden; margin-bottom:12px; }
-.rep-head   { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#f8fafc; cursor:pointer; user-select:none; }
-.rep-head-title { font-size:13px; font-weight:700; color:#334155; }
-.rep-body   { padding:18px 16px; border-top:1px solid #e2e8f0; display:none; }
+.rep-item   { border:1.5px solid var(--a-line); border-radius:12px; overflow:hidden; margin-bottom:12px; }
+.rep-head   { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--a-soft); cursor:pointer; user-select:none; }
+.rep-head-title { font-size:13px; font-weight:700; color:var(--a-text); }
+.rep-body   { padding:18px 16px; border-top:1px solid var(--a-line); display:none; }
 .rep-body.open { display:block; }
-.acc-chev   { transition:transform .25s; font-size:11px; color:#94a3b8; }
+.acc-chev   { transition:transform .25s; font-size:11px; color:var(--a-dim); }
 .rep-item.open .acc-chev { transform:rotate(180deg); }
-.rep-add    { width:100%; padding:12px; border:1.5px dashed #c7d2fe; border-radius:10px; background:none; color:#7c3aed; font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
-.rep-add:hover { background:rgba(124,58,237,.05); }
+.rep-add    { width:100%; padding:12px; border:1.5px dashed var(--a-line); border-radius:10px; background:none; color:var(--p); font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
+.rep-add:hover { background:rgba(var(--p-rgb),.05); }
 
 /* ── sub label ── */
-.sub-lbl { font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:1.2px; margin:0 0 10px; }
+.sub-lbl { font-size:10px; font-weight:700; color:var(--a-dim); text-transform:uppercase; letter-spacing:1.2px; margin:0 0 10px; }
 
 /* ── upload ── */
-.upl-box  { border:2px dashed #e2e8f0; border-radius:10px; padding:18px 14px; text-align:center; cursor:pointer; position:relative; transition:border-color .2s; background:#fafbfc; }
-.upl-box:hover { border-color:#7c3aed; }
+.upl-box  { border:2px dashed var(--a-line); border-radius:10px; padding:18px 14px; text-align:center; cursor:pointer; position:relative; transition:border-color .2s; background:var(--a-soft); }
+.upl-box:hover { border-color:var(--p); }
 .upl-box input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-.upl-prev { width:80px; height:60px; border-radius:8px; object-fit:cover; margin:0 auto 8px; display:block; border:1px solid #e2e8f0; }
-.upl-hint { font-size:12px; color:#94a3b8; }
-.upl-hint strong { color:#7c3aed; }
+.upl-prev { width:80px; height:60px; border-radius:8px; object-fit:cover; margin:0 auto 8px; display:block; border:1px solid var(--a-line); }
+.upl-hint { font-size:12px; color:var(--a-dim); }
+.upl-hint strong { color:var(--p); }
 
 /* ── tech category nested ── */
-.tc-wrap  { border:1px solid #e2e8f0; border-radius:10px; padding:14px; margin-bottom:10px; background:#fafcff; }
+.tc-wrap  { border:1px solid var(--a-line); border-radius:10px; padding:14px; margin-bottom:10px; background:var(--a-soft); }
 .tc-items { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; min-height:32px; }
-.tc-item  { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; background:#f1f5f9; border-radius:6px; font-size:12px; font-weight:600; }
+.tc-item  { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; background:var(--a-soft); border-radius:6px; font-size:12px; font-weight:600; }
 .tc-item-rm { cursor:pointer; color:#ef4444; font-size:10px; }
 .tc-add-row { display:flex; gap:8px; margin-top:8px; }
 .tc-add-row input { flex:1; }
@@ -55,10 +55,7 @@
     {{-- Page header --}}
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
         <div>
-            <h2 style="font-size:20px;font-weight:800;color:#0f172a;margin:0">
-                {{ isset($service) ? '✏️ Edit Service' : '➕ Add Service' }}
-            </h2>
-            <p style="font-size:13px;color:#64748b;margin:2px 0 0">Manage all sections of this service page</p>
+            <p style="font-size:13px;color:var(--a-muted);margin:2px 0 0">Manage all sections of this service page</p>
         </div>
         <div style="display:flex;gap:10px">
             <a href="{{ route('admin.services.index') }}" class="btn btn-ghost btn-sm">← Back</a>

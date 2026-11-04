@@ -16,15 +16,15 @@
             <thead><tr><th>From</th><th>Subject</th><th>Service</th><th>Budget</th><th>Date</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
             <tbody>
             @foreach($contacts as $contact)
-            <tr style="{{ !$contact->is_read ? 'background:#fefcff' : '' }}">
+            <tr style="{{ !$contact->is_read ? 'background:var(--a-soft)' : '' }}">
                 <td>
-                    <div style="font-weight:{{ !$contact->is_read ? '700' : '600' }};color:#1e293b">{{ $contact->name }}</div>
+                    <div style="font-weight:{{ !$contact->is_read ? '700' : '600' }};color:var(--a-text)">{{ $contact->name }}</div>
                     <a href="mailto:{{ $contact->email }}" style="font-size:12px;color:var(--p)">{{ $contact->email }}</a>
                 </td>
-                <td style="font-size:13px;color:#64748b;max-width:220px">{{ $contact->subject ?: '—' }}</td>
-                <td>@if($contact->service)<span class="badge badge-purple">{{ $contact->service }}</span>@else<span style="color:#94a3b8">—</span>@endif</td>
-                <td>@if($contact->budget)<span class="badge badge-green">{{ $contact->budget }}</span>@else<span style="color:#94a3b8">—</span>@endif</td>
-                <td style="font-size:12px;color:#94a3b8;white-space:nowrap">{{ $contact->created_at->diffForHumans() }}</td>
+                <td style="font-size:13px;color:var(--a-muted);max-width:220px">{{ $contact->subject ?: '—' }}</td>
+                <td>@if($contact->service)<span class="badge badge-purple">{{ $contact->service }}</span>@else<span style="color:var(--a-dim)">—</span>@endif</td>
+                <td>@if($contact->budget)<span class="badge badge-green">{{ $contact->budget }}</span>@else<span style="color:var(--a-dim)">—</span>@endif</td>
+                <td style="font-size:12px;color:var(--a-dim);white-space:nowrap">{{ $contact->created_at->diffForHumans() }}</td>
                 <td><span class="badge {{ $contact->is_read ? 'badge-green' : 'badge-blue' }}">{{ $contact->is_read ? 'Read' : 'New' }}</span></td>
                 <td style="text-align:right">
                     <div style="display:flex;gap:6px;justify-content:flex-end">

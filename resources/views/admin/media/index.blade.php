@@ -4,26 +4,26 @@
 @section('styles')
 <style>
 .media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-.media-card{border:1.5px solid #e8ecf0;border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s;position:relative;background:#fff}
-.media-card:hover{border-color:rgba(124,58,237,.4);box-shadow:0 8px 25px rgba(124,58,237,.1);transform:translateY(-2px)}
-.media-card.selected{border-color:var(--p);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
-.media-thumb{height:130px;overflow:hidden;background:#f8fafc;display:flex;align-items:center;justify-content:center;position:relative}
+.media-card{border:1.5px solid var(--a-line);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s;position:relative;background:var(--a-panel)}
+.media-card:hover{border-color:rgba(var(--p-rgb),.4);box-shadow:0 8px 25px rgba(var(--p-rgb),.1);transform:translateY(-2px)}
+.media-card.selected{border-color:var(--p);box-shadow:0 0 0 3px rgba(var(--p-rgb),.15)}
+.media-thumb{height:130px;overflow:hidden;background:var(--a-soft);display:flex;align-items:center;justify-content:center;position:relative}
 .media-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .media-card:hover .media-thumb img{transform:scale(1.05)}
 .media-check{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;opacity:0;transition:opacity .2s}
 .media-card.selected .media-check{opacity:1}
 .media-info{padding:10px 12px}
-.media-name{font-size:11px;font-weight:600;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.media-size{font-size:10px;color:#94a3b8;margin-top:2px}
+.media-name{font-size:11px;font-weight:600;color:var(--a-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.media-size{font-size:10px;color:var(--a-dim);margin-top:2px}
 .media-type-icon{font-size:2.5rem}
-.upload-zone{border:2px dashed #e2e8f0;border-radius:16px;padding:48px;text-align:center;transition:all .3s;cursor:pointer;background:#fafafa}
-.upload-zone:hover,.upload-zone.dragover{border-color:var(--p);background:rgba(124,58,237,.04)}
+.upload-zone{border:2px dashed var(--a-line);border-radius:16px;padding:48px;text-align:center;transition:all .3s;cursor:pointer;background:var(--a-soft)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--p);background:rgba(var(--p-rgb),.04)}
 .upload-zone-icon{font-size:3rem;margin-bottom:12px;display:block}
 .folder-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.folder-tab{padding:7px 18px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid #e2e8f0;background:#fff;color:#64748b;transition:all .2s}
+.folder-tab{padding:7px 18px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--a-line);background:var(--a-panel);color:var(--a-muted);transition:all .2s}
 .folder-tab.active{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;border-color:transparent}
-.copy-url-btn{font-size:10px;padding:3px 8px;border-radius:5px;background:rgba(124,58,237,.1);color:var(--p);border:none;cursor:pointer;font-weight:600;transition:background .2s;display:block;width:100%;margin-top:4px;text-align:center}
-.copy-url-btn:hover{background:rgba(124,58,237,.2)}
+.copy-url-btn{font-size:10px;padding:3px 8px;border-radius:5px;background:rgba(var(--p-rgb),.1);color:var(--p);border:none;cursor:pointer;font-weight:600;transition:background .2s;display:block;width:100%;margin-top:4px;text-align:center}
+.copy-url-btn:hover{background:rgba(var(--p-rgb),.2)}
 </style>
 @endsection
 
@@ -39,8 +39,8 @@
                     @csrf
                     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
                         <span class="upload-zone-icon">☁️</span>
-                        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:#374151;margin-bottom:6px">Drop files here or click to browse</div>
-                        <div style="font-size:13px;color:#94a3b8">Supports: JPG, PNG, GIF, SVG, WebP, PDF (Max 10MB)</div>
+                        <div style="font-family:var(--font-ui);font-size:1.1rem;font-weight:700;color:var(--a-text);margin-bottom:6px">Drop files here or click to browse</div>
+                        <div style="font-size:13px;color:var(--a-dim)">Supports: JPG, PNG, GIF, SVG, WebP, PDF (Max 10MB)</div>
                         <input type="file" id="fileInput" name="files[]" multiple accept="image/*,.pdf,.svg" style="display:none" onchange="previewFiles(this)">
                     </div>
                     <div id="preview-list" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px"></div>
@@ -75,9 +75,9 @@
         @if($files->count())
         <div class="card">
             <div class="card-head">
-                <div class="card-title">🖼️ Files <span style="background:#ede9fe;color:#5b21b6;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;margin-left:8px">{{ $files->total() }}</span></div>
+                <div class="card-title">🖼️ Files <span style="background:var(--a-tint);color:var(--p);padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;margin-left:8px">{{ $files->total() }}</span></div>
                 <div style="display:flex;gap:8px">
-                    <input type="text" placeholder="Search files..." style="padding:8px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;outline:none;font-family:'DM Sans',sans-serif;width:200px" oninput="filterMedia(this.value)">
+                    <input type="text" placeholder="Search files..." style="padding:8px 14px;border:1.5px solid var(--a-line);border-radius:10px;font-size:13px;outline:none;font-family:var(--font-b);width:200px" oninput="filterMedia(this.value)">
                 </div>
             </div>
             <div class="card-body">
@@ -124,10 +124,10 @@
         <div class="card" id="selectedPanel" style="display:none">
             <div class="card-head"><div class="card-title">📋 File Details</div></div>
             <div class="card-body">
-                <div id="selectedPreview" style="width:100%;height:180px;border-radius:10px;overflow:hidden;background:#f8fafc;margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-size:4rem"></div>
-                <div id="selectedName" style="font-weight:600;font-size:15px;color:#1e293b;margin-bottom:4px;word-break:break-all"></div>
-                <div id="selectedSize" style="font-size:12px;color:#94a3b8;margin-bottom:16px"></div>
-                <div style="background:#f8fafc;border-radius:10px;padding:12px;font-size:12px;color:#374151;word-break:break-all;font-family:monospace;margin-bottom:14px" id="selectedUrl"></div>
+                <div id="selectedPreview" style="width:100%;height:180px;border-radius:10px;overflow:hidden;background:var(--a-soft);margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-size:4rem"></div>
+                <div id="selectedName" style="font-weight:600;font-size:15px;color:var(--a-text);margin-bottom:4px;word-break:break-all"></div>
+                <div id="selectedSize" style="font-size:12px;color:var(--a-dim);margin-bottom:16px"></div>
+                <div style="background:var(--a-soft);border-radius:10px;padding:12px;font-size:12px;color:var(--a-text);word-break:break-all;font-family:monospace;margin-bottom:14px" id="selectedUrl"></div>
                 <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="copySelectedUrl()">
                     📋 Copy URL
                 </button>
@@ -136,11 +136,11 @@
         <div class="card" style="margin-top:16px">
             <div class="card-head"><div class="card-title">📊 Storage</div></div>
             <div class="card-body">
-                <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--p)">{{ $files->total() }}</div>
-                <div style="font-size:13px;color:#64748b;margin-top:4px">Total files</div>
-                <div style="margin-top:16px;font-size:13px;color:#374151">
+                <div style="font-family:var(--font-ui);font-size:2rem;font-weight:800;color:var(--p)">{{ $files->total() }}</div>
+                <div style="font-size:13px;color:var(--a-muted);margin-top:4px">Total files</div>
+                <div style="margin-top:16px;font-size:13px;color:var(--a-text)">
                     @foreach($folderCounts as $folder=>$count)
-                    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f8fafc">
+                    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--a-soft)">
                         <span>{{ ucfirst($folder) }}</span>
                         <span style="font-weight:600;color:var(--p)">{{ $count }}</span>
                     </div>
@@ -183,8 +183,8 @@ function previewFiles(input){
     document.getElementById('uploadBtn').style.display='inline-flex';
     Array.from(input.files).forEach(f=>{
         const div=document.createElement('div');
-        div.style='border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600;color:#374151;display:flex;align-items:center;gap:8px;background:#f8fafc';
-        div.innerHTML='<span>📎</span>'+f.name.substring(0,30)+(f.name.length>30?'...':'')+'<span style="color:#94a3b8">'+(f.size>1048576?(f.size/1048576).toFixed(1)+'MB':(f.size/1024).toFixed(0)+'KB')+'</span>';
+        div.style='border:1px solid var(--a-line);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600;color:var(--a-text);display:flex;align-items:center;gap:8px;background:var(--a-soft)';
+        div.innerHTML='<span>📎</span>'+f.name.substring(0,30)+(f.name.length>30?'...':'')+'<span style="color:var(--a-dim)">'+(f.size>1048576?(f.size/1048576).toFixed(1)+'MB':(f.size/1024).toFixed(0)+'KB')+'</span>';
         list.appendChild(div);
     });
 }

@@ -105,11 +105,11 @@
                     ];
                     @endphp
                     @foreach($checks as $check)
-                    <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:{{ $check['done'] ? 'rgba(16,185,129,.06)' : 'rgba(245,158,11,.06)' }};border:1px solid {{ $check['done'] ? 'rgba(16,185,129,.2)' : 'rgba(245,158,11,.2)' }}">
+                    <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:{{ $check['done'] ? 'rgba(var(--p-rgb),.06)' : 'rgba(var(--p-rgb),.06)' }};border:1px solid {{ $check['done'] ? 'rgba(var(--p-rgb),.2)' : 'rgba(var(--p-rgb),.2)' }}">
                         <span style="font-size:1.2rem">{{ $check['done'] ? '✅' : '⚠️' }}</span>
                         <div>
-                            <div style="font-size:13px;font-weight:600;color:{{ $check['done'] ? '#065f46' : '#92400e' }}">{{ $check['label'] }}</div>
-                            @if(!$check['done'])<div style="font-size:11px;color:#9ca3af;margin-top:2px">{{ $check['tip'] }}</div>@endif
+                            <div style="font-size:13px;font-weight:600;color:{{ $check['done'] ? 'var(--p)' : 'var(--s)' }}">{{ $check['label'] }}</div>
+                            @if(!$check['done'])<div style="font-size:11px;color:var(--a-dim);margin-top:2px">{{ $check['tip'] }}</div>@endif
                         </div>
                     </div>
                     @endforeach
