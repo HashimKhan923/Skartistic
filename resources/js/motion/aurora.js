@@ -11,6 +11,7 @@ uniform float u_time;
 uniform vec3 u_a;
 uniform vec3 u_b;
 uniform vec3 u_c;
+uniform float u_k;
 
 vec2 hash(vec2 p){
   p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
@@ -43,7 +44,7 @@ void main(){
 
   // Fade toward the top and bottom edges so it melts into the page.
   float edge = smoothstep(0.0, 0.32, uv.y) * smoothstep(1.0, 0.62, uv.y);
-  float alpha = (0.1 + 0.26 * smoothstep(-0.25, 0.5, f) + pull * 0.16) * edge;
+  float alpha = (0.1 + 0.26 * smoothstep(-0.25, 0.5, f) + pull * 0.16) * edge * u_k;
   gl_FragColor = vec4(col * alpha, alpha);
 }`;
 
@@ -88,9 +89,14 @@ export function startAurora(host) {
 
     const u = (n) => gl.getUniformLocation(prog, n);
     const uRes = u('u_res'), uMouse = u('u_mouse'), uTime = u('u_time');
-    gl.uniform3fv(u('u_a'), rgbVar('--accent-rgb', [0.42, 0.36, 0.91]));
-    gl.uniform3fv(u('u_b'), rgbVar('--magenta', [0.65, 0.55, 0.98]));
-    gl.uniform3fv(u('u_c'), rgbVar('--light', [0.92, 0.9, 1]));
+    const applyPalette = () => {
+        gl.uniform3fv(u('u_a'), rgbVar('--aurora-a', [0.66, 0.33, 0.97]));
+        gl.uniform3fv(u('u_b'), rgbVar('--aurora-b', [0.65, 0.55, 0.98]));
+        gl.uniform3fv(u('u_c'), rgbVar('--aurora-c', [0.92, 0.9, 1]));
+        gl.uniform1f(u('u_k'), parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--aurora-k')) || 1);
+    };
+    applyPalette();
+    window.addEventListener('sk-theme', applyPalette);
 
     host.prepend(canvas);
 

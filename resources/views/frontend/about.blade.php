@@ -5,11 +5,11 @@
 <style>
 
 /* ---- Variables ---- */
-.ab-page { --ab-purple:var(--accent); --ab-muted:#6b7280; --ab-border:#e5e7eb; --ab-bg:#fff; --ab-bg2:#f9f9f9; --ab-text:#0f0f0f; }
+.ab-page { --ab-fill:#e9eaf0; --ab-fill2:#f4f4f5; --ab-purple:var(--accent); --ab-muted:#6b7280; --ab-border:#e5e7eb; --ab-bg:#fff; --ab-bg2:#f9f9f9; --ab-text:#0f0f0f; }
 
 /* ---- Reset for this page ---- */
 .ab-page *, .ab-page *::before, .ab-page *::after { box-sizing:border-box; }
-.ab-page { font-family:var(--font-b); color:var(--ab-text); background:#fff; }
+.ab-page { font-family:var(--font-b); color:var(--ab-text); background:var(--ab-bg); }
 
 /* NOTE: No custom container defined here.
    All sections use the site's existing .container class
@@ -94,7 +94,7 @@
 .ab-photo-item {
   border-radius:16px;
   overflow:hidden;
-  background:#e9eaf0;
+  background:var(--ab-fill);
   aspect-ratio:4/3;
   opacity:0;
   transform:translateY(24px);
@@ -106,7 +106,7 @@
 .ab-photo-placeholder {
   width:100%; height:100%; min-height:160px;
   display:flex; align-items:center; justify-content:center;
-  background:linear-gradient(135deg,#f0f0f5,#e5e5ef);
+  background:linear-gradient(135deg,var(--ab-fill2),var(--ab-fill));
   color:#bbb; font-size:2.5rem;
 }
 
@@ -119,7 +119,7 @@
 .ab-sec-sub   { font-size:15px; color:var(--ab-muted); max-width:540px; margin:0 auto 52px; line-height:1.7; }
 
 .ab-awards-card {
-  background:#f4f4f5;
+  background:var(--ab-fill2);
   border-radius:20px;
   padding:44px 36px;
   display:flex;
@@ -135,7 +135,7 @@
 }
 .ab-award-item.ab-visible { animation:ab-fadeup .55s ease forwards; }
 .ab-award-trophy { font-size:2rem; }
-.ab-award-brand  { font-size:15px; font-weight:800; color:#555; letter-spacing:-.01em; }
+.ab-award-brand  { font-size:15px; font-weight:800; color:var(--ab-muted); letter-spacing:-.01em; }
 .ab-award-achiev { font-size:12px; font-weight:600; color:var(--ab-text); text-align:center; line-height:1.4; }
 .ab-award-year   { font-size:12px; color:var(--ab-muted); }
 
@@ -187,7 +187,7 @@
   .ab-founder-row.ab-reverse .ab-founder-photo,
   .ab-founder-row.ab-reverse .ab-founder-text { order:unset; }
 }
-.ab-founder-photo { border-radius:20px; overflow:hidden; background:#f0f0f5; box-shadow:0 4px 28px rgba(0,0,0,.09); }
+.ab-founder-photo { border-radius:20px; overflow:hidden; background:var(--ab-fill); box-shadow:0 4px 28px rgba(0,0,0,.09); }
 .ab-founder-photo img  { width:100%; height:300px; object-fit:cover; display:block; }
 .ab-founder-photo-ph   { width:100%; height:300px; display:flex; align-items:center; justify-content:center; font-size:72px; color:#ccc; }
 .ab-founder-name { font-size:clamp(1.5rem,3vw,2rem); font-weight:800; margin:0 0 14px; }
@@ -208,7 +208,7 @@
 /* ======================================================
    6. TEAM
    ====================================================== */
-.ab-team-wrap { background:#f9f9f9; padding:80px 0; }
+.ab-team-wrap { background:var(--ab-bg2); padding:80px 0; }
 .ab-team-hd {
   display:flex; justify-content:space-between; align-items:flex-end;
   margin-bottom:40px; flex-wrap:wrap; gap:14px;
@@ -228,14 +228,14 @@
 @media(max-width:900px){ .ab-team-grid{ grid-template-columns:repeat(2,1fr); } }
 @media(max-width:480px){ .ab-team-grid{ grid-template-columns:1fr 1fr; } }
 .ab-team-card {
-  background:#fff; border-radius:14px; overflow:hidden;
+  background:var(--panel); border-radius:14px; overflow:hidden;
   box-shadow:0 1px 4px rgba(0,0,0,.06);
   transition:transform .3s ease, box-shadow .3s ease;
   opacity:0; transform:translateY(18px);
 }
 .ab-team-card.ab-visible { animation:ab-fadeup .5s ease forwards; }
 .ab-team-card:hover { transform:translateY(-4px); box-shadow:0 14px 36px rgba(0,0,0,.13); }
-.ab-team-thumb { aspect-ratio:1; background:#e9eaf0; overflow:hidden; }
+.ab-team-thumb { aspect-ratio:1; background:var(--ab-fill); overflow:hidden; }
 .ab-team-thumb img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
 .ab-team-card:hover .ab-team-thumb img { transform:scale(1.06); }
 .ab-team-ph  { width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#ccc; }
@@ -257,7 +257,7 @@
 .ab-faq-inner { max-width:740px; margin:0 auto; }
 .ab-faq-list  { margin-top:44px; text-align:left; }
 .ab-faq-item  {
-  background:#f4f4f5; border-radius:11px; margin-bottom:7px; overflow:hidden;
+  background:var(--ab-fill2); border-radius:11px; margin-bottom:7px; overflow:hidden;
   opacity:0; transform:translateY(14px);
   transition:opacity .4s ease, transform .4s ease;
 }
@@ -398,7 +398,7 @@
 {{-- ============================================================
      3. MILESTONES / AWARDS
      ============================================================ --}}
-<section class="ab-milestones" style="background:#fff">
+<section class="ab-milestones" style="background:var(--ab-bg)">
   <div class="container">
     <span class="ab-sec-tag ab-anim">{{ $about->milestones_tag ?? 'Milestones That Matter' }}</span>
     <h2 class="ab-sec-h ab-anim">{{ $about->milestones_title ?? 'Our Journey of Impact' }}</h2>

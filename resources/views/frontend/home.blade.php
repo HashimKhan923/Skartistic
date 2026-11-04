@@ -46,7 +46,7 @@
 .hero-trust-avatars { display: flex }
 .hero-trust-av {
   width: 28px; height: 28px; border-radius: 50%;
-  border: 2px solid #fff; background: var(--deep);
+  border: 2px solid var(--panel); background: var(--deep);
   margin-left: -7px; display: flex; align-items: center; justify-content: center;
   font-size: .75rem; overflow: hidden; flex-shrink: 0;
 }
@@ -152,8 +152,8 @@
 .hero-chip {
   position: absolute; z-index: 1; display: none;
   font-family: var(--font-ui); font-size: 12px; font-weight: 600; white-space: nowrap;
-  color: var(--brand); padding: 9px 16px; border-radius: 100px;
-  background: rgba(255,255,255,.7); border: 1px solid rgba(var(--brand-rgb),.1);
+  color: var(--accent); padding: 9px 16px; border-radius: 100px;
+  background: rgba(var(--panel-rgb),.7); border: 1px solid rgba(var(--brand-rgb),.1);
   box-shadow: 0 10px 30px rgba(var(--brand-rgb),.1);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
   aspect-ratio: 16/9;
   border-radius: 24px;
   border: 3px solid rgba(var(--brand-rgb),.13);
-  background: #fff;
+  background: var(--panel);
   padding: 8px;
   box-shadow:
     0 2px 0 rgba(var(--brand-rgb),.06) inset,
@@ -360,12 +360,12 @@ document.addEventListener('DOMContentLoaded', function () {
 /* Fallback animated mockup */
 .device-fallback {
   width: 100%; height: 100%;
-  background: linear-gradient(135deg, #f5f3ff 0%, #fff 60%, #ede9fe 100%);
+  background: linear-gradient(135deg, var(--tint-1) 0%, var(--panel) 60%, var(--tint-2) 100%);
   display: flex; align-items: stretch; justify-content: center;
   gap: 20px; padding: clamp(18px, 4.5%, 52px); box-sizing: border-box;
 }
 .mock-card {
-  background: #fff; border-radius: 16px; padding: 20px;
+  background: var(--panel); border-radius: 16px; padding: 20px;
   box-shadow: 0 4px 24px rgba(var(--brand-rgb),.1);
   border: 1px solid rgba(var(--brand-rgb),.07);
   flex: 1; display: flex; flex-direction: column; gap: 10px;

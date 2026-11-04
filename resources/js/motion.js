@@ -202,8 +202,12 @@ function initParticles() {
     if (!isDesktop() || lowEnd) { cvs.remove(); return; }
     const ctx = cvs.getContext('2d');
     const css = getComputedStyle(root);
-    const brand = css.getPropertyValue('--brand-rgb').trim() || '108,43,217';
-    const accent = css.getPropertyValue('--accent-rgb').trim() || '168,85,247';
+    let brand = css.getPropertyValue('--brand-rgb').trim() || '108,43,217';
+    let accent = css.getPropertyValue('--accent-rgb').trim() || '168,85,247';
+    window.addEventListener('sk-theme', () => {
+        brand = css.getPropertyValue('--brand-rgb').trim() || brand;
+        accent = css.getPropertyValue('--accent-rgb').trim() || accent;
+    });
     let W = 0, H = 0, mx = -999, my = -999;
     const size = () => { W = cvs.width = window.innerWidth; H = cvs.height = window.innerHeight; };
     size();
@@ -213,7 +217,7 @@ function initParticles() {
         x: Math.random() * W, y: Math.random() * H,
         vx: (Math.random() - 0.5) * 0.16, vy: (Math.random() - 0.5) * 0.16,
         r: Math.random() * 1.4 + 0.4, a: Math.random() * 0.25 + 0.05,
-        c: Math.random() > 0.5 ? brand : accent,
+        useBrand: Math.random() > 0.5,
     }));
     gsap.ticker.add(() => {
         ctx.clearRect(0, 0, W, H);
@@ -232,7 +236,7 @@ function initParticles() {
                     ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
                 }
             }
-            ctx.fillStyle = `rgba(${p.c},${p.a})`;
+            ctx.fillStyle = `rgba(${p.useBrand ? brand : accent},${p.a})`;
             ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
         }
     });

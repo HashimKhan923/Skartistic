@@ -68,7 +68,7 @@
 .sv-hero {
     padding:120px 0 100px;
     text-align:center;
-    background:#fff;
+    background:var(--sv-bg);
     position:relative;
     overflow:hidden;
 }
@@ -125,7 +125,7 @@
 /* ════════════════════════════
    2. WHAT WE OFFER
    ════════════════════════════ */
-.sv-offer { background:#fff; }
+.sv-offer { background:var(--sv-bg); }
 
 /* Default 3-col grid for 1-3 cards */
 .sv-offer-grid {
@@ -152,7 +152,7 @@
     border:1px solid var(--sv-border);
     border-radius:var(--sv-radius);
     padding:32px 28px;
-    background:#fff;
+    background:var(--panel);
     transition:all .35s;
     position:relative; overflow:hidden;
     display:flex; flex-direction:column;
@@ -188,7 +188,7 @@
     width:100%; height:100%; min-height:220px;
     display:flex; align-items:flex-end; justify-content:center;
     padding-bottom:0;
-    background:linear-gradient(160deg,#f0f4ff 0%,#e8eeff 100%);
+    background:linear-gradient(160deg,var(--tint-1) 0%,var(--tint-2) 100%);
 }
 .sv-vis-phone-device {
     width:170px;
@@ -223,7 +223,7 @@
 /* ── Performance bars visual ── */
 .sv-vis-perf {
     width:100%; padding:20px 22px;
-    background:#fff; min-height:160px;
+    background:var(--panel); min-height:160px;
     display:flex; flex-direction:column; justify-content:center;
     align-items:stretch;
 }
@@ -238,7 +238,7 @@
 .sv-vis-scores {
     width:100%; padding:20px 16px;
     display:grid; grid-template-columns:1fr 1fr;
-    gap:16px 12px; background:#fff;
+    gap:16px 12px; background:var(--panel);
     min-height:220px; align-content:center;
 }
 .sv-vis-circle-wrap { display:flex; flex-direction:column; align-items:center; gap:8px; }
@@ -247,14 +247,14 @@
     border:5px solid #22c55e;
     display:flex; align-items:center; justify-content:center;
     font-size:14px; font-weight:900; color:var(--sv-text);
-    background:#fff;
+    background:var(--panel);
 }
 .sv-vis-circle-label { font-size:11px; color:var(--sv-text-2); font-weight:600; text-align:center; line-height:1.3; }
 
 /* ── Security icons visual ── */
 .sv-vis-security {
     width:100%; padding:18px 20px;
-    background:#fff; min-height:100px;
+    background:var(--panel); min-height:100px;
     display:flex; flex-direction:column; justify-content:center;
 }
 .sv-vis-sec-icons { display:flex; align-items:center; gap:0; margin-top:14px; }
@@ -297,7 +297,7 @@
     padding:9px 16px;
     border:1.5px solid var(--sv-border);
     border-radius:8px;
-    background:#fff;
+    background:var(--panel);
     font-size:13.5px; font-weight:600; color:var(--sv-text);
     cursor:default;
     transition:all .2s;
@@ -308,7 +308,7 @@
 /* ════════════════════════════
    4. WORK PROCESS
    ════════════════════════════ */
-.sv-process { background:#fff; }
+.sv-process { background:var(--sv-bg); }
 .sv-process-step {
     display:grid;
     grid-template-columns:280px 1fr;
@@ -343,7 +343,7 @@
     border:1px solid var(--sv-border);
     border-radius:var(--sv-radius);
     padding:32px 36px;
-    background:#fff;
+    background:var(--panel);
 }
 .sv-process-desc {
     font-size:16px; color:var(--sv-text-2);
@@ -366,7 +366,7 @@
 /* ════════════════════════════
    5. FEATURED WORK
    ════════════════════════════ */
-.sv-work { background:#fff; border-top:1px solid var(--sv-border); }
+.sv-work { background:var(--sv-bg); border-top:1px solid var(--sv-border); }
 .sv-work-project {
     display:grid;
     grid-template-columns:1fr 1fr;

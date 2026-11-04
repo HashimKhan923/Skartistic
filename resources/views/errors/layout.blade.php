@@ -8,8 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 {{-- Self-contained on purpose: error pages can't depend on the database or the build. --}}
+<script>(function(){var t=null;try{t=localStorage.getItem('sk-theme')}catch(e){}if(t!=='dark'&&t!=='light')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)})();</script>
 <style>
 :root { --brand:#6c2bd9; --accent:#a855f7; --magenta:#a78bfa; --void:#ffffff; --muted:rgba(108,43,217,.62) }
+html[data-theme="dark"] { color-scheme:dark; --brand:#8b5cf6; --accent:#a78bfa; --magenta:#c4b5fd; --void:#0d0a18; --muted:rgba(226,219,250,.74) }
+html[data-theme="dark"] h1 { color:#f1eefc }
+html[data-theme="dark"] .blob { opacity:.28 }
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 body { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:32px 20px; font-family:'Space Grotesk',sans-serif; background:var(--void); color:var(--brand); position:relative }
 .bg { position:fixed; inset:0; overflow:hidden; pointer-events:none }

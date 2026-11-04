@@ -130,6 +130,11 @@ it('serves robots.txt from settings', function () {
     $this->get('/robots.txt')->assertSee('Disallow: /private/');
 });
 
+it('offers a dark mode toggle on public and error pages', function () {
+    $this->get('/')->assertSee('id="theme-btn"', false)->assertSee('html[data-theme="dark"]', false);
+    $this->get('/definitely-not-a-page')->assertSee('html[data-theme="dark"]', false);
+});
+
 it('uses the one fixed purple theme and has no theme panel', function () {
     $this->get('/')->assertSee('--brand:   #6c2bd9;', false)->assertSee('--magenta: #a78bfa;', false);
     $this->actingAs(admin())->get('/admin/theme')->assertNotFound();
