@@ -1,5 +1,4 @@
 @extends('frontend.layouts.app')
-@section('title', ($settings['site_name'] ?? 'SK Artistic') . ' — Beyond Ordinary')
 @section('content')
 
 {{-- ── HERO (Centered, Nyntax-style with animated cycling text) ── --}}
@@ -20,16 +19,18 @@
 }
 .hero-c-grid {
   position: absolute; inset: 0; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);
+  mask-image: linear-gradient(to bottom, #000 62%, transparent);
   background-image:
-    linear-gradient(rgba(42,34,99,.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(42,34,99,.055) 1px, transparent 1px);
+    linear-gradient(rgba(var(--brand-rgb),.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--brand-rgb),.055) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 .hero-c-orb {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -55%);
   width: 780px; height: 780px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(108,92,231,.11) 0%, rgba(42,34,99,.04) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(var(--accent-rgb),.11) 0%, rgba(var(--brand-rgb),.04) 45%, transparent 68%);
   filter: blur(90px); pointer-events: none;
   animation: orb-breathe 6s ease-in-out infinite;
 }
@@ -37,7 +38,7 @@
 /* Trusted badge */
 .hero-trust {
   display: inline-flex; align-items: center; gap: 10px;
-  background: rgba(42,34,99,.05); border: 1.5px solid rgba(42,34,99,.11);
+  background: rgba(var(--brand-rgb),.05); border: 1.5px solid rgba(var(--brand-rgb),.11);
   padding: 7px 20px 7px 10px; border-radius: 100px;
   margin-bottom: 40px; animation: fade-up .6s .1s both;
   position: relative; z-index: 2;
@@ -78,6 +79,15 @@
   display: inline-block; text-align: center; padding: 4px 8px;
   white-space: nowrap; color: var(--accent);
 }
+@media (max-width: 640px) {
+  .hero-c { padding: 130px 20px 110px }
+  .hero-ticker-word { white-space: normal; font-size: clamp(2.1rem, 10.5vw, 2.8rem); letter-spacing: -1px }
+  .hero-ticker-wrap { min-height: 2.5em; font-size: clamp(2.1rem, 10.5vw, 2.8rem) }
+  .device-section { padding: 0 16px 70px }
+  .mock-card { padding: 10px; gap: 6px; border-radius: 10px }
+  .mock-card-tag { font-size: 6px; letter-spacing: 1px; padding: 2px 6px }
+  .mock-bar { height: 5px }
+}
 /* Nyntax letter spans — gradient applied per-letter so it actually renders */
 .nt-chunk { display: inline-block; white-space: nowrap }
 .nt-letter {
@@ -109,19 +119,19 @@
   background: var(--brand); color: #fff;
   font-family: var(--font-ui); font-size: 13px; font-weight: 600;
   letter-spacing: .2px; padding: 14px 28px; border-radius: 100px;
-  cursor: none; border: none;
+  border: none;
   transition: box-shadow .3s, transform .3s, background .3s;
 }
-.btn-schedule:hover { box-shadow: 0 8px 32px rgba(42,34,99,.28); transform: translateY(-2px); background: var(--brand2) }
+.btn-schedule:hover { box-shadow: 0 8px 32px rgba(var(--brand-rgb),.28); transform: translateY(-2px); background: var(--brand2) }
 .btn-contact-out {
   display: inline-flex; align-items: center; gap: 9px;
   background: transparent; color: var(--text);
   font-family: var(--font-ui); font-size: 13px; font-weight: 600;
   letter-spacing: .2px; padding: 13px 28px; border-radius: 100px;
-  border: 1.5px solid rgba(42,34,99,.18); cursor: none;
+  border: 1.5px solid rgba(var(--brand-rgb),.18);
   transition: all .25s;
 }
-.btn-contact-out:hover { border-color: var(--brand); color: var(--brand); background: rgba(42,34,99,.03) }
+.btn-contact-out:hover { border-color: var(--brand); color: var(--brand); background: rgba(var(--brand-rgb),.03) }
 
 /* Scroll pill */
 .hero-scroll-pill {
@@ -131,17 +141,43 @@
 }
 .scroll-pill-ring {
   width: 22px; height: 36px;
-  border: 1.5px solid rgba(42,34,99,.2); border-radius: 100px;
+  border: 1.5px solid rgba(var(--brand-rgb),.2); border-radius: 100px;
   display: flex; align-items: flex-start; justify-content: center; padding-top: 5px;
 }
 .scroll-pill-dot { width: 4px; height: 8px; background: var(--brand); border-radius: 100px; animation: sp-fall 1.7s ease-in-out infinite }
 @keyframes sp-fall { 0%{transform:translateY(0);opacity:1} 75%{transform:translateY(14px);opacity:0} 100%{transform:translateY(0);opacity:0} }
 .scroll-pill-lbl { font-family: var(--font-ui); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--dim) }
+.hero-c-content { position: relative; z-index: 2; width: 100%; display: flex; flex-direction: column; align-items: center }
+/* Floating skill chips (depth layer) */
+.hero-chip {
+  position: absolute; z-index: 1; display: none;
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600; white-space: nowrap;
+  color: var(--brand); padding: 9px 16px; border-radius: 100px;
+  background: rgba(255,255,255,.7); border: 1px solid rgba(var(--brand-rgb),.1);
+  box-shadow: 0 10px 30px rgba(var(--brand-rgb),.1);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+html.m-on .hero-chip { display: block }
+@media (max-width: 1100px) { html.m-on .hero-chip { display: none } }
+.hero-chip:nth-of-type(1) { top: 22%; left: 8% }
+.hero-chip:nth-of-type(2) { top: 16%; right: 11% }
+.hero-chip:nth-of-type(3) { top: 52%; left: 4% }
+.hero-chip:nth-of-type(4) { top: 56%; right: 5% }
+.hero-chip:nth-of-type(5) { bottom: 13%; left: 13% }
+.hero-chip:nth-of-type(6) { bottom: 15%; right: 13% }
 </style>
 
 <section class="hero-c">
   <div class="hero-c-grid"></div>
   <div class="hero-c-orb"></div>
+  @php
+    $marqueeRaw  = $settings['marquee_words'] ?? 'Web Development,UI / UX Design,Mobile Apps,Brand Identity,Backend APIs,Motion Design,Graphic Design,Integrations';
+    $marqueeList = array_values(array_filter(array_map('trim', explode(',', $marqueeRaw))));
+  @endphp
+  <div class="hero-chips" aria-hidden="true">
+    @foreach(array_slice($marqueeList, 0, 6) as $chip)<span class="hero-chip">{{ $chip }}</span>@endforeach
+  </div>
+  <div class="hero-c-content">
 
   {{-- Trusted badge --}}
   <div class="hero-trust">
@@ -176,6 +212,8 @@
     </a>
   </div>
 
+  </div>{{-- .hero-c-content --}}
+
   {{-- Scroll hint --}}
   <div class="hero-scroll-pill">
     <div class="scroll-pill-ring"><div class="scroll-pill-dot"></div></div>
@@ -189,29 +227,36 @@ document.addEventListener('DOMContentLoaded', function () {
     $animWordsRaw = $settings['hero_animated_words'] ?? 'Seamless Designs,Digital Creation,Innovative Ideas,Impactful Solutions';
     $animWordsArr = array_values(array_filter(array_map('trim', explode(',', $animWordsRaw))));
   @endphp
-  var WORDS = {!! json_encode($animWordsArr) !!};
+  var WORDS = @json($animWordsArr);
   var container = document.getElementById('heroWord');
   if (!container) return;
 
   var current = 0;
+  if (!WORDS.length) return;
 
   /* Build letter spans exactly like Nyntax:
      each word is split into <span class="word-chunk">
      each character is a <span class="letter"> */
   function buildWord(text) {
-    // Split by spaces so we can wrap each chunk in whitespace-nowrap span
-    var chunks = text.split(' ');
-    var html = '';
-    chunks.forEach(function (chunk, ci) {
-      html += '<span class="nt-chunk">';
-      for (var i = 0; i < chunk.length; i++) {
-        html += '<span class="nt-letter">' + chunk[i] + '</span>';
+    var frag = document.createDocumentFragment();
+    text.split(' ').forEach(function (chunk, ci, chunks) {
+      var c = document.createElement('span');
+      c.className = 'nt-chunk';
+      chunk.split('').forEach(function (ch) {
+        var l = document.createElement('span');
+        l.className = 'nt-letter';
+        l.textContent = ch;
+        c.appendChild(l);
+      });
+      if (ci < chunks.length - 1) {
+        var sp = document.createElement('span');
+        sp.className = 'nt-space';
+        sp.textContent = ' ';
+        c.appendChild(sp);
       }
-      // Add non-breaking space after every chunk except the last
-      if (ci < chunks.length - 1) html += '<span class="nt-space">&nbsp;</span>';
-      html += '</span>';
+      frag.appendChild(c);
     });
-    return html;
+    return frag;
   }
 
   /* Animate letters IN — staggered blur(8px)→blur(0) + translateY(12px)→0 + opacity 0→1 */
@@ -260,14 +305,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* Initial render */
-  container.innerHTML = buildWord(WORDS[current]);
+  container.setAttribute('aria-label', WORDS.join(', '));
+  container.appendChild(buildWord(WORDS[current]));
   animateIn(container);
 
   /* Cycle every 2.8s */
   setInterval(function () {
     animateOut(container, function () {
       current = (current + 1) % WORDS.length;
-      container.innerHTML = buildWord(WORDS[current]);
+      container.textContent = '';
+      container.appendChild(buildWord(WORDS[current]));
       animateIn(container);
     });
   }, 2800);
@@ -286,24 +333,20 @@ document.addEventListener('DOMContentLoaded', function () {
   width: 100%; max-width: 1100px;
   aspect-ratio: 16/9;
   border-radius: 24px;
-  border: 3px solid rgba(42,34,99,.13);
+  border: 3px solid rgba(var(--brand-rgb),.13);
   background: #fff;
   padding: 8px;
   box-shadow:
-    0 2px 0 rgba(42,34,99,.06) inset,
-    0 40px 100px rgba(42,34,99,.16),
-    0 8px 32px rgba(42,34,99,.09);
-  /* NO CSS animation here — JS controls transform entirely */
+    0 2px 0 rgba(var(--brand-rgb),.06) inset,
+    0 40px 100px rgba(var(--brand-rgb),.16),
+    0 8px 32px rgba(var(--brand-rgb),.09);
   transform-origin: center top;
   will-change: transform;
-  opacity: 0; /* starts hidden, JS fades in after load */
-  transition: opacity .6s ease;
 }
-.device-frame.ready { opacity: 1 }
 .device-inner {
   width: 100%; height: 100%;
   border-radius: 18px;
-  background: rgba(42,34,99,.03);
+  background: rgba(var(--brand-rgb),.03);
   padding: 8px;
 }
 .device-screen {
@@ -318,27 +361,27 @@ document.addEventListener('DOMContentLoaded', function () {
 .device-fallback {
   width: 100%; height: 100%;
   background: linear-gradient(135deg, #f5f3ff 0%, #fff 60%, #ede9fe 100%);
-  display: flex; align-items: center; justify-content: center;
-  gap: 16px; padding: 28px; box-sizing: border-box;
+  display: flex; align-items: stretch; justify-content: center;
+  gap: 20px; padding: clamp(18px, 4.5%, 52px); box-sizing: border-box;
 }
 .mock-card {
   background: #fff; border-radius: 16px; padding: 20px;
-  box-shadow: 0 4px 24px rgba(42,34,99,.1);
-  border: 1px solid rgba(42,34,99,.07);
+  box-shadow: 0 4px 24px rgba(var(--brand-rgb),.1);
+  border: 1px solid rgba(var(--brand-rgb),.07);
   flex: 1; display: flex; flex-direction: column; gap: 10px;
   overflow: hidden; min-width: 0;
 }
-.mock-card:nth-child(2) { margin-top: -24px; margin-bottom: 24px }
+.mock-card:nth-child(2) { margin-top: -14px; margin-bottom: 14px }
 .mock-card-tag {
   display: inline-block; padding: 3px 10px; border-radius: 100px;
-  background: rgba(108,92,231,.1);
+  background: rgba(var(--accent-rgb),.1);
   font-family: var(--font-ui); font-size: 9px; font-weight: 700;
   letter-spacing: 2px; text-transform: uppercase; color: var(--accent); width: fit-content;
 }
 .mock-card-img {
-  height: 70px; border-radius: 10px;
-  background: linear-gradient(135deg, rgba(108,92,231,.1), rgba(167,139,250,.15));
-  display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+  flex: 1; min-height: 60px; border-radius: 12px;
+  background: linear-gradient(135deg, rgba(var(--accent-rgb),.12), rgba(167,139,250,.2));
+  display: flex; align-items: center; justify-content: center; font-size: clamp(1.8rem, 5vw, 4.6rem);
 }
 .mock-bar { height: 8px; border-radius: 100px; background: var(--deep) }
 .mock-bar.w60 { width:60%; background:linear-gradient(90deg,var(--accent),var(--magenta)) }
@@ -352,7 +395,11 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="device-frame">
     <div class="device-inner">
       <div class="device-screen">
-        @if(!empty($settings['promo_video']))
+        @if(!empty($settings['promo_video_file']))
+          <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block">
+            <source src="{{ asset($settings['promo_video_file']) }}">
+          </video>
+        @elseif(!empty($settings['promo_video']))
           {{-- YouTube embed via iframe --}}
           @php
             // Extract YouTube video ID from any YouTube URL format
@@ -377,25 +424,25 @@ document.addEventListener('DOMContentLoaded', function () {
             </video>
           @endif
         @elseif(!empty($settings['promo_image']))
-          <img src="{{ asset('storage/'.$settings['promo_image']) }}" alt="SK Artistic work preview" style="width:100%;height:100%;object-fit:cover;display:block">
+          <img src="{{ asset($settings['promo_image']) }}" alt="{{ $settings['site_name'] ?? 'SK Artistic' }} work preview" style="width:100%;height:100%;object-fit:cover;display:block">
         @else
           {{-- Animated UI mockup fallback --}}
           <div class="device-fallback">
-            <div class="mock-card" style="animation:fade-up .5s .6s both">
+            <div class="mock-card" >
               <div class="mock-card-tag">UI Design</div>
               <div class="mock-card-img">🎨</div>
               <div class="mock-bar w60"></div>
               <div class="mock-bar w75"></div>
               <div class="mock-bar w40"></div>
             </div>
-            <div class="mock-card" style="animation:fade-up .5s .75s both">
+            <div class="mock-card" >
               <div class="mock-card-tag">Development</div>
               <div class="mock-card-img">⚡</div>
               <div class="mock-bar w50"></div>
               <div class="mock-bar w40"></div>
               <div class="mock-bar w75"></div>
             </div>
-            <div class="mock-card" style="animation:fade-up .5s .9s both">
+            <div class="mock-card" >
               <div class="mock-card-tag">Strategy</div>
               <div class="mock-card-img">🚀</div>
               <div class="mock-bar w35"></div>
@@ -409,95 +456,38 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 
-<script>
-(function () {
-  var frame = document.querySelector('.device-frame');
-  if (!frame) return;
-
-  var MAX_ROTATE = 12;   // tilt when frame first enters viewport
-  var MIN_ROTATE = 0;    // flat when frame centre crosses viewport centre
-  var MAX_SCALE  = 1.02;
-  var MIN_SCALE  = 1.00;
-
-  function setTransform(rotateX, scale) {
-    frame.style.transform =
-      'perspective(1400px) rotateX(' + rotateX.toFixed(4) + 'deg) scale(' + scale.toFixed(5) + ')';
-  }
-
-  function update() {
-    var rect = frame.getBoundingClientRect();
-    var vh   = window.innerHeight;
-
-    /*
-      progress calculation (matches Nyntax):
-        0  → top of frame is AT the bottom of the viewport (just entering)
-        1  → top of frame has reached the vertical centre of the viewport
-      We clamp so it never goes negative or above 1.
-    */
-    var progress = 1 - (rect.top / (vh * 0.5));
-    progress = Math.max(0, Math.min(1, progress));
-
-    // Smooth ease-out so it slows as it flattens
-    var eased = 1 - Math.pow(1 - progress, 3);
-
-    var rotateX = MAX_ROTATE - (MAX_ROTATE - MIN_ROTATE) * eased;
-    var scale   = MAX_SCALE  - (MAX_SCALE  - MIN_SCALE)  * eased;
-
-    setTransform(rotateX, scale);
-  }
-
-  // On page load: apply initial tilted state immediately, then fade in
-  setTransform(MAX_ROTATE, MAX_SCALE);
-  // Small delay so opacity transition plays after transform is set
-  requestAnimationFrame(function () {
-    frame.classList.add('ready');
-    update(); // recalculate in case page loaded scrolled down
-  });
-
-  // Throttled rAF scroll listener
-  var ticking = false;
-  window.addEventListener('scroll', function () {
-    if (!ticking) {
-      requestAnimationFrame(function () {
-        update();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-
-  window.addEventListener('resize', update, { passive: true });
-})();
-</script>
 
 {{-- MARQUEE --}}
 <div class="marquee-section">
   <div class="marquee-track">
     @php
-      $marqueeRaw  = $settings['marquee_words'] ?? 'Web Development,UI / UX Design,Mobile Apps,Brand Identity,Backend APIs,Motion Design,Graphic Design,Integrations';
-      $marqueeList = array_values(array_filter(array_map('trim', explode(',', $marqueeRaw))));
       $marqueeLoop = array_merge($marqueeList, $marqueeList); // duplicate for seamless scroll
     @endphp
     @foreach($marqueeLoop as $w)<span class="m-word">{{ $w }}</span><span class="m-dot">◆</span>@endforeach
   </div>
 </div>
 
+{{-- STATEMENT --}}
+<section class="statement">
+  <p data-scrub-text>Every service delivered with obsessive attention to craft — from pixel-perfect design to production-grade code that performs.</p>
+</section>
+
 {{-- SERVICES --}}
-<section class="section">
+@if($services->count())
+<section class="section" style="padding-top:40px">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:56px">
+    <div class="split-end">
       <div class="reveal-l">
         <div class="s-tag">Our Expertise</div>
         <h2 class="s-h">SERVICES<br>THAT <span class="g">HIT.</span></h2>
       </div>
-      <div class="reveal-r" style="text-align:right">
-        <p class="s-body" style="margin-left:auto">Every service delivered with obsessive attention to craft — from pixel-perfect design to production-grade code that performs.</p>
-        <a href="{{ route('services') }}" class="btn-ghost" style="display:inline-flex;margin-top:24px">View All Services <span class="arr">→</span></a>
+      <div class="reveal-r text-end-md" style="text-align:right">
+        <a href="{{ route('services') }}" class="btn-ghost" style="display:inline-flex">View All Services <span class="arr">→</span></a>
       </div>
     </div>
     <div class="svc-grid">
       @foreach($services as $i => $service)
-      <div class="svc-cell">
+      <div class="svc-cell" data-cursor="Explore">
         <div class="svc-bar"></div>
         <div class="svc-num">{{ str_pad($i+1,2,'0',STR_PAD_LEFT) }}</div>
         <div class="svc-icon-wrap"><span class="svc-icon">{{ $service->icon ?? '⚡' }}</span></div>
@@ -509,9 +499,43 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 </section>
+@endif
+
+{{-- FEATURED WORK --}}
+@if($featured_portfolios->count())
+<section class="work-section" id="work">
+  <div class="work-head">
+    <div class="reveal-l">
+      <div class="s-tag">Selected Work</div>
+      <h2 class="s-h" style="margin-bottom:0">WORK WE'RE<br><span class="g2">PROUD OF.</span></h2>
+    </div>
+    <a href="{{ route('portfolio') }}" class="btn-ghost reveal-r">All Projects <span class="arr">→</span></a>
+  </div>
+  <div class="work-track">
+    @foreach($featured_portfolios as $project)
+    <a href="{{ route('portfolio.detail',$project->slug) }}" class="work-card" data-cursor="View">
+      @if($project->thumbnail)<img src="{{ asset('storage/'.$project->thumbnail) }}" alt="{{ $project->title }}" loading="lazy">@else<div class="work-ph">🎨</div>@endif
+      <div class="work-info">@if($project->category)<span>{{ $project->category }}</span>@endif<b>{{ $project->title }}</b></div>
+    </a>
+    @endforeach
+  </div>
+</section>
+@endif
+
+{{-- CLIENT LOGOS --}}
+@if($client_logos->count())
+<section class="clients">
+  <div class="clients-label">Trusted by teams at</div>
+  <div class="clients-track">
+    @foreach($client_logos->concat($client_logos)->concat($client_logos)->concat($client_logos) as $logo)
+      @if($logo->website_url)<a href="{{ $logo->website_url }}" target="_blank" rel="noopener"><img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}" loading="lazy"></a>@else<img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}" loading="lazy">@endif
+    @endforeach
+  </div>
+</section>
+@endif
 
 {{-- STATS BAND --}}
-<div style="background:var(--deep);border-top:1px solid var(--rim);border-bottom:1px solid var(--rim);position:relative;z-index:1">
+<div class="stats-band">
   <div class="container">
     <div class="stats-row">
       <div class="stat-box"><div class="stat-box-n" data-count="{{ preg_replace('/\D/','',$settings['stats_projects']??'65') }}">{{ $settings['stats_projects'] ?? '65+' }}</div><div class="stat-box-l">Projects</div></div>
@@ -538,6 +562,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </section>
 
 {{-- TESTIMONIALS --}}
+@if($testimonials->count())
 <section class="section">
   <div class="container">
     <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
@@ -557,8 +582,10 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 </section>
+@endif
 
 {{-- PRICING --}}
+@if($pricing_plans->count())
 <section class="section section-alt">
   <div class="container">
     <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
@@ -584,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <li style="opacity:.4;text-decoration:line-through">{{ $f }}</li>
           @endforeach
         </ul>
-        <a href="{{ route('contact') }}?plan={{ urlencode($plan->name) }}" class="btn-price {{ $plan->is_featured ? 'btn-price-fill' : 'btn-price-out' }}">
+        <a href="{{ $plan->cta_url && !in_array($plan->cta_url, ['/contact', route('contact')]) ? $plan->cta_url : route('contact', ['plan' => $plan->name]) }}" class="btn-price {{ $plan->is_featured ? 'btn-price-fill' : 'btn-price-out' }}">
           {{ $plan->cta_label ?? 'Get Started' }} →
         </a>
       </div>
@@ -592,8 +619,10 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 </section>
+@endif
 
 {{-- FAQ --}}
+@if($faqs->count())
 <section class="section">
   <div class="container">
     <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
@@ -604,12 +633,13 @@ document.addEventListener('DOMContentLoaded', function () {
       @foreach($faqs as $faq)
       <div class="faq-item">
         <button class="faq-q-btn"><span class="faq-question">{{ $faq->question }}</span><span class="faq-icon-wrap">+</span></button>
-        <div class="faq-answer"><p>{{ $faq->answer }}</p></div>
+        <div class="faq-answer"><div><p>{{ $faq->answer }}</p></div></div>
       </div>
       @endforeach
     </div>
   </div>
 </section>
+@endif
 
 {{-- CTA --}}
 <section class="section" style="padding-top:0;padding-bottom:80px">
@@ -618,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="cta-glow1"></div><div class="cta-glow2"></div>
       <div class="cta-corner tl"></div><div class="cta-corner tr"></div><div class="cta-corner bl"></div><div class="cta-corner br"></div>
       <div style="font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:20px;position:relative;z-index:1">Ready when you are →</div>
-      <h2>BUILD SOMETHING<br><span style="background:linear-gradient(135deg,var(--light),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">EXTRAORDINARY.</span></h2>
+      <h2>BUILD SOMETHING<br><span class="g">EXTRAORDINARY.</span></h2>
       <p>Join {{ $settings['stats_clients'] ?? '70+' }} businesses who trusted SK Artistic.</p>
       <div class="cta-btns">
         <a href="{{ route('contact') }}" class="btn-primary"><span>Start Your Project</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>

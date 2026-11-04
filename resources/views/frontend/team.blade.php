@@ -15,16 +15,19 @@
       <div class="s-tag">Our People</div>
       <h2 class="s-h">MEET THE <span class="g">TEAM.</span></h2>
     </div>
+    @if($team->isEmpty())
+    <div class="empty-state reveal"><div class="ico">👋</div><h3>TEAM PROFILES COMING SOON</h3><p>Our people are camera-shy for the moment. Come say hello, or join us.</p><a href="{{ route('careers') }}" class="btn-primary" style="display:inline-flex"><span>View Openings</span></a></div>
+    @else
     <div class="team-grid">
       @foreach($team as $member)
       <div class="team-card">
         <div class="team-img">
-          @if($member->photo)<img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}">@else<div class="team-img-ph">👤</div>@endif
+          @if($member->photo)<img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" loading="lazy">@else<div class="team-img-ph">👤</div>@endif
           <div class="team-overlay"></div>
           <div class="team-socials">
-            @if($member->linkedin)<a href="{{ $member->linkedin }}" class="team-soc" target="_blank">LinkedIn</a>@endif
-            @if($member->instagram)<a href="{{ $member->instagram }}" class="team-soc" target="_blank">IG</a>@endif
-            @if($member->twitter)<a href="{{ $member->twitter }}" class="team-soc" target="_blank">X</a>@endif
+            @if($member->linkedin)<a href="{{ $member->linkedin }}" class="team-soc" target="_blank" rel="noopener">LinkedIn</a>@endif
+            @if($member->instagram)<a href="{{ $member->instagram }}" class="team-soc" target="_blank" rel="noopener">IG</a>@endif
+            @if($member->twitter)<a href="{{ $member->twitter }}" class="team-soc" target="_blank" rel="noopener">X</a>@endif
           </div>
         </div>
         <div class="team-info">
@@ -35,8 +38,9 @@
       </div>
       @endforeach
     </div>
+    @endif
     <div class="reveal" style="margin-top:80px">
-      <div style="background:var(--panel);border:1px solid var(--rim);border-left:2px solid var(--cyan);padding:52px 60px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center">
+      <div class="split-band band-pad" style="background:var(--panel);border:1px solid var(--rim);border-left:3px solid var(--cyan);padding:52px 60px;border-radius:12px">
         <div><div class="s-tag" style="margin-bottom:10px">Join Us</div><h3 style="font-family:var(--font-d);font-size:2.5rem;letter-spacing:1px;color:var(--text);margin-bottom:10px">WANT TO BE ON<br><span style="background:linear-gradient(135deg,var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">THIS TEAM?</span></h3><p style="font-size:15px;color:var(--muted);font-weight:300">We're always looking for passionate creatives and engineers.</p></div>
         <a href="{{ route('careers') }}" class="btn-primary" style="flex-shrink:0"><span>View Openings</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </div>

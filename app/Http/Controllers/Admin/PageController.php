@@ -6,11 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class PageController extends Controller {
+    private function uniqueSlug(string $title): string
+    {
+        $base = Str::slug($title) ?: 'untitled';
+        $slug = $base;
+        for ($i = 2; Page::where('slug', $slug)->exists(); $i++) $slug = $base.'-'.$i;
+        return $slug;
+    }
+
     public function index() { return view('admin.pages.index', ['pages' => Page::all()]); }
     public function create() { return view('admin.pages.form'); }
     public function store(Request $request) {
         $data = $request->validate(['title'=>'required','content'=>'nullable','meta_title'=>'nullable','meta_description'=>'nullable']);
-        $data['slug'] = Str::slug($data['title']);
+        $data['slug'] = $this->uniqueSlug($data['title']);
         $data['is_published'] = $request->boolean('is_published');
         $data['show_in_menu'] = $request->boolean('show_in_menu');
         $data['menu_order'] = $request->input('menu_order', 0);
@@ -20,7 +28,6 @@ class PageController extends Controller {
     public function edit(Page $page) { return view('admin.pages.form', compact('page')); }
     public function update(Request $request, Page $page) {
         $data = $request->validate(['title'=>'required','content'=>'nullable','meta_title'=>'nullable','meta_description'=>'nullable']);
-        $data['slug'] = Str::slug($data['title']);
         $data['is_published'] = $request->boolean('is_published');
         $data['show_in_menu'] = $request->boolean('show_in_menu');
         $data['menu_order'] = $request->input('menu_order', 0);

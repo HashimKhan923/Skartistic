@@ -41,7 +41,7 @@ class MediaController extends Controller
         ]);
 
         $uploaded = [];
-        $folder   = $request->input('folder', 'general');
+        $folder   = \Illuminate\Support\Str::slug($request->input('folder', 'general')) ?: 'general';
 
         foreach ($request->file('files') as $file) {
             $path = $file->store("media/{$folder}", 'public');

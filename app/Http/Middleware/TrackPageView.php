@@ -14,6 +14,7 @@ class TrackPageView
         // Only track GET requests, not admin, not AJAX
         if ($request->isMethod('GET')
             && !$request->is('admin/*')
+            && !$request->is('robots.txt')
             && !$request->ajax()
             && !$request->expectsJson()
             && $response->status() === 200

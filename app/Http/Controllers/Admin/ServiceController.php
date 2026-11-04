@@ -23,6 +23,7 @@ class ServiceController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate(['title' => 'required|string|max:255']);
         $data = $this->prepareData($request, new Service());
         Service::create($data);
         return redirect()->route('admin.services.index')->with('success', 'Service created.');
@@ -35,6 +36,7 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service)
     {
+        $request->validate(['title' => 'required|string|max:255']);
         $data = $this->prepareData($request, $service);
         $service->update($data);
         return redirect()->route('admin.services.index')->with('success', 'Service updated.');
@@ -49,6 +51,8 @@ class ServiceController extends Controller
     /* ─── upload helper ─── */
     private function uploadFile($file, string $folder): string
     {
+        $ext = strtolower($file->getClientOriginalExtension());
+        abort_unless(in_array($ext, ['jpg','jpeg','png','gif','webp','svg','ico','mp4','webm']), 422, 'Unsupported file type.');
         $dir = public_path('uploads/' . $folder);
         if (!file_exists($dir)) mkdir($dir, 0755, true);
 
@@ -80,7 +84,14 @@ class ServiceController extends Controller
         ]);
 
         $data['is_published'] = $request->boolean('is_published');
-        $data['slug']         = Str::slug($data['slug'] ?: $data['title']);
+        $data['hero_cta_primary']   = $data['hero_cta_primary'] ?? 'Get in touch';
+        $data['hero_cta_secondary'] = $data['hero_cta_secondary'] ?? 'Learn more';
+        $data['sort_order']         = $data['sort_order'] ?? 0;
+        $base = Str::slug(($data['slug'] ?? '') ?: $data['title']);
+        $data['slug'] = $base;
+        for ($n = 2; Service::where('slug', $data['slug'])->where('id', '!=', $service->id ?? 0)->exists(); $n++) {
+            $data['slug'] = $base.'-'.$n;
+        }
 
         // ── Banner image ──
         if ($request->hasFile('banner_image')) {

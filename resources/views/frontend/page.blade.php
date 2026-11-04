@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 @section('title', $page->meta_title ?? $page->title)
-@section('meta_description', $page->meta_description ?? '')
+@section('meta_description', $page->meta_description ?: $page->title)
 @section('content')
 <div class="page-hero">
   <div class="page-hero-grid"></div><div class="page-hero-orb"></div>

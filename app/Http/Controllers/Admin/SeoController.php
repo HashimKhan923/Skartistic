@@ -17,7 +17,7 @@ class SeoController extends Controller
     {
         $fields = [
             'seo_title', 'seo_description', 'seo_keywords',
-            'og_title', 'og_description', 'og_image',
+            'og_title', 'og_description',
             'google_analytics_id', 'google_tag_manager_id',
             'facebook_pixel_id', 'robots_txt',
         ];

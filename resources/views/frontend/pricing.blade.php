@@ -11,6 +11,9 @@
 </div>
 <section class="section">
   <div class="container">
+    @if($pricing_plans->isEmpty())
+    <div class="empty-state reveal"><div class="ico">💬</div><h3>LET'S TALK NUMBERS</h3><p>Every project is different. Tell us yours and we'll send a clear quote.</p><a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex"><span>Get a Quote</span></a></div>
+    @endif
     <div class="price-wrap">
       @foreach($pricing_plans as $plan)
       <div class="price-card {{ $plan->is_featured ? 'featured' : '' }}">
@@ -29,7 +32,7 @@
           <li style="opacity:.4;text-decoration:line-through">{{ $f }}</li>
           @endforeach
         </ul>
-        <a href="{{ route('contact') }}?plan={{ urlencode($plan->name) }}" class="btn-price {{ $plan->is_featured ? 'btn-price-fill' : 'btn-price-out' }}">{{ $plan->cta_label ?? 'Get Started' }} →</a>
+        <a href="{{ $plan->cta_url && !in_array($plan->cta_url, ['/contact', route('contact')]) ? $plan->cta_url : route('contact', ['plan' => $plan->name]) }}" class="btn-price {{ $plan->is_featured ? 'btn-price-fill' : 'btn-price-out' }}">{{ $plan->cta_label ?? 'Get Started' }} →</a>
       </div>
       @endforeach
     </div>
@@ -40,7 +43,7 @@
         <h2 class="s-h">PRICING <span class="g2">FAQ.</span></h2>
       </div>
       <div class="faq-list">
-        @foreach($faqs as $faq)<div class="faq-item"><button class="faq-q-btn"><span class="faq-question">{{ $faq->question }}</span><span class="faq-icon-wrap">+</span></button><div class="faq-answer"><p>{{ $faq->answer }}</p></div></div>@endforeach
+        @foreach($faqs as $faq)<div class="faq-item"><button class="faq-q-btn"><span class="faq-question">{{ $faq->question }}</span><span class="faq-icon-wrap">+</span></button><div class="faq-answer"><div><p>{{ $faq->answer }}</p></div></div></div>@endforeach
       </div>
     </div>
     @endif

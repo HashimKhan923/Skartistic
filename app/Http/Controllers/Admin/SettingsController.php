@@ -11,6 +11,8 @@ class SettingsController extends Controller
 {
     private function uploadFile($file, string $folder): string
     {
+        $ext = strtolower($file->getClientOriginalExtension());
+        abort_unless(in_array($ext, ['jpg','jpeg','png','gif','webp','svg','ico','mp4','webm']), 422, 'Unsupported file type.');
         $dir = public_path('uploads/' . $folder);
         if (!file_exists($dir)) mkdir($dir, 0755, true);
 

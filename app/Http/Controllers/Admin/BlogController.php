@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class BlogController extends Controller {
+    private function uniqueSlug(string $title): string
+    {
+        $base = Str::slug($title) ?: 'untitled';
+        $slug = $base;
+        for ($i = 2; BlogPost::where('slug', $slug)->exists(); $i++) $slug = $base.'-'.$i;
+        return $slug;
+    }
+
     public function index() {
         $posts = BlogPost::latest()->get();
         return view('admin.blog.index', compact('posts'));
@@ -13,7 +21,7 @@ class BlogController extends Controller {
     public function create() { return view('admin.blog.form'); }
     public function store(Request $request) {
         $data = $request->validate(['title'=>'required','excerpt'=>'nullable','content'=>'nullable','author'=>'nullable','category'=>'nullable','is_published'=>'nullable']);
-        $data['slug'] = Str::slug($data['title']);
+        $data['slug'] = $this->uniqueSlug($data['title']);
         $data['is_published'] = $request->boolean('is_published');
         $data['published_at'] = now();
         if ($request->hasFile('featured_image')) $data['featured_image'] = $request->file('featured_image')->store('blog','public');
@@ -23,7 +31,6 @@ class BlogController extends Controller {
     public function edit(BlogPost $blog) { return view('admin.blog.form', ['post' => $blog]); }
     public function update(Request $request, BlogPost $blog) {
         $data = $request->validate(['title'=>'required','excerpt'=>'nullable','content'=>'nullable','author'=>'nullable','category'=>'nullable','is_published'=>'nullable']);
-        $data['slug'] = Str::slug($data['title']);
         $data['is_published'] = $request->boolean('is_published');
         if ($request->hasFile('featured_image')) $data['featured_image'] = $request->file('featured_image')->store('blog','public');
         $blog->update($data);

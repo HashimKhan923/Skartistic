@@ -5,7 +5,7 @@
 <style>
 
 /* ---- Variables ---- */
-.ab-page { --ab-purple:#7c3aed; --ab-muted:#6b7280; --ab-border:#e5e7eb; --ab-bg:#fff; --ab-bg2:#f9f9f9; --ab-text:#0f0f0f; }
+.ab-page { --ab-purple:var(--accent); --ab-muted:#6b7280; --ab-border:#e5e7eb; --ab-bg:#fff; --ab-bg2:#f9f9f9; --ab-text:#0f0f0f; }
 
 /* ---- Reset for this page ---- */
 .ab-page *, .ab-page *::before, .ab-page *::after { box-sizing:border-box; }
@@ -274,7 +274,7 @@
   max-height:0; overflow:hidden; transition:max-height .38s ease, padding .3s ease;
   padding:0 22px; font-size:14px; color:var(--ab-muted); line-height:1.8;
 }
-.ab-faq-item.ab-open .ab-faq-body { max-height:280px; padding:0 22px 20px; }
+.ab-faq-item.ab-open .ab-faq-body { max-height:640px; padding:0 22px 20px; }
 
 /* ======================================================
    8. CTA
@@ -287,7 +287,7 @@
 .ab-cta-box::before {
   content:''; position:absolute; top:-80px; left:-80px;
   width:340px; height:340px;
-  background:radial-gradient(circle,rgba(124,58,237,.28) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(var(--accent-rgb),.28) 0%,transparent 65%);
   pointer-events:none;
 }
 .ab-cta-box::after {
@@ -368,7 +368,7 @@
         {{-- Photo 1 (wide, spans full width of right column) --}}
         <div class="ab-photo-item ab-anim">
           @if(!empty($about->photo_1))
-            <img src="{{ asset('storage/'.$about->photo_1) }}" alt="Team">
+            <img src="{{ asset($about->photo_1) }}" alt="Team">
           @else
             <div class="ab-photo-placeholder">📸</div>
           @endif
@@ -376,7 +376,7 @@
         {{-- Photo 2 --}}
         <div class="ab-photo-item ab-anim" style="animation-delay:.12s">
           @if(!empty($about->photo_2))
-            <img src="{{ asset('storage/'.$about->photo_2) }}" alt="Team">
+            <img src="{{ asset($about->photo_2) }}" alt="Team">
           @else
             <div class="ab-photo-placeholder">🤝</div>
           @endif
@@ -384,7 +384,7 @@
         {{-- Photo 3 --}}
         <div class="ab-photo-item ab-anim" style="animation-delay:.24s">
           @if(!empty($about->photo_3))
-            <img src="{{ asset('storage/'.$about->photo_3) }}" alt="Team">
+            <img src="{{ asset($about->photo_3) }}" alt="Team">
           @else
             <div class="ab-photo-placeholder">🚀</div>
           @endif
@@ -409,7 +409,7 @@
         <div class="ab-award-item ab-anim">
           <div class="ab-award-trophy">🏆</div>
           @if(!empty($award->logo_path))
-            <img src="{{ asset('storage/'.$award->logo_path) }}" alt="{{ $award->platform }}" style="height:26px;filter:grayscale(1);opacity:.55">
+            <img src="{{ asset($award->logo_path) }}" alt="{{ $award->platform }}" style="height:26px;filter:grayscale(1);opacity:.55">
           @else
             <div class="ab-award-brand">{{ $award->platform }}</div>
           @endif
@@ -488,7 +488,7 @@
     <div class="ab-founder-row ab-anim {{ $i % 2 !== 0 ? 'ab-reverse' : '' }}">
       <div class="ab-founder-photo">
         @if($founder->photo)
-          <img src="{{ asset('storage/'.$founder->photo) }}" alt="{{ $founder->name }}">
+          <img src="{{ asset($founder->photo) }}" alt="{{ $founder->name }}">
         @else
           <div class="ab-founder-photo-ph">👤</div>
         @endif
@@ -507,12 +507,12 @@
             <span class="ab-founder-meta-lbl">Find me on:</span>
             <div class="ab-founder-links">
               @if(!empty($founder->website))
-              <a href="{{ $founder->website }}" class="ab-founder-link" target="_blank" title="Website">
+              <a href="{{ $founder->website }}" class="ab-founder-link" target="_blank" rel="noopener" title="Website">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>
               </a>
               @endif
               @if(!empty($founder->linkedin))
-              <a href="{{ $founder->linkedin }}" class="ab-founder-link" target="_blank" title="LinkedIn">
+              <a href="{{ $founder->linkedin }}" class="ab-founder-link" target="_blank" rel="noopener" title="LinkedIn">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
               </a>
               @endif
@@ -554,8 +554,8 @@
           <div class="ab-team-pos">{{ $member->position }}</div>
           @if($member->linkedin || ($member->instagram ?? false))
           <div class="ab-team-socs">
-            @if($member->linkedin)<a href="{{ $member->linkedin }}" class="ab-team-soc" target="_blank">in</a>@endif
-            @if(!empty($member->instagram))<a href="{{ $member->instagram }}" class="ab-team-soc" target="_blank">ig</a>@endif
+            @if($member->linkedin)<a href="{{ $member->linkedin }}" class="ab-team-soc" target="_blank" rel="noopener">in</a>@endif
+            @if(!empty($member->instagram))<a href="{{ $member->instagram }}" class="ab-team-soc" target="_blank" rel="noopener">ig</a>@endif
           </div>
           @endif
         </div>
@@ -625,8 +625,8 @@
 
   document.querySelectorAll('.ab-anim').forEach(function(el){ io.observe(el); });
 
-  /* ---- Counter animation ---- */
-  var counterDone = false;
+  /* ---- Counter animation (the motion layer has its own odometer) ---- */
+  var counterDone = document.documentElement.classList.contains('m-on');
   var numObs = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting && !counterDone){

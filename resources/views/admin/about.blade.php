@@ -174,7 +174,7 @@
                 <div class="upl-box" onclick="document.getElementById('ph{{$n}}').click()">
                     <input type="file" id="ph{{$n}}" name="photo_{{$n}}" accept="image/*" onchange="uplPrev(this,'pi{{$n}}')">
                     @if(!empty($about->{'photo_'.$n}))
-                        <img id="pi{{$n}}" class="upl-prev" src="{{ asset('storage/'.$about->{'photo_'.$n}) }}" alt="">
+                        <img id="pi{{$n}}" class="upl-prev" src="{{ asset($about->{'photo_'.$n}) }}" alt="">
                     @else
                         <div id="pi{{$n}}" style="font-size:2rem;margin-bottom:8px">📷</div>
                     @endif
@@ -227,7 +227,7 @@
                             <label class="form-label">Logo (optional)</label>
                             <div class="upl-box" onclick="document.getElementById('al{{$award->id}}').click()">
                                 <input type="file" id="al{{$award->id}}" name="awards[{{$i}}][logo]" accept="image/*" onchange="uplPrev(this,'ap{{$award->id}}')">
-                                @if($award->logo_path)<img id="ap{{$award->id}}" class="upl-prev" src="{{ asset('storage/'.$award->logo_path) }}" alt="">@else<div id="ap{{$award->id}}" style="font-size:1.5rem;margin-bottom:4px">🏅</div>@endif
+                                @if($award->logo_path)<img id="ap{{$award->id}}" class="upl-prev" src="{{ asset($award->logo_path) }}" alt="">@else<div id="ap{{$award->id}}" style="font-size:1.5rem;margin-bottom:4px">🏅</div>@endif
                                 <div class="upl-hint"><strong>Upload logo</strong></div>
                             </div>
                             @if($award->logo_path)<label class="rm-chk"><input type="checkbox" name="awards[{{$i}}][remove_logo]" value="1"> Remove logo</label>@endif
@@ -356,7 +356,7 @@
                             <label class="form-label">Photo</label>
                             <div class="upl-box" onclick="document.getElementById('fp{{$founder->id}}').click()">
                                 <input type="file" id="fp{{$founder->id}}" name="founders[{{$i}}][photo]" accept="image/*" onchange="uplPrev(this,'fpi{{$founder->id}}')">
-                                @if($founder->photo)<img id="fpi{{$founder->id}}" class="upl-prev" src="{{ asset('storage/'.$founder->photo) }}" alt="">@else<div id="fpi{{$founder->id}}" style="font-size:2rem;margin-bottom:6px">👤</div>@endif
+                                @if($founder->photo)<img id="fpi{{$founder->id}}" class="upl-prev" src="{{ asset($founder->photo) }}" alt="">@else<div id="fpi{{$founder->id}}" style="font-size:2rem;margin-bottom:6px">👤</div>@endif
                                 <div class="upl-hint"><strong>Upload photo</strong></div>
                             </div>
                             @if($founder->photo)<label class="rm-chk"><input type="checkbox" name="founders[{{$i}}][remove_photo]" value="1"> Remove</label>@endif

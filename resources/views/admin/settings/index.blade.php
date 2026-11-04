@@ -78,7 +78,7 @@
       <input class="form-control" type="file" name="site_logo"
         accept="image/png,image/svg+xml,image/webp,image/jpeg">
       @if(!empty($settings['site_logo']))
-        <img src="{{ asset('storage/'.$settings['site_logo']) }}" class="img-preview" alt="Logo">
+        <img src="{{ asset($settings['site_logo']) }}" class="img-preview" alt="Logo">
         <label class="rm-chk"><input type="checkbox" name="remove_site_logo" value="1"> Remove current logo</label>
       @endif
       <small class="form-text">SVG or PNG transparent recommended. Displayed in the navbar.</small>
@@ -232,7 +232,7 @@
         <label class="form-label">Poster / Fallback Image <span class="kb">promo_image</span></label>
         <input class="form-control" type="file" name="promo_image" accept="image/*">
         @if(!empty($settings['promo_image']))
-          <img src="{{ asset('storage/'.$settings['promo_image']) }}"
+          <img src="{{ asset($settings['promo_image']) }}"
             class="img-preview" alt="Promo Image">
           <label class="rm-chk">
             <input type="checkbox" name="remove_promo_image" value="1"> Remove image
@@ -385,7 +385,7 @@
         <label class="form-label">OG / Social Share Image <span class="kb">og_image</span></label>
         <input class="form-control" type="file" name="og_image" accept="image/*">
         @if(!empty($settings['og_image']))
-          <img src="{{ asset('storage/'.$settings['og_image']) }}"
+          <img src="{{ asset($settings['og_image']) }}"
             class="img-preview" alt="OG Image">
           <label class="rm-chk">
             <input type="checkbox" name="remove_og_image" value="1"> Remove image

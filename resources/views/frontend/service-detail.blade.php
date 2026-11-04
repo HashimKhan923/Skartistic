@@ -10,9 +10,9 @@
    Prefix: sv-
    ═══════════════════════════════════════════════════ */
 :root {
-    --sv-purple: #7c3aed;
-    --sv-purple-light: rgba(124,58,237,.08);
-    --sv-purple-mid: rgba(124,58,237,.15);
+    --sv-purple: var(--accent);
+    --sv-purple-light: rgba(var(--accent-rgb),.08);
+    --sv-purple-mid: rgba(var(--accent-rgb),.15);
     --sv-text: #0f0f0f;
     --sv-text-2: #4b5563;
     --sv-text-3: #9ca3af;
@@ -75,7 +75,7 @@
 .sv-hero::before {
     content:'';
     position:absolute; inset:0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,.07) 0%, transparent 70%);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--accent-rgb),.07) 0%, transparent 70%);
     pointer-events:none;
 }
 .sv-hero-tag {
@@ -111,7 +111,7 @@
     text-decoration:none; border:none; cursor:pointer;
     transition:all .25s;
 }
-.sv-btn-primary:hover { background:#6d28d9; transform:translateY(-2px); box-shadow:0 8px 24px rgba(124,58,237,.35); }
+.sv-btn-primary:hover { background:#6d28d9; transform:translateY(-2px); box-shadow:0 8px 24px rgba(var(--accent-rgb),.35); }
 .sv-btn-secondary {
     display:inline-flex; align-items:center; gap:8px;
     padding:14px 28px; border-radius:100px;
@@ -160,10 +160,10 @@
 .sv-offer-card::after {
     content:''; position:absolute;
     inset:0; border-radius:inherit;
-    background:linear-gradient(135deg,rgba(124,58,237,.04),transparent);
+    background:linear-gradient(135deg,rgba(var(--accent-rgb),.04),transparent);
     opacity:0; transition:opacity .3s;
 }
-.sv-offer-card:hover { box-shadow:0 20px 60px rgba(0,0,0,.09); transform:translateY(-4px); border-color:rgba(124,58,237,.25); }
+.sv-offer-card:hover { box-shadow:0 20px 60px rgba(0,0,0,.09); transform:translateY(-4px); border-color:rgba(var(--accent-rgb),.25); }
 .sv-offer-card:hover::after { opacity:1; }
 .sv-offer-card-title { font-size:17px; font-weight:800; color:var(--sv-text); margin-bottom:10px; }
 .sv-offer-card-desc  { font-size:14px; color:var(--sv-text-2); line-height:1.65; margin-bottom:24px; }
@@ -195,7 +195,7 @@
     background:#1a1a2e;
     border-radius:20px 20px 0 0;
     padding:16px 14px 0;
-    box-shadow:0 -8px 40px rgba(124,58,237,.2);
+    box-shadow:0 -8px 40px rgba(var(--accent-rgb),.2);
 }
 .sv-vis-phone-topbar {
     display:flex; align-items:center; justify-content:space-between;
@@ -214,7 +214,7 @@
 .sv-vis-phone-lines { flex:1; display:flex; flex-direction:column; gap:3px; }
 .sv-vis-phone-line { height:5px; border-radius:2px; background:#2d2d4e; }
 .sv-vis-phone-badges { display:flex; gap:4px; margin-bottom:10px; }
-.sv-vis-phone-badge-ip { padding:2px 7px; border-radius:4px; background:rgba(124,58,237,.3); color:#a78bfa; font-size:8px; font-weight:700; }
+.sv-vis-phone-badge-ip { padding:2px 7px; border-radius:4px; background:rgba(var(--accent-rgb),.3); color:#a78bfa; font-size:8px; font-weight:700; }
 .sv-vis-phone-badge-lw { padding:2px 7px; border-radius:4px; background:rgba(34,197,94,.3); color:#4ade80; font-size:8px; font-weight:700; }
 .sv-vis-phone-desc { background:#252545; border-radius:6px; padding:7px 8px; margin-bottom:0; }
 .sv-vis-phone-desc-line { height:5px; border-radius:2px; background:#3d3d5e; margin-bottom:3px; }
@@ -263,7 +263,7 @@
     background:var(--sv-purple); color:#fff;
     display:flex; align-items:center; justify-content:center;
     font-size:18px; flex-shrink:0;
-    box-shadow:0 4px 12px rgba(124,58,237,.3);
+    box-shadow:0 4px 12px rgba(var(--accent-rgb),.3);
 }
 .sv-vis-sec-icon.mid { background:#5b21b6; width:52px; height:52px; font-size:22px; }
 .sv-vis-sec-line { flex:1; height:2px; background:var(--sv-border); }
@@ -800,7 +800,7 @@
 
                 <div class="sv-work-btns">
                     @if(!empty($proj['live_url']))
-                    <a href="{{ $proj['live_url'] }}" target="_blank" class="sv-btn-live">
+                    <a href="{{ $proj['live_url'] }}" target="_blank" rel="noopener" class="sv-btn-live">
                         View Live
                         <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                     </a>
@@ -851,13 +851,6 @@
         io.observe(el);
     });
 
-    // Smooth scroll for hero "Learn more"
-    document.querySelectorAll('a[href^="#"]').forEach(function(a){
-        a.addEventListener('click', function(e){
-            var t = document.querySelector(this.getAttribute('href'));
-            if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
-        });
-    });
 })();
 </script>
 @endsection

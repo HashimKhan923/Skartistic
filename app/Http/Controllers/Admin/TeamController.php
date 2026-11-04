@@ -10,6 +10,7 @@ class TeamController extends Controller {
     public function store(Request $request) {
         $data = $request->validate(['name'=>'required','position'=>'required','bio'=>'nullable','linkedin'=>'nullable','twitter'=>'nullable','instagram'=>'nullable']);
         $data['is_published'] = $request->boolean('is_published');
+        $data['sort_order'] = $request->input('sort_order', 0);
         if ($request->hasFile('photo')) $data['photo'] = $request->file('photo')->store('team','public');
         TeamMember::create($data);
         return redirect()->route('admin.team.index')->with('success','Member added!');
@@ -18,6 +19,7 @@ class TeamController extends Controller {
     public function update(Request $request, TeamMember $team) {
         $data = $request->validate(['name'=>'required','position'=>'required','bio'=>'nullable','linkedin'=>'nullable','twitter'=>'nullable','instagram'=>'nullable']);
         $data['is_published'] = $request->boolean('is_published');
+        $data['sort_order'] = $request->input('sort_order', 0);
         if ($request->hasFile('photo')) $data['photo'] = $request->file('photo')->store('team','public');
         $team->update($data);
         return redirect()->route('admin.team.index')->with('success','Member updated!');

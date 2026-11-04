@@ -1,0 +1,211 @@
+/* ═══════════════════════════════════════════════════════════
+   MOTION LAYER — only loaded with the Vite bundle, and every rule
+   is scoped to html.m-on, which is never set for visitors who
+   prefer reduced motion.
+═══════════════════════════════════════════════════════════ */
+html.m-on { scroll-behavior: auto }
+html.lenis, html.lenis body { height: auto }
+.lenis.lenis-stopped { overflow: clip }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain }
+
+/* GSAP owns entrances: switch off the CSS versions so they can't fight it */
+html.m-on .breadcrumb,
+html.m-on .page-hero h1,
+html.m-on .page-hero p,
+html.m-on .hero-trust,
+html.m-on .hero-static-line,
+html.m-on .hero-ticker-wrap,
+html.m-on .hero-sub-c,
+html.m-on .hero-c-btns,
+html.m-on .hero-scroll-pill,
+html.m-on .ab-hero-tag,
+html.m-on .ab-hero h1,
+html.m-on .ab-hero-sub,
+html.m-on .sv-hero-tag,
+html.m-on .sv-hero-h1,
+html.m-on .sv-hero-sub,
+html.m-on .sv-hero-btns,
+html.m-on .marquee-track,
+html.m-on .clients-track,
+html.m-on .nav { animation: none }
+html.m-on .ab-hero-tag, html.m-on .ab-hero h1, html.m-on .ab-hero-sub, html.m-on .sv-hero-tag, html.m-on .sv-hero-h1, html.m-on .sv-hero-sub, html.m-on .sv-hero-btns { opacity: 1 }
+html.m-on .ab-anim, html.m-on .ab-anim.ab-visible,
+html.m-on .ab-photo-item, html.m-on .ab-award-item, html.m-on .ab-val-item, html.m-on .ab-founder-row, html.m-on .ab-team-card, html.m-on .ab-faq-item,
+html.m-on .sv-reveal, html.m-on .sv-reveal-l, html.m-on .sv-reveal-r, html.m-on .sv-reveal-s { animation: none !important; opacity: 1; transform: none }
+
+/* Long transitions on these would lag behind per-frame transforms */
+html.m-on .price-card { transition: border-color .4s, box-shadow .4s, background .4s }
+html.m-on .btn-primary, html.m-on .btn-schedule, html.m-on .btn-contact-out, html.m-on .nav-cta { transition: box-shadow .3s, background .3s, color .3s, border-color .3s !important }
+html.m-on .proc-item { transition: none }
+html.m-on .proc-item:hover { padding-left: 48px }
+html.m-on .proc-pinned { padding: 96px 24px 44px; min-height: 100vh; display: flex; align-items: center }
+html.m-on .proc-pinned .container > .reveal, html.m-on .proc-pinned .container > div:first-child { margin-bottom: 24px !important }
+html.m-on .proc-pinned .proc-row { margin-top: 0 }
+html.m-on .proc-pinned .proc-item, html.m-on .proc-pinned .proc-item:hover { padding: 36px 40px }
+html.m-on .proc-pinned .proc-n { font-size: 3.6rem; margin-bottom: 12px }
+html.m-on .proc-pinned .proc-circle { margin-bottom: 18px }
+html.m-on .proc-pinned .s-h { font-size: clamp(2.6rem,5vw,5rem) }
+html.m-on .h-stat { transition: border-color .3s, box-shadow .3s }
+
+/* While cards reveal, the 1px-gap grids would expose their backing colour as a grey slab,
+   and their overflow would clip the 3D tilt. Floating cards avoid both. */
+html.m-on .svc-grid, html.m-on .stats-row, html.m-on .team-grid, html.m-on .blog-grid, html.m-on .port-grid, html.m-on .benefit-grid {
+  background: none !important; border: 0 !important; overflow: visible !important; gap: 16px !important;
+}
+html.m-on .svc-cell, html.m-on .stat-box, html.m-on .team-card, html.m-on .blog-card, html.m-on .port-item, html.m-on .benefit-box {
+  border: 1px solid var(--rim); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);
+}
+html.m-on .stat-box:hover { border-color: var(--rim2) }
+
+/* Full-screen blending and backdrop blur repaint on every scrolled frame. They were the
+   largest measured cost of the layer, and at these strengths the eye can't tell. */
+html.m-on #grain { mix-blend-mode: normal; opacity: .016 }
+html.m-on .nav, html.m-on .hero-chip { backdrop-filter: none; -webkit-backdrop-filter: none }
+html.m-on .nav { background: rgba(255,255,255,.94) }
+html.m-on .hero-chip { background: rgba(255,255,255,.86) }
+
+/* ── Aurora ── */
+.ab-hero > .container, .sv-hero > .sv-container { position: relative; z-index: 2 }
+html.m-on .ab-hero { padding-top: 140px }
+.aurora { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0 }
+html.m-on .hero-c-orb, html.m-on .page-hero-orb { opacity: .5 }
+html.m-on .page-hero-orb { animation: none }
+
+/* ── Grid that lights up around the pointer ── */
+.grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(var(--accent-rgb),.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb),.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(240px circle at var(--gx,50%) var(--gy,50%), #000, transparent 72%);
+  mask-image: radial-gradient(240px circle at var(--gx,50%) var(--gy,50%), #000, transparent 72%);
+  opacity: 0; transition: opacity .5s;
+}
+.has-grid:hover > .grid-glow { opacity: .55 }
+.page-hero > .grid-glow { background-size: 80px 80px }
+
+/* ── Masked word reveal ── */
+.sw {
+  display: inline-block; overflow: clip; vertical-align: top;
+  padding: .1em .05em .08em; margin: -.1em -.05em -.08em;
+}
+.si { display: inline-block; will-change: transform }
+.g .si, .g2 .si, .g3 .si, .ab-cta-box h2 span .si { -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-right: .04em; margin-right: -.04em }
+.g .si { background-image: linear-gradient(135deg, var(--brand), var(--accent)) }
+.g2 .si { background-image: linear-gradient(135deg, var(--accent), var(--magenta)) }
+.g3 .si { background-image: linear-gradient(135deg, var(--brand), #8b5cf6) }
+.cta-block .g .si, .cta-block .g2 .si, .ab-cta-box h2 span .si { background-image: linear-gradient(135deg, var(--light), var(--magenta)) }
+
+/* ── Scroll-driven statement text ── */
+[data-scrub-text] .w { color: rgba(var(--brand-rgb), .14); transition: color .1s linear }
+[data-scrub-text] .w.lit { color: var(--text) }
+
+/* ── Spotlight ── */
+.has-spot { position: relative }
+.spot {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0; border-radius: inherit; opacity: 0;
+  transition: opacity .4s;
+  background: radial-gradient(380px circle at var(--mx,50%) var(--my,50%), rgba(var(--accent-rgb),.16), transparent 68%);
+}
+.has-spot:hover > .spot { opacity: 1 }
+.price-card.featured > .spot, .cta-block > .spot { background: radial-gradient(380px circle at var(--mx,50%) var(--my,50%), rgba(var(--accent-rgb),.22), transparent 68%) }
+
+/* ── Featured price card: travelling light on the border ── */
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg }
+html.m-on .price-card.featured { border-color: transparent; background:
+    linear-gradient(#fff, #fff) padding-box,
+    conic-gradient(from var(--ang), rgba(var(--brand-rgb),.15), var(--accent), var(--magenta), rgba(var(--brand-rgb),.15) 40%) border-box;
+  animation: ang-spin 5s linear infinite;
+}
+@keyframes ang-spin { to { --ang: 360deg } }
+
+/* ── Cursor ── */
+html.has-cursor, html.has-cursor * { cursor: none !important }
+html.has-cursor input, html.has-cursor textarea, html.has-cursor select { cursor: auto !important }
+html.has-cursor #cur-dot, html.has-cursor #cur-ring, html.has-cursor #cur-trail { display: block }
+html.m-on #cur-dot, html.m-on #cur-ring, html.m-on #cur-trail { left: 0; top: 0; transition: none; transform: none; will-change: transform }
+html.m-on #cur-ring { display: none; width: 38px; height: 38px; margin: -19px 0 0 -19px; align-items: center; justify-content: center; background: transparent }
+html.m-on #cur-dot { margin: -3.5px 0 0 -3.5px }
+html.m-on #cur-trail { margin: -100px 0 0 -100px }
+html.has-cursor #cur-ring { display: flex }
+#cur-label { font-family: var(--font-ui); font-size: 4.8px; font-weight: 700; letter-spacing: .2px; text-transform: uppercase; color: #fff; opacity: 0; white-space: nowrap; transition: opacity .2s }
+html.cur-hide #cur-dot, html.cur-hide #cur-ring, html.cur-hide #cur-trail { opacity: 0 }
+html.cur-label #cur-ring { background: var(--brand); border-color: var(--brand) }
+html.cur-label #cur-label { opacity: 1 }
+html.cur-label #cur-dot { opacity: 0 }
+
+/* ── Nav ── */
+html.m-on .nav { transition: top .55s var(--ease-out), background .4s, box-shadow .4s, border-color .4s }
+html.m-on .nav.nav-away { top: -96px }
+html.m-on .nav-center .nav-pill { position: absolute; top: 50%; left: 0; height: 34px; margin-top: -17px; width: 0; border-radius: 10px; background: rgba(var(--brand-rgb),.08); opacity: 0; pointer-events: none; will-change: transform }
+@media (min-width: 1081px) {
+  html.m-on .nav-center a:hover, html.m-on .nav-center > li > a.active { background: none }
+  html.m-on .nav-dropdown a:hover { background: rgba(var(--brand-rgb),.05) }
+  html.m-on .nav-dropdown a { opacity: 0; transform: translateY(8px); transition: opacity .35s var(--ease-out), transform .45s var(--ease-out), color .2s, background .2s }
+  html.m-on .nav-center li:hover .nav-dropdown a { opacity: 1; transform: none }
+  html.m-on .nav-center li:hover .nav-dropdown a:nth-child(2) { transition-delay: .05s }
+  html.m-on .nav-center li:hover .nav-dropdown a:nth-child(3) { transition-delay: .1s }
+  html.m-on .nav-center li:hover .nav-dropdown a:nth-child(4) { transition-delay: .15s }
+  html.m-on .nav-center li:hover .nav-dropdown a:nth-child(5) { transition-delay: .2s }
+}
+@media (max-width: 1080px) {
+  html.m-on .nav-center > li { opacity: 0; transform: translateY(14px); transition: opacity .3s, transform .3s }
+  html.m-on .nav-center.open > li { opacity: 1; transform: none; transition: opacity .5s var(--ease-out), transform .6s var(--ease-out); transition-delay: calc(var(--i, 0) * 45ms + 90ms) }
+}
+
+/* ── Button micro-interactions ── */
+.roll { display: inline-block; position: relative; overflow: hidden; vertical-align: top; line-height: 1.35 }
+.roll > span { display: block; transition: transform .55s var(--ease-out) }
+.roll::after { content: attr(data-t); position: absolute; left: 0; top: 100%; white-space: nowrap; transition: transform .55s var(--ease-out) }
+a:hover > .roll > span, button:hover > .roll > span, a:hover > .roll::after, button:hover > .roll::after { transform: translateY(-100%) }
+
+.has-fill { position: relative; overflow: hidden; isolation: isolate; transition: color .35s, border-color .35s !important }
+.btn-fill { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); transform: translate(-50%,-50%) scale(0); z-index: -1; pointer-events: none }
+.has-fill:hover { color: #fff !important; border-color: var(--brand) !important }
+.has-fill:hover svg { color: #fff }
+
+/* ── Image hovers that don't fight the scroll parallax on the same element ── */
+.parallax-img { transition: scale .9s var(--ease-out); will-change: transform }
+.port-item:hover .parallax-img, .blog-card:hover .parallax-img, .team-card:hover .parallax-img, .work-card:hover .parallax-img { scale: 1.06 }
+
+/* ── Testimonial fan ── */
+@media (min-width: 1024px) {
+  html.m-on .testi-wrap.fan { background: none; border: 0; overflow: visible; gap: 18px }
+  html.m-on .testi-wrap.fan .testi-block { border: 1px solid var(--rim); border-radius: 18px; box-shadow: var(--shadow-lg) }
+}
+
+/* ── Process track ── */
+.proc-track { position: relative; height: 2px; background: var(--rim); margin-top: 60px; border-radius: 2px }
+.proc-track i { position: absolute; inset: 0; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, var(--brand), var(--accent), var(--magenta)); border-radius: 2px }
+.proc-track + .proc-row { margin-top: 0 }
+html.m-on .proc-item.is-on .proc-circle { background: var(--brand); border-color: var(--brand); color: #fff !important; box-shadow: 0 12px 36px rgba(var(--brand-rgb),.28) }
+html.m-on .proc-circle { transition: background .45s, border-color .45s, color .45s, box-shadow .45s }
+
+/* ── Odometer ── */
+.odo { display: inline-flex; align-items: baseline; -webkit-text-fill-color: currentcolor; background: none !important }
+.odo-col { display: inline-block; height: 1em; line-height: 1; overflow: clip }
+.odo-reel { display: block; will-change: transform }
+.odo-reel b { display: block; height: 1em; line-height: 1; font-weight: inherit }
+.odo-reel b, .odo-fix { background-image: linear-gradient(135deg, var(--brand), var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent }
+
+/* ── Form states ── */
+html.m-on .field-input { transition: border-color .3s, background .3s, box-shadow .35s var(--ease-out), transform .35s var(--ease-out) }
+html.m-on .field-input:focus { box-shadow: 0 0 0 4px rgba(var(--accent-rgb),.14), 0 14px 34px rgba(var(--brand-rgb),.1); transform: translateY(-1px); border-color: var(--accent) }
+html.m-on .field-wrap > label { transition: color .3s, letter-spacing .4s var(--ease-out), opacity .3s }
+html.m-on .field-wrap:focus-within > label { color: var(--accent); opacity: 1; letter-spacing: 4.2px }
+.is-busy { pointer-events: none; opacity: .85 }
+.is-busy svg { display: none }
+.is-busy::before { display: none }
+.btn-spin { width: 15px; height: 15px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; animation: btn-spin .7s linear infinite; position: relative; z-index: 1 }
+@keyframes btn-spin { to { transform: rotate(360deg) } }
+.burst-dot { position: fixed; width: 8px; height: 8px; border-radius: 2px; pointer-events: none; z-index: 99990 }
+
+/* ── To-top progress ring ── */
+#to-top .tt-ring { position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); transform: rotate(-90deg); color: var(--accent); pointer-events: none }
+#to-top { position: fixed }
+
+/* ── Featured work (pinned rail on desktop) ── */
+html.m-on .work-section.is-pinned { padding-bottom: 60px }
+
+@media (hover: none) { .spot, .grid-glow { display: none } }

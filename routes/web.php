@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\AboutController;
 | Frontend Routes
 |--------------------------------------------------------------------------
 */
+Route::get('/robots.txt', [FrontendController::class, 'robots'])->name('robots');
 Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::get('/services', [FrontendController::class, 'services'])->name('services');
 Route::get('/services/{slug}', [FrontendController::class, 'serviceDetail'])->name('service.detail');
@@ -40,9 +41,9 @@ Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
 Route::get('/blog/{slug}', [FrontendController::class, 'blogPost'])->name('blog.post');
 Route::get('/careers', [FrontendController::class, 'careers'])->name('careers');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
-Route::post('/contact', [FrontendController::class, 'submitContact'])->name('contact.submit');
+Route::post('/contact', [FrontendController::class, 'submitContact'])->middleware('throttle:10,1')->name('contact.submit');
 Route::get('/free-audit', [FrontendController::class, 'freeAudit'])->name('free-audit');
-Route::post('/free-audit', [FrontendController::class, 'submitAudit'])->name('audit.submit');
+Route::post('/free-audit', [FrontendController::class, 'submitAudit'])->middleware('throttle:10,1')->name('audit.submit');
 
 // Language switcher
 Route::get('/lang/{locale}', function ($locale) {
@@ -51,6 +52,9 @@ Route::get('/lang/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('lang.switch');
+
+// Bare /admin would otherwise fall through to the page catch-all and 404
+Route::redirect('/admin', '/admin/dashboard');
 
 // Static pages — MUST be last frontend route (catch-all)
 Route::get('/{slug}', [FrontendController::class, 'page'])->name('page');
@@ -64,7 +68,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // ── Public admin routes (no auth required) ────────────────────────
     Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.post');
 
     // ── Protected admin routes (requires admin middleware) ────────────
     Route::middleware(['admin'])->group(function () {

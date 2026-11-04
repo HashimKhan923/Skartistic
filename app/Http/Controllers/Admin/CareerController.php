@@ -59,7 +59,7 @@ class CareerController extends Controller
             'location'         => $request->location,
             'type'             => $request->type ?? 'Full-time',
             'experience'       => $request->experience,
-            'summary'          => $request->summary,
+            'summary'          => $request->summary ?? '',
             'description'      => $request->description,
             'responsibilities' => $parseList('responsibilities_raw'),
             'requirements'     => $parseList('requirements_raw'),

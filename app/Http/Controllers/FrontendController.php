@@ -18,6 +18,7 @@ use App\Models\AuditLead;
 use App\Models\ThemeSetting;
 use App\Mail\NewContactMail;
 use App\Mail\NewAuditMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class FrontendController extends Controller
@@ -30,6 +31,21 @@ class FrontendController extends Controller
         $theme = ThemeSetting::getAllForCSS();
         // Page view tracking is handled globally by the TrackPageView middleware.
         return compact('settings', 'services_nav', 'menu_pages', 'theme');
+    }
+
+    /** Drafts stay private; a logged-in admin may still preview them. */
+    protected function publishedOrPreview($query)
+    {
+        $user = Auth::user();
+        $isAdmin = $user && in_array($user->role, ['admin', 'super_admin']);
+        return $isAdmin ? $query : $query->where('is_published', true);
+    }
+
+    /** Ignores malformed filters such as ?category[]=x. */
+    protected function categoryFilter(Request $request): ?string
+    {
+        $category = $request->query('category');
+        return is_string($category) && $category !== '' ? $category : null;
     }
 
     public function home()
@@ -54,7 +70,7 @@ class FrontendController extends Controller
     public function serviceDetail($slug)
     {
         $data = $this->sharedData();
-        $service = Service::where('slug', $slug)->firstOrFail();
+        $service = $this->publishedOrPreview(Service::where('slug', $slug))->firstOrFail();
         return view('frontend.service-detail', array_merge($data, compact('service')));
     }
 
@@ -87,14 +103,15 @@ public function portfolio(Request $request)
     $query = Portfolio::where('is_published', true)
         ->orderBy('sort_order');
 
-    if ($request->category) {
-        $query->where('category', $request->category);
+    if ($category = $this->categoryFilter($request)) {
+        $query->where('category', $category);
     }
 
-    $portfolios = $query->paginate(12); // IMPORTANT
+    $portfolios = $query->paginate(12)->withQueryString();
 
     $categories = Portfolio::where('is_published', true)
         ->whereNotNull('category')
+        ->where('category', '!=', '')
         ->distinct()
         ->pluck('category');
 
@@ -104,9 +121,9 @@ public function portfolio(Request $request)
     public function portfolioDetail($slug)
     {
         $data = $this->sharedData();
-        $project = Portfolio::where('slug', $slug)->firstOrFail();
+        $project = $this->publishedOrPreview(Portfolio::where('slug', $slug))->firstOrFail();
         $related = Portfolio::where('is_published', true)->where('id', '!=', $project->id)->where('category', $project->category)->take(3)->get();
-        return view('frontend.portfolio-detail', array_merge($data, compact('project','related')));
+        return view('frontend.portfolio-detail', array_merge($data, ['project' => $project, 'related_projects' => $related]));
     }
 
     public function blog(Request $request)
@@ -114,10 +131,10 @@ public function portfolio(Request $request)
         $data = $this->sharedData();
 
         $query = BlogPost::where('is_published', true);
-        if ($request->category) {
-            $query->where('category', $request->category);
+        if ($category = $this->categoryFilter($request)) {
+            $query->where('category', $category);
         }
-        $posts = $query->latest('published_at')->paginate(9);
+        $posts = $query->latest('published_at')->paginate(9)->withQueryString();
 
         $categories = BlogPost::where('is_published', true)
             ->whereNotNull('category')
@@ -131,8 +148,8 @@ public function portfolio(Request $request)
     public function blogPost($slug)
     {
         $data = $this->sharedData();
-        $post = BlogPost::where('slug', $slug)->firstOrFail();
-        $related = BlogPost::where('is_published', true)->where('id', '!=', $post->id)->latest()->take(3)->get();
+        $post = $this->publishedOrPreview(BlogPost::where('slug', $slug))->firstOrFail();
+        $related = BlogPost::where('is_published', true)->where('id', '!=', $post->id)->latest('published_at')->take(3)->get();
         return view('frontend.blog-post', array_merge($data, compact('post','related')));
     }
 
@@ -148,21 +165,24 @@ public function portfolio(Request $request)
     public function careers()
     {
         $data = $this->sharedData();
-        $careers = Career::where('is_published', true)->latest()->get();
-        return view('frontend.careers', array_merge($data, compact('careers')));
+        $jobs = Career::where('is_published', true)->orderBy('sort_order')->latest()->get();
+        return view('frontend.careers', array_merge($data, compact('jobs')));
     }
 
     public function contact()
     {
         $data = $this->sharedData();
 
-        $data['services'] = Service::all(); // adjust condition if needed
+        $data['services'] = Service::where('is_published', true)->orderBy('sort_order')->get();
 
         return view('frontend.contact', $data);
     }
 
     public function submitContact(Request $request)
     {
+        if ($request->filled('company_site')) { // honeypot: bots only
+            return back()->with('success', 'Message sent! We\'ll get back to you within 24 hours.');
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -170,7 +190,7 @@ public function portfolio(Request $request)
             'subject' => 'nullable|string|max:255',
             'service' => 'nullable|string|max:255',
             'budget' => 'nullable|string|max:100',
-            'message' => 'required|string',
+            'message' => 'required|string|max:5000',
         ]);
         $contact = Contact::create($validated);
         try {
@@ -190,6 +210,9 @@ public function portfolio(Request $request)
 
     public function submitAudit(Request $request)
     {
+        if ($request->filled('company_site')) { // honeypot: bots only
+            return back()->with('success', 'Audit request submitted! We\'ll analyze your website and get back to you within 48 hours.');
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -197,8 +220,9 @@ public function portfolio(Request $request)
             'website_url' => 'nullable|max:255',
             'business_type' => 'nullable|string|max:255',
             'budget_range' => 'nullable|string|max:100',
-            'goals' => 'nullable|string',
+            'goals' => 'nullable|string|max:5000',
             'services_needed' => 'nullable|array',
+            'services_needed.*' => 'string|max:255',
         ]);
         $lead = AuditLead::create($validated);
         try {
@@ -215,5 +239,12 @@ public function portfolio(Request $request)
         $data = $this->sharedData();
         $page = Page::where('slug', $slug)->where('is_published', true)->firstOrFail();
         return view('frontend.page', array_merge($data, compact('page')));
+    }
+
+    /** Served from the SEO Manager's robots_txt setting. */
+    public function robots()
+    {
+        $body = trim((string) Setting::get('robots_txt', '')) ?: "User-agent: *\nDisallow: /admin/\n";
+        return response($body, 200)->header('Content-Type', 'text/plain');
     }
 }
