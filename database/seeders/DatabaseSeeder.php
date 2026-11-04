@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Setting;
-use App\Models\ThemeSetting;
 use App\Models\Service;
 use App\Models\Testimonial;
 use App\Models\Faq;
@@ -75,23 +74,6 @@ class DatabaseSeeder extends Seeder
             Setting::set($key, $value);
         }
 
-        // ================================================================
-        // THEME DEFAULTS
-        // ================================================================
-        $theme = [
-            'primary_color'   => '#2A2263',
-            'secondary_color' => '#6c5ce7',
-            'accent_color'    => '#a78bfa',
-            'text_color'      => '#1a1540',
-            'bg_color'        => '#f5f3ff',
-            'dark_bg'         => '#1a1540',
-            'font_family'     => 'Syne',
-            'border_radius'   => '8px',
-        ];
-
-        foreach ($theme as $key => $value) {
-            ThemeSetting::set($key, $value);
-        }
 
         // ================================================================
         // SERVICES

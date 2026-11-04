@@ -5,7 +5,6 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\TeamController;
@@ -78,11 +77,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        // Settings & Theme
+        // Settings
         Route::get('/settings',  [SettingsController::class, 'index'])->name('settings');
         Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
-        Route::get('/theme',     [ThemeController::class, 'index'])->name('theme');
-        Route::post('/theme',    [ThemeController::class, 'update'])->name('theme.update');
 
         // SEO Manager
         Route::get('/seo',  [SeoController::class, 'index'])->name('seo.index');

@@ -9,11 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 {{-- Self-contained on purpose: error pages can't depend on the database or the build. --}}
 <style>
-:root { --brand:#2A2263; --accent:#6c5ce7; --magenta:#a78bfa; --void:#f5f3ff; --muted:rgba(42,34,99,.62) }
+:root { --brand:#6c2bd9; --accent:#a855f7; --magenta:#a78bfa; --void:#ffffff; --muted:rgba(108,43,217,.62) }
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 body { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:32px 20px; font-family:'Space Grotesk',sans-serif; background:var(--void); color:var(--brand); position:relative }
 .bg { position:fixed; inset:0; overflow:hidden; pointer-events:none }
-.grid { position:absolute; inset:0; background-image:linear-gradient(rgba(42,34,99,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(42,34,99,.05) 1px,transparent 1px); background-size:60px 60px; -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,#000,transparent); mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,#000,transparent) }
+.grid { position:absolute; inset:0; background-image:linear-gradient(rgba(108,43,217,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,43,217,.05) 1px,transparent 1px); background-size:60px 60px; -webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,#000,transparent); mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,#000,transparent) }
 .blob { position:absolute; width:560px; height:560px; border-radius:50%; filter:blur(80px); opacity:.45; animation:drift 12s ease-in-out infinite alternate }
 .blob.a { background:var(--accent); top:-180px; left:-120px }
 .blob.b { background:var(--magenta); bottom:-200px; right:-120px; animation-delay:-5s }
@@ -28,7 +28,7 @@ main { position:relative; z-index:1; max-width:620px }
 h1 { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:clamp(1.8rem,5vw,3rem); letter-spacing:2px; margin:18px 0 12px; animation:fade .9s .35s both }
 p { color:var(--muted); line-height:1.75; font-weight:300; margin-bottom:32px; animation:fade .9s .45s both }
 a { display:inline-flex; align-items:center; gap:10px; background:var(--brand); color:#fff; text-decoration:none; font-size:14px; font-weight:500; padding:14px 30px; border-radius:100px; transition:transform .3s,box-shadow .3s; animation:fade .9s .55s both }
-a:hover { transform:translateY(-3px); box-shadow:0 14px 34px rgba(42,34,99,.3) }
+a:hover { transform:translateY(-3px); box-shadow:0 14px 34px rgba(108,43,217,.3) }
 a:focus-visible { outline:2.5px solid var(--accent); outline-offset:3px }
 @keyframes fade { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:none } }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important } }

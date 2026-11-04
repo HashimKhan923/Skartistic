@@ -84,7 +84,6 @@
                     ['icon'=>'⚡','label'=>'Add Service','route'=>'admin.services.create'],
                     ['icon'=>'👤','label'=>'Add Team Member','route'=>'admin.team.create'],
                     ['icon'=>'📄','label'=>'New Page','route'=>'admin.pages.create'],
-                    ['icon'=>'🎨','label'=>'Edit Theme','route'=>'admin.theme'],
                     ['icon'=>'⚙️','label'=>'General Settings','route'=>'admin.settings'],
                 ] as $action)
                 <a href="{{ route($action['route']) }}" style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;font-size:14px;font-weight:500;color:#334155;transition:all .2s;border:1px solid transparent" onmouseenter="this.style.background='rgba(124,58,237,.05)';this.style.borderColor='rgba(124,58,237,.15)'" onmouseleave="this.style.background='';this.style.borderColor='transparent'">

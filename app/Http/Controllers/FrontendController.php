@@ -15,7 +15,6 @@ use App\Models\Contact;
 use App\Models\Portfolio;
 use App\Models\ClientLogo;
 use App\Models\AuditLead;
-use App\Models\ThemeSetting;
 use App\Mail\NewContactMail;
 use App\Mail\NewAuditMail;
 use Illuminate\Support\Facades\Auth;
@@ -28,9 +27,8 @@ class FrontendController extends Controller
         $settings = Setting::pluck('value', 'key')->toArray();
         $services_nav = Service::where('is_published', true)->orderBy('sort_order')->get();
         $menu_pages = Page::where('is_published', true)->where('show_in_menu', true)->orderBy('menu_order')->get();
-        $theme = ThemeSetting::getAllForCSS();
         // Page view tracking is handled globally by the TrackPageView middleware.
-        return compact('settings', 'services_nav', 'menu_pages', 'theme');
+        return compact('settings', 'services_nav', 'menu_pages');
     }
 
     /** Drafts stay private; a logged-in admin may still preview them. */

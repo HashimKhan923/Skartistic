@@ -15,7 +15,6 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Models\TeamMember;
 use App\Models\Testimonial;
-use App\Models\ThemeSetting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -131,15 +130,10 @@ it('serves robots.txt from settings', function () {
     $this->get('/robots.txt')->assertSee('Disallow: /private/');
 });
 
-it('applies the theme panel to the page', function () {
-    ThemeSetting::set('primary_color', '#112233');
-    ThemeSetting::set('secondary_color', '#445566');
-    ThemeSetting::set('bg_color', '#fefefe');
-    $this->get('/')
-        ->assertSee('--brand: #112233;', false)
-        ->assertSee('--brand-rgb: 17,34,51;', false)
-        ->assertSee('--accent-rgb: 68,85,102;', false)
-        ->assertSee('--void: #fefefe;', false);
+it('uses the one fixed purple theme and has no theme panel', function () {
+    $this->get('/')->assertSee('--brand:   #6c2bd9;', false)->assertSee('--magenta: #a78bfa;', false);
+    $this->actingAs(admin())->get('/admin/theme')->assertNotFound();
+    $this->get('/admin/dashboard')->assertOk()->assertDontSee('Edit Theme');
 });
 
 it('does not wipe the og image when SEO settings are saved', function () {
@@ -205,7 +199,7 @@ it('renders every admin screen', function (string $url) {
     seedSite();
     $this->actingAs(admin())->get($url)->assertOk();
 })->with([
-    '/admin/dashboard', '/admin/settings', '/admin/theme', '/admin/seo', '/admin/analytics', '/admin/media',
+    '/admin/dashboard', '/admin/settings', '/admin/seo', '/admin/analytics', '/admin/media',
     '/admin/audit-leads', '/admin/portfolio', '/admin/portfolio/create', '/admin/client-logos', '/admin/client-logos/create',
     '/admin/pages', '/admin/pages/create', '/admin/services', '/admin/services/create', '/admin/about',
     '/admin/blog', '/admin/blog/create', '/admin/team', '/admin/team/create', '/admin/testimonials', '/admin/testimonials/create',

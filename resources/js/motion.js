@@ -202,8 +202,8 @@ function initParticles() {
     if (!isDesktop() || lowEnd) { cvs.remove(); return; }
     const ctx = cvs.getContext('2d');
     const css = getComputedStyle(root);
-    const brand = css.getPropertyValue('--brand-rgb').trim() || '42,34,99';
-    const accent = css.getPropertyValue('--accent-rgb').trim() || '108,92,231';
+    const brand = css.getPropertyValue('--brand-rgb').trim() || '108,43,217';
+    const accent = css.getPropertyValue('--accent-rgb').trim() || '168,85,247';
     let W = 0, H = 0, mx = -999, my = -999;
     const size = () => { W = cvs.width = window.innerWidth; H = cvs.height = window.innerHeight; };
     size();

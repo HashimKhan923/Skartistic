@@ -28,7 +28,7 @@
 <meta property="og:title" content="@yield('title', ($settings['og_title'] ?? '') ?: $seoTitle)">
 <meta property="og:description" content="@yield('meta_description', ($settings['og_description'] ?? '') ?: $seoDesc)">
 @if($ogImage)<meta property="og:image" content="{{ $ogImage }}"><meta name="twitter:card" content="summary_large_image">@endif
-<meta name="theme-color" content="{{ $theme['primary_color'] ?? '#2A2263' }}">
+<meta name="theme-color" content="#6c2bd9">
 <script>
 (function(){
   var d=document.documentElement,rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,10 +40,7 @@
 </script>
 <noscript><style>.reveal,.reveal-l,.reveal-r,.ab-anim,.sv-reveal,.sv-reveal-l,.sv-reveal-r,.sv-reveal-s,.ab-faq-item,.ab-val-item,.ab-founder-row{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
-@if(!empty($theme['font_family']) && $theme['font_family'] !== 'Syne')
-<link href="https://fonts.googleapis.com/css2?family={{ str_replace(' ', '+', $theme['font_family']) }}:wght@400;600;700;800&display=swap" rel="stylesheet">
-@endif
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
    TOKENS — Light Theme
@@ -52,86 +49,34 @@
    #2A2263  deep navy brand
 ═══════════════════════════════════════════════════════════ */
 :root {
-  --void:    #f5f3ff;
+  --void:    #ffffff;
   --deep:    #EAE6FF;
   --panel:   #FFFFFF;
   --glass:   rgba(var(--brand-rgb),.04);
   --rim:     rgba(var(--brand-rgb),.1);
   --rim2:    rgba(var(--brand-rgb),.18);
-  --text:    #1a1540;
+  --text:    #1f2937;
   --muted:   rgba(var(--brand-rgb),.6);
   --dim:     rgba(var(--brand-rgb),.38);
-  --brand:   #2A2263;
-  --brand-rgb: 42,34,99;
-  --accent-rgb: 108,92,231;
+  --brand:   #6c2bd9;
+  --brand-rgb: 108,43,217;
+  --accent-rgb: 168,85,247;
   --ease-out: cubic-bezier(.16,1,.3,1);
-  --brand2:  #3d30a3;
-  --accent:  #6c5ce7;
+  --brand2:  #813ae4;
+  --accent:  #a855f7;
   --light:   #EAE6FF;
-  --cyan:    #2A2263;
-  --violet:  #6c5ce7;
+  --cyan:    #6c2bd9;
+  --violet:  #a855f7;
   --magenta: #a78bfa;
   --glow-c:  0 4px 24px rgba(var(--brand-rgb),.18), 0 0 60px rgba(var(--brand-rgb),.06);
   --glow-v:  0 4px 24px rgba(var(--accent-rgb),.22), 0 0 60px rgba(var(--accent-rgb),.08);
   --font-d:  'Bebas Neue', sans-serif;
-  --font-ui: 'Syne', sans-serif;
+  --font-ui: 'Inter', sans-serif;
   --font-b:  'Space Grotesk', sans-serif;
   --r:       6px;
   --shadow:  0 2px 24px rgba(var(--brand-rgb),.08);
   --shadow-lg: 0 8px 48px rgba(var(--brand-rgb),.12);
 }
-@if(!empty($theme))
-@php
-  // Admin-configurable overrides (Theme Settings panel) — kept optional so
-  // sites that never touch that panel still get the default brand palette above.
-  $hexToRgb = function ($hex) {
-    $hex = ltrim($hex ?? '', '#');
-    if (strlen($hex) !== 6) return null;
-    return implode(',', array_map(fn($h) => hexdec($h), str_split($hex, 2)));
-  };
-  // Hover shade blends the brand color toward the accent (matches the
-  // hand-picked default relationship of --brand -> --brand2 -> --accent).
-  $blend = function ($hexA, $hexB, $amt = 0.35) {
-    $hexA = ltrim($hexA ?? '', '#'); $hexB = ltrim($hexB ?? '', '#');
-    if (strlen($hexA) !== 6 || strlen($hexB) !== 6) return $hexA ? "#$hexA" : null;
-    $a = array_map('hexdec', str_split($hexA, 2));
-    $b = array_map('hexdec', str_split($hexB, 2));
-    [$r, $g, $bl] = array_map(fn($i) => (int) round($a[$i] + ($b[$i] - $a[$i]) * $amt), [0, 1, 2]);
-    return sprintf('#%02x%02x%02x', $r, $g, $bl);
-  };
-  $brand   = $theme['primary_color'] ?? null;
-  $accent  = $theme['secondary_color'] ?? null;
-  $magenta = $theme['accent_color'] ?? null;
-@endphp
-:root {
-  @if($brand)
-  --brand: {{ $brand }};
-  @if($hexToRgb($brand))--brand-rgb: {{ $hexToRgb($brand) }};@endif
-  --brand2: {{ $blend($brand, $accent ?: $brand) }};
-  --cyan: {{ $brand }};
-  @endif
-  @if($accent)
-  --accent: {{ $accent }};
-  @if($hexToRgb($accent))--accent-rgb: {{ $hexToRgb($accent) }};@endif
-  --violet: {{ $accent }};
-  @endif
-  @if($magenta)
-  --magenta: {{ $magenta }};
-  @endif
-  @if(!empty($theme['bg_color']))
-  --void: {{ $theme['bg_color'] }};
-  @endif
-  @if(!empty($theme['border_radius']))
-  --r: {{ $theme['border_radius'] }};
-  @endif
-  @if(!empty($theme['text_color']))
-  --text: {{ $theme['text_color'] }};
-  @endif
-  @if(!empty($theme['font_family']) && $theme['font_family'] !== 'Syne')
-  --font-ui: '{{ $theme['font_family'] }}', sans-serif;
-  @endif
-}
-@endif
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 html { scroll-behavior:smooth; overflow-x:clip }
 body { font-family:var(--font-b); color:var(--text); background:var(--void); overflow-x:clip }
@@ -1093,7 +1038,7 @@ body.hov #cur-ring { width:52px; height:52px; border-color:rgba(var(--accent-rgb
 .field-input:focus { border-color:rgba(var(--brand-rgb),.45);background:#FFFFFF;box-shadow:0 0 0 3px rgba(var(--brand-rgb),.06) }
 .field-input::placeholder { color:var(--dim) }
 .field-error { font-size:12px;color:#e55;margin-top:5px;display:block }
-select.field-input { -webkit-appearance:none;appearance:none;color:var(--muted);padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232A2263' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center }
+select.field-input { -webkit-appearance:none;appearance:none;color:var(--muted);padding-right:44px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236c2bd9' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center }
 
 /* ═══════════════════════════════════════════════════════════
    INFO CARDS (contact info)
