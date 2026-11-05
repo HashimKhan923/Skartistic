@@ -37,12 +37,12 @@ class SettingsController extends Controller
 
     public function update(Request $request)
     {
-        $fileFields = ['site_logo', 'promo_image', 'promo_video_file', 'og_image'];
+        $fileFields = ['site_logo', 'promo_image', 'promo_video_file', 'og_image', 'associate_partner_logo', 'creative_partner_logo', 'trademark_logo', 'google_reviews_logo'];
 
         $skip = array_merge(
             $fileFields,
             ['_token', '_method'],
-            ['remove_site_logo', 'remove_promo_image', 'remove_promo_video_file', 'remove_og_image']
+            ['remove_site_logo', 'remove_promo_image', 'remove_promo_video_file', 'remove_og_image', 'remove_associate_partner_logo', 'remove_creative_partner_logo', 'remove_trademark_logo', 'remove_google_reviews_logo']
         );
 
         // ── 1. Save all plain text / URL fields ──
@@ -56,6 +56,10 @@ class SettingsController extends Controller
             'promo_image'      => ['folder' => 'settings/promo', 'remove_key' => 'remove_promo_image'],
             'promo_video_file' => ['folder' => 'settings/promo', 'remove_key' => 'remove_promo_video_file'],
             'og_image'         => ['folder' => 'settings/seo',   'remove_key' => 'remove_og_image'],
+            'associate_partner_logo' => ['folder' => 'settings/footer', 'remove_key' => 'remove_associate_partner_logo'],
+            'creative_partner_logo' => ['folder' => 'settings/footer', 'remove_key' => 'remove_creative_partner_logo'],
+            'trademark_logo' => ['folder' => 'settings/footer', 'remove_key' => 'remove_trademark_logo'],
+            'google_reviews_logo' => ['folder' => 'settings/footer', 'remove_key' => 'remove_google_reviews_logo'],
         ];
 
         foreach ($fileConfigs as $field => $config) {

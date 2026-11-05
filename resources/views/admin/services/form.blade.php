@@ -34,6 +34,10 @@
 .upl-hint strong { color:var(--p); }
 
 /* ── tech category nested ── */
+.tc-item { display:inline-flex; align-items:center; gap:8px; }
+.tc-logo { width:26px; height:26px; object-fit:contain; flex-shrink:0; }
+.tc-upload { font-size:11px; font-weight:600; color:var(--p); padding:3px 9px; border:1px dashed rgba(var(--p-rgb),.5); border-radius:100px; cursor:pointer; white-space:nowrap; }
+.tc-upload:hover { background:var(--a-tint); }
 .tc-wrap  { border:1px solid var(--a-line); border-radius:10px; padding:14px; margin-bottom:10px; background:var(--a-soft); }
 .tc-items { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; min-height:32px; }
 .tc-item  { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; background:var(--a-soft); border-radius:6px; font-size:12px; font-weight:600; }
@@ -81,12 +85,6 @@
                                value="{{ old('tag_label', $service->tag_label ?? '') }}"
                                placeholder="e.g. Web Development">
                         <div class="form-hint">Purple label above the headline</div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Icon / Emoji</label>
-                        <input class="form-control" type="text" name="icon"
-                               value="{{ old('icon', $service->icon ?? '') }}"
-                               placeholder="🌐">
                     </div>
                 </div>
                 <div class="form-group">
@@ -278,16 +276,21 @@
                         <div class="tc-items" id="tc-items-{{ $ci }}">
                             @foreach(($cat['items'] ?? []) as $ii => $item)
                             <span class="tc-item">
-                                {{ $item['emoji'] ?? '' }} {{ $item['name'] }}
+                                @if(!empty($item['icon_image']))
+                                <img class="tc-logo" src="{{ asset($item['icon_image']) }}" alt="">
+                                @else
+                                <img class="tc-logo" alt="" style="display:none">
+                                @endif
+                                {{ $item['name'] }}
                                 <input type="hidden" name="tech_categories[{{ $ci }}][items][{{ $ii }}][name]" value="{{ $item['name'] }}">
-                                <input type="hidden" name="tech_categories[{{ $ci }}][items][{{ $ii }}][emoji]" value="{{ $item['emoji'] ?? '' }}">
+                                <input type="hidden" name="tech_categories[{{ $ci }}][items][{{ $ii }}][icon_image]" value="{{ $item['icon_image'] ?? '' }}">
+                                <label class="tc-upload">{{ !empty($item['icon_image']) ? 'Change logo' : 'Upload logo' }}<input type="file" name="tech_icons[{{ $ci }}][{{ $ii }}]" accept="image/*" onchange="techLogoPreview(this)" hidden></label>
                                 <span class="tc-item-rm" onclick="this.parentElement.remove()">✕</span>
                             </span>
                             @endforeach
                         </div>
                         <div class="tc-add-row">
-                            <input class="form-control" type="text" placeholder="Emoji (e.g. ⚛️)" style="max-width:100px">
-                            <input class="form-control" type="text" placeholder="Tech name (e.g. React.js)">
+                                                        <input class="form-control" type="text" placeholder="Tech name (e.g. React.js)">
                             <button type="button" class="btn btn-ghost btn-sm" onclick="addTechItem(this,{{ $ci }})">Add</button>
                         </div>
                     </div>
@@ -603,8 +606,7 @@ function addTechCat(){
         <div class="sub-lbl">Tech Items</div>
         <div class="tc-items" id="tc-items-${ci}"></div>
         <div class="tc-add-row">
-            <input class="form-control" type="text" placeholder="Emoji" style="max-width:100px">
-            <input class="form-control" type="text" placeholder="Tech name">
+                        <input class="form-control" type="text" placeholder="Tech name">
             <button type="button" class="btn btn-ghost btn-sm" onclick="addTechItem(this,${ci})">Add</button>
         </div>
     </div>`;
@@ -613,20 +615,29 @@ function addTechCat(){
 
 function addTechItem(btn, ci){
     var row   = btn.closest('.tc-add-row');
-    var emoji = row.querySelector('input:nth-child(1)').value.trim();
-    var name  = row.querySelector('input:nth-child(2)').value.trim();
+    var name  = row.querySelector('input').value.trim();
     if(!name) return;
     var ii = tcItemCounts[ci] === undefined ? 0 : tcItemCounts[ci]++;
     if(tcItemCounts[ci] === undefined) tcItemCounts[ci] = 1;
     var html = `<span class="tc-item">
-        ${emoji} ${name}
+        <img class="tc-logo" alt="" style="display:none">
+        ${name}
         <input type="hidden" name="tech_categories[${ci}][items][${ii}][name]" value="${name}">
-        <input type="hidden" name="tech_categories[${ci}][items][${ii}][emoji]" value="${emoji}">
+        <input type="hidden" name="tech_categories[${ci}][items][${ii}][icon_image]" value="">
+        <label class="tc-upload">Upload logo<input type="file" name="tech_icons[${ci}][${ii}]" accept="image/*" onchange="techLogoPreview(this)" hidden></label>
         <span class="tc-item-rm" onclick="this.parentElement.remove()">✕</span>
     </span>`;
     document.getElementById('tc-items-'+ci).insertAdjacentHTML('beforeend', html);
-    row.querySelector('input:nth-child(1)').value = '';
-    row.querySelector('input:nth-child(2)').value = '';
+    row.querySelector('input').value = '';
+}
+
+function techLogoPreview(input){
+    var file = input.files[0];
+    if(!file) return;
+    var img = input.closest('.tc-item').querySelector('.tc-logo');
+    img.src = URL.createObjectURL(file);
+    img.style.display = '';
+    input.parentElement.firstChild.textContent = 'Change logo';
 }
 
 /* ─── ADD PROCESS STEP ─── */

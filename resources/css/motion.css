@@ -48,10 +48,10 @@ html.m-on .h-stat { transition: border-color .3s, box-shadow .3s }
 
 /* While cards reveal, the 1px-gap grids would expose their backing colour as a grey slab,
    and their overflow would clip the 3D tilt. Floating cards avoid both. */
-html.m-on .svc-grid, html.m-on .stats-row, html.m-on .team-grid, html.m-on .blog-grid, html.m-on .port-grid, html.m-on .benefit-grid {
+html.m-on .stats-row, html.m-on .team-grid, html.m-on .blog-grid, html.m-on .benefit-grid {
   background: none !important; border: 0 !important; overflow: visible !important; gap: 16px !important;
 }
-html.m-on .svc-cell, html.m-on .stat-box, html.m-on .team-card, html.m-on .blog-card, html.m-on .port-item, html.m-on .benefit-box {
+html.m-on .stat-box, html.m-on .team-card, html.m-on .blog-card, html.m-on .benefit-box {
   border: 1px solid var(--rim); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow);
 }
 html.m-on .stat-box:hover { border-color: var(--rim2) }
@@ -119,14 +119,6 @@ html.m-on .page-hero-orb { animation: none }
 .has-spot:hover > .spot { opacity: 1 }
 .price-card.featured > .spot, .cta-block > .spot { background: radial-gradient(380px circle at var(--mx,50%) var(--my,50%), rgba(var(--accent-rgb),.22), transparent 68%) }
 
-/* ── Featured price card: travelling light on the border ── */
-@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg }
-html.m-on .price-card.featured { border-color: transparent; background:
-    linear-gradient(var(--panel), var(--panel)) padding-box,
-    conic-gradient(from var(--ang), rgba(var(--brand-rgb),.15), var(--accent), var(--magenta), rgba(var(--brand-rgb),.15) 40%) border-box;
-  animation: ang-spin 5s linear infinite;
-}
-@keyframes ang-spin { to { --ang: 360deg } }
 
 /* ── Cursor ── */
 html.has-cursor, html.has-cursor * { cursor: none !important }
@@ -137,9 +129,9 @@ html.m-on #cur-ring { display: none; width: 38px; height: 38px; margin: -19px 0 
 html.m-on #cur-dot { margin: -3.5px 0 0 -3.5px }
 html.m-on #cur-trail { margin: -100px 0 0 -100px }
 html.has-cursor #cur-ring { display: flex }
-#cur-label { font-family: var(--font-ui); font-size: 4.8px; font-weight: 700; letter-spacing: .2px; text-transform: uppercase; color: #fff; opacity: 0; white-space: nowrap; transition: opacity .2s }
+#cur-label { font-family: var(--font-ui); font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: #fff; opacity: 0; white-space: nowrap; transition: opacity .2s }
 html.cur-hide #cur-dot, html.cur-hide #cur-ring, html.cur-hide #cur-trail { opacity: 0 }
-html.cur-label #cur-ring { background: var(--brand); border-color: var(--brand) }
+html.cur-label #cur-ring { width: 84px; height: 84px; margin: -42px 0 0 -42px; background: var(--brand); border-color: var(--brand); transition: width .3s var(--ease-out), height .3s var(--ease-out), margin .3s var(--ease-out) }
 html.cur-label #cur-label { opacity: 1 }
 html.cur-label #cur-dot { opacity: 0 }
 
@@ -173,9 +165,6 @@ a:hover > .roll > span, button:hover > .roll > span, a:hover > .roll::after, but
 .has-fill:hover { color: #fff !important; border-color: var(--brand) !important }
 .has-fill:hover svg { color: #fff }
 
-/* ── Image hovers that don't fight the scroll parallax on the same element ── */
-.parallax-img { transition: scale .9s var(--ease-out); will-change: transform }
-.port-item:hover .parallax-img, .blog-card:hover .parallax-img, .team-card:hover .parallax-img, .work-card:hover .parallax-img { scale: 1.06 }
 
 /* ── Testimonial fan ── */
 @media (min-width: 1024px) {
@@ -213,7 +202,5 @@ html.m-on .field-wrap:focus-within > label { color: var(--accent); opacity: 1; l
 #to-top .tt-ring { position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); transform: rotate(-90deg); color: var(--accent); pointer-events: none }
 #to-top { position: fixed }
 
-/* ── Featured work (pinned rail on desktop) ── */
-html.m-on .work-section.is-pinned { padding-bottom: 60px }
 
 @media (hover: none) { .spot, .grid-glow { display: none } }

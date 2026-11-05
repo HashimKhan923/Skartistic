@@ -34,6 +34,7 @@ Route::get('/services/{slug}', [FrontendController::class, 'serviceDetail'])->na
 Route::get('/pricing', [FrontendController::class, 'pricing'])->name('pricing');
 Route::get('/about-us', [FrontendController::class, 'about'])->name('about');
 Route::get('/meet-the-team', [FrontendController::class, 'team'])->name('team');
+Route::get('/meet-the-team/{slug}', [FrontendController::class, 'teamMember'])->name('team.member');
 Route::get('/portfolio', [FrontendController::class, 'portfolio'])->name('portfolio');
 Route::get('/portfolio/{slug}', [FrontendController::class, 'portfolioDetail'])->name('portfolio.detail');
 Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');

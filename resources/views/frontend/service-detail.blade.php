@@ -293,17 +293,20 @@
     display:flex; flex-wrap:wrap; gap:10px;
 }
 .sv-tech-pill {
-    display:inline-flex; align-items:center; gap:8px;
-    padding:9px 16px;
+    display:inline-flex; align-items:center; gap:12px;
+    padding:10px 18px 10px 12px;
     border:1.5px solid var(--sv-border);
-    border-radius:8px;
+    border-radius:14px;
     background:var(--panel);
-    font-size:13.5px; font-weight:600; color:var(--sv-text);
+    font-size:14.5px; font-weight:600; color:var(--sv-text);
     cursor:default;
     transition:all .2s;
 }
 .sv-tech-pill:hover { border-color:var(--sv-purple); color:var(--sv-purple); background:var(--sv-purple-light); transform:translateY(-1px); }
-.sv-tech-pill img, .sv-tech-pill-icon { width:18px; height:18px; object-fit:contain; }
+/* Every logo sits in the same fixed box, whatever size was uploaded */
+.sv-tech-logo { width:32px; height:32px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.sv-tech-logo img { width:32px; height:32px; object-fit:contain; display:block; }
+.sv-tech-logo b { width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#fff; background:linear-gradient(135deg,var(--brand),var(--accent)); }
 
 /* ════════════════════════════
    4. WORK PROCESS
@@ -368,48 +371,48 @@
    ════════════════════════════ */
 .sv-work { background:var(--sv-bg); border-top:1px solid var(--sv-border); }
 .sv-work-project {
+    position:relative;
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:80px;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+    gap:48px;
     align-items:center;
-    padding:80px 0;
-    border-bottom:1px solid var(--sv-border);
+    margin-top:36px;
+    padding:30px;
+    border-radius:30px;
+    background:linear-gradient(135deg,var(--sv-purple-light),var(--panel) 62%);
+    border:1px solid var(--sv-border);
+    box-shadow:var(--shadow);
+    transition:box-shadow .45s, border-color .4s;
 }
-.sv-work-project:last-child { border-bottom:none; }
+.sv-work-project:hover { border-color:var(--sv-purple-mid); box-shadow:0 30px 70px rgba(var(--brand-rgb),.16); }
 .sv-work-project.sv-reverse { direction:rtl; }
 .sv-work-project.sv-reverse > * { direction:ltr; }
 .sv-work-img-wrap {
-    border-radius:var(--sv-radius);
+    border-radius:18px;
     overflow:hidden;
-    position:relative;
-    background:var(--sv-bg-2);
-    min-height:340px;
+    background:var(--panel);
+    border:1px solid var(--sv-border);
+    box-shadow:0 22px 50px rgba(var(--brand-rgb),.18);
+    transition:transform .6s var(--ease-out);
 }
-.sv-work-img-wrap img {
-    width:100%; height:100%;
-    object-fit:cover; display:block;
-    transition:transform .6s ease;
-}
-.sv-work-project:hover .sv-work-img-wrap img { transform:scale(1.04); }
+.sv-work-project:hover .sv-work-img-wrap { transform:translateY(-6px); }
+.sv-work-bar { display:flex; gap:6px; padding:12px 14px; border-bottom:1px solid var(--sv-border); }
+.sv-work-bar i { width:9px; height:9px; border-radius:50%; background:rgba(var(--brand-rgb),.28); }
+.sv-work-img-wrap img { width:100%; height:auto; display:block; }
 .sv-work-img-placeholder {
-    width:100%; min-height:340px;
+    aspect-ratio:16/9;
     background:linear-gradient(135deg,var(--sv-purple-light),var(--sv-bg-2));
     display:flex; align-items:center; justify-content:center;
-    font-size:4rem;
+    font-size:4rem; font-weight:800; color:var(--sv-purple);
 }
+.sv-work-no { font-family:var(--font-d); font-size:3.4rem; line-height:1; letter-spacing:1px; color:transparent; -webkit-text-stroke:1.5px var(--sv-purple); margin-bottom:8px; }
 .sv-work-title { font-size:1.7rem; font-weight:900; color:var(--sv-text); margin-bottom:12px; letter-spacing:-.5px; }
 .sv-work-desc  { font-size:15px; color:var(--sv-text-2); line-height:1.75; margin-bottom:24px; }
 .sv-work-meta  { margin-bottom:20px; }
 .sv-work-meta-title { font-size:13px; font-weight:800; color:var(--sv-text); margin-bottom:10px; }
-.sv-work-meta-grid {
-    display:grid; grid-template-columns:1fr 1fr;
-    gap:6px 16px;
-}
-.sv-work-meta-item {
-    display:flex; align-items:center; gap:6px;
-    font-size:13px; color:var(--sv-text-2);
-}
-.sv-work-meta-item b { color:var(--sv-text); font-weight:700; }
+.sv-work-meta-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.sv-work-meta-item { padding:12px 14px; border-radius:12px; background:var(--panel); border:1px solid var(--sv-border); font-size:12px; color:var(--sv-text-2); }
+.sv-work-meta-item b { display:block; margin-top:3px; font-size:14px; color:var(--sv-text); font-weight:700; }
 .sv-work-status {
     display:inline-flex; align-items:center; gap:6px;
     font-size:13px; font-weight:600;
@@ -484,7 +487,7 @@
     .sv-offer-grid-4 .sv-offer-card:nth-child(2),
     .sv-offer-grid-4 .sv-offer-card:nth-child(4) { grid-column: auto; grid-row: auto; }
     .sv-process-step { grid-template-columns:200px 1fr; gap:40px; }
-    .sv-work-project { gap:48px; }
+    .sv-work-project { gap:32px; padding:22px; }
 }
 @media(max-width:768px){
     .sv-container { padding:0 20px; }
@@ -662,11 +665,15 @@
             <div class="sv-tech-pills">
                 @foreach(($cat['items'] ?? []) as $item)
                 <div class="sv-tech-pill">
-                    @if(!empty($item['icon_url']))
-                    <img src="{{ $item['icon_url'] }}" alt="{{ $item['name'] }}" class="sv-tech-pill-icon">
-                    @elseif(!empty($item['emoji']))
-                    <span>{{ $item['emoji'] }}</span>
-                    @endif
+                    <span class="sv-tech-logo">
+                        @if(!empty($item['icon_image']))
+                        <img src="{{ asset($item['icon_image']) }}" alt="" loading="lazy">
+                        @elseif(!empty($item['icon_url']))
+                        <img src="{{ $item['icon_url'] }}" alt="" loading="lazy">
+                        @else
+                        <b aria-hidden="true">{{ strtoupper(substr($item['name'], 0, 1)) }}</b>
+                        @endif
+                    </span>
                     {{ $item['name'] }}
                 </div>
                 @endforeach
@@ -747,15 +754,17 @@
         <div class="sv-work-project {{ $i % 2 == 1 ? 'sv-reverse' : '' }}">
             {{-- Image --}}
             <div class="sv-work-img-wrap sv-reveal-s" style="animation-delay:{{ $i * 0.12 }}s">
+                <div class="sv-work-bar" aria-hidden="true"><i></i><i></i><i></i></div>
                 @if(!empty($proj['image']))
                     <img src="{{ asset($proj['image']) }}" alt="{{ $proj['title'] ?? '' }}">
                 @else
-                    <div class="sv-work-img-placeholder">🎨</div>
+                    <div class="sv-work-img-placeholder">{{ strtoupper(substr($proj['title'] ?? 'P', 0, 1)) }}</div>
                 @endif
             </div>
 
             {{-- Content --}}
             <div class="sv-reveal" style="animation-delay:{{ $i * 0.12 + 0.1 }}s">
+                <div class="sv-work-no" aria-hidden="true">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</div>
                 <h3 class="sv-work-title">{{ $proj['title'] ?? '' }}</h3>
                 @if(!empty($proj['description']))
                 <p class="sv-work-desc">{{ $proj['description'] }}</p>
@@ -763,22 +772,21 @@
 
                 @if(!empty($proj['client']) || !empty($proj['role']) || !empty($proj['year']))
                 <div class="sv-work-meta">
-                    <div class="sv-work-meta-title">Project Details:</div>
-                    <div class="sv-work-meta-grid">
+                                        <div class="sv-work-meta-grid">
                         @if(!empty($proj['client']))
-                        <div class="sv-work-meta-item">🌐 Client: <b>{{ $proj['client'] }}</b></div>
+                        <div class="sv-work-meta-item">Client<b>{{ $proj['client'] }}</b></div>
                         @endif
                         @if(!empty($proj['role']))
-                        <div class="sv-work-meta-item">✦ Role: <b>{{ $proj['role'] }}</b></div>
+                        <div class="sv-work-meta-item">Role<b>{{ $proj['role'] }}</b></div>
                         @endif
                         @if(!empty($proj['year']))
-                        <div class="sv-work-meta-item">📅 Year: <b>{{ $proj['year'] }}</b></div>
+                        <div class="sv-work-meta-item">Year<b>{{ $proj['year'] }}</b></div>
                         @endif
                         @if(!empty($proj['duration']))
-                        <div class="sv-work-meta-item">⏱ Duration: <b>{{ $proj['duration'] }}</b></div>
+                        <div class="sv-work-meta-item">Duration<b>{{ $proj['duration'] }}</b></div>
                         @endif
                         @if(!empty($proj['team']))
-                        <div class="sv-work-meta-item">👥 Team: <b>{{ $proj['team'] }}</b></div>
+                        <div class="sv-work-meta-item">Team<b>{{ $proj['team'] }}</b></div>
                         @endif
                     </div>
                     @if(!empty($proj['status']))
@@ -790,7 +798,7 @@
                 @endif
 
                 @if(!empty($proj['features']) && count($proj['features']))
-                <div class="sv-work-features-title">Key Features:</div>
+                <div class="sv-work-features-title">Key Features</div>
                 <div class="sv-work-features">
                     @foreach($proj['features'] as $feat)
                     <span class="sv-work-feature-tag">{{ $feat }}</span>

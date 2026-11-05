@@ -13,8 +13,8 @@
 <section class="section" style="padding-top:60px">
   <div class="container">
     @if($project->banner_image ?? $project->thumbnail)
-    <div class="reveal" style="margin-bottom:64px;overflow:hidden;border:1px solid var(--rim)">
-      <img src="{{ asset('storage/'.($project->banner_image??$project->thumbnail)) }}" alt="{{ $project->title }}" style="width:100%;max-height:580px;object-fit:cover;display:block">
+    <div class="reveal" style="margin-bottom:64px;overflow:hidden;border:1px solid var(--rim);border-radius:22px;box-shadow:var(--shadow-lg)">
+      <img src="{{ asset('storage/'.($project->banner_image??$project->thumbnail)) }}" alt="{{ $project->title }}" style="width:100%;height:auto;display:block">
     </div>
     @endif
     <div class="split-side">
@@ -66,13 +66,9 @@
         <div><div class="s-tag">More Work</div><h3 style="font-family:var(--font-d);font-size:3rem;letter-spacing:1px;color:var(--text)">RELATED <span style="background:linear-gradient(135deg,var(--violet),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">PROJECTS.</span></h3></div>
         <a href="{{ route('portfolio') }}" class="btn-ghost">All Projects <span class="arr">→</span></a>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rim);border:1px solid var(--rim);border-radius:12px;overflow:hidden">
+      <div class="project-grid is-three">
         @foreach($related_projects as $rel)
-        <a href="{{ route('portfolio.detail',$rel->slug) }}" class="port-item" data-cursor="View" style="height:220px;display:block">
-          @if($rel->thumbnail)<img src="{{ asset('storage/'.$rel->thumbnail) }}" alt="{{ $rel->title }}" style="width:100%;height:100%;object-fit:cover;transition:transform .5s">@else<div class="port-ph">🎨</div>@endif
-          <div class="port-overlay"></div>
-          <div class="port-info"><div class="port-title">{{ $rel->title }}</div></div>
-        </a>
+        @include('frontend.partials.project-card', ['project' => $rel])
         @endforeach
       </div>
     </div>

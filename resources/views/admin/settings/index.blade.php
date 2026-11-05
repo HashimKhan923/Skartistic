@@ -157,6 +157,13 @@
       <small class="form-text">Short paragraph below the animated word. ~150 chars max recommended.</small>
     </div>
 
+    <div class="form-group">
+      <label class="form-label">Home Statement Text <span class="kb">statement_text</span></label>
+      <textarea class="form-control" name="statement_text" rows="3"
+        placeholder="Every service delivered with obsessive attention to craft…">{{ $settings['statement_text'] ?? '' }}</textarea>
+      <small class="form-text">The large sentence on the home page that fills in as visitors scroll. Leave blank for the default.</small>
+    </div>
+
     <div class="g2col">
       <div class="form-group">
         <label class="form-label">Primary Button Text <span class="kb">hero_btn1</span></label>
@@ -355,6 +362,67 @@
         <input class="form-control" type="url" name="social_twitter"
           value="{{ $settings['social_twitter'] ?? '' }}"
           placeholder="https://x.com/skartistic">
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- ══════════════════════════════════════════
+     FOOTER PARTNERS & BADGES
+══════════════════════════════════════════ --}}
+<div class="card full">
+  <div class="card-head"><div class="card-title">Footer Partners &amp; Badges</div></div>
+  <div class="card-body">
+    <div class="g2col">
+      <div class="form-group">
+        <label class="form-label">Associate Partner Name <span class="kb">associate_partner_name</span></label>
+        <input class="form-control" type="text" name="associate_partner_name" value="{{ $settings['associate_partner_name'] ?? '' }}" placeholder="Kuvvet">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Creative Partner Name <span class="kb">creative_partner_name</span></label>
+        <input class="form-control" type="text" name="creative_partner_name" value="{{ $settings['creative_partner_name'] ?? '' }}" placeholder="Sindh Food Awards">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Associate Partner Logo <span class="kb">associate_partner_logo</span></label>
+        <input class="form-control" type="file" name="associate_partner_logo" accept="image/*">
+        @if(!empty($settings['associate_partner_logo']))
+          <img src="{{ asset($settings['associate_partner_logo']) }}" class="img-preview" alt="">
+          <label class="rm-chk"><input type="checkbox" name="remove_associate_partner_logo" value="1"> Remove image</label>
+        @endif
+        <small class="form-text">Optional. If empty, the matching Client Logo is used.</small>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Creative Partner Logo <span class="kb">creative_partner_logo</span></label>
+        <input class="form-control" type="file" name="creative_partner_logo" accept="image/*">
+        @if(!empty($settings['creative_partner_logo']))
+          <img src="{{ asset($settings['creative_partner_logo']) }}" class="img-preview" alt="">
+          <label class="rm-chk"><input type="checkbox" name="remove_creative_partner_logo" value="1"> Remove image</label>
+        @endif
+        <small class="form-text">Optional. If empty, the matching Client Logo is used.</small>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Trademark Logo <span class="kb">trademark_logo</span></label>
+        <input class="form-control" type="file" name="trademark_logo" accept="image/*">
+        @if(!empty($settings['trademark_logo']))
+          <img src="{{ asset($settings['trademark_logo']) }}" class="img-preview" alt="">
+          <label class="rm-chk"><input type="checkbox" name="remove_trademark_logo" value="1"> Remove image</label>
+        @endif
+        <small class="form-text">Optional. If empty, a standard ® mark is shown.</small>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Google Reviews Logo <span class="kb">google_reviews_logo</span></label>
+        <input class="form-control" type="file" name="google_reviews_logo" accept="image/*">
+        @if(!empty($settings['google_reviews_logo']))
+          <img src="{{ asset($settings['google_reviews_logo']) }}" class="img-preview" alt="">
+          <label class="rm-chk"><input type="checkbox" name="remove_google_reviews_logo" value="1"> Remove image</label>
+        @endif
+        <small class="form-text">Optional. If empty, the Google G is shown.</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Google Reviews Link <span class="kb">google_reviews_url</span></label>
+        <input class="form-control" type="url" name="google_reviews_url" value="{{ $settings['google_reviews_url'] ?? '' }}" placeholder="https://g.page/r/...">
+        <small class="form-text">Where the badge links to.</small>
       </div>
     </div>
   </div>

@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
   border-radius: 24px;
   border: 3px solid rgba(var(--brand-rgb),.13);
   background: var(--panel);
-  padding: 8px;
+  padding: 5px;
   box-shadow:
     0 2px 0 rgba(var(--brand-rgb),.06) inset,
     0 40px 100px rgba(var(--brand-rgb),.16),
@@ -347,8 +347,11 @@ document.addEventListener('DOMContentLoaded', function () {
   width: 100%; height: 100%;
   border-radius: 18px;
   background: rgba(var(--brand-rgb),.03);
-  padding: 8px;
 }
+/* A promo image sets its own shape, so nothing is cropped and it runs to the frame */
+.device-frame.is-image { aspect-ratio: auto }
+.device-frame.is-image .device-inner,.device-frame.is-image .device-screen { height: auto }
+.device-frame.is-image img { width: 100%; height: auto; display: block }
 .device-screen {
   position: relative; width: 100%; height: 100%;
   border-radius: 12px; overflow: hidden;
@@ -392,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </style>
 
 <div class="device-section">
-  <div class="device-frame">
+  <div class="device-frame {{ empty($settings['promo_video_file']) && empty($settings['promo_video']) && !empty($settings['promo_image']) ? 'is-image' : '' }}">
     <div class="device-inner">
       <div class="device-screen">
         @if(!empty($settings['promo_video_file']))
@@ -424,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </video>
           @endif
         @elseif(!empty($settings['promo_image']))
-          <img src="{{ asset($settings['promo_image']) }}" alt="{{ $settings['site_name'] ?? 'SK Artistic' }} work preview" style="width:100%;height:100%;object-fit:cover;display:block">
+          <img src="{{ asset($settings['promo_image']) }}" alt="{{ $settings['site_name'] ?? 'SK Artistic' }} work preview">
         @else
           {{-- Animated UI mockup fallback --}}
           <div class="device-fallback">
@@ -469,7 +472,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 {{-- STATEMENT --}}
 <section class="statement">
-  <p data-scrub-text>Every service delivered with obsessive attention to craft — from pixel-perfect design to production-grade code that performs.</p>
+  <p data-scrub-text>{{ ($settings['statement_text'] ?? '') ?: 'Every service delivered with obsessive attention to craft — from pixel-perfect design to production-grade code that performs.' }}</p>
 </section>
 
 {{-- SERVICES --}}
@@ -487,14 +490,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div class="svc-grid">
       @foreach($services as $i => $service)
-      <div class="svc-cell" data-cursor="Explore">
-        <div class="svc-bar"></div>
-        <div class="svc-num">{{ str_pad($i+1,2,'0',STR_PAD_LEFT) }}</div>
-        <div class="svc-icon-wrap"><span class="svc-icon">{{ $service->icon ?? '⚡' }}</span></div>
-        <h3>{{ $service->title }}</h3>
-        <p>{{ $service->short_description ?: \Illuminate\Support\Str::limit($service->hero_subtitle, 150) }}</p>
-        <a href="{{ route('service.detail',$service->slug) }}" class="svc-link">Explore →</a>
-      </div>
+      @include('frontend.partials.service-card', ['service' => $service, 'index' => $i])
       @endforeach
     </div>
   </div>
@@ -503,33 +499,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
 {{-- FEATURED WORK --}}
 @if($featured_portfolios->count())
-<section class="work-section" id="work">
-  <div class="work-head">
-    <div class="reveal-l">
-      <div class="s-tag">Selected Work</div>
-      <h2 class="s-h" style="margin-bottom:0">WORK WE'RE<br><span class="g2">PROUD OF.</span></h2>
+<section class="section" id="work" style="padding-top:40px">
+  <div class="container">
+    <div class="split-end">
+      <div class="reveal-l">
+        <div class="s-tag">Selected Work</div>
+        <h2 class="s-h">WORK WE'RE<br><span class="g2">PROUD OF.</span></h2>
+      </div>
+      <div class="reveal-r text-end-md" style="text-align:right">
+        <a href="{{ route('portfolio') }}" class="btn-ghost" style="display:inline-flex">All Projects <span class="arr">→</span></a>
+      </div>
     </div>
-    <a href="{{ route('portfolio') }}" class="btn-ghost reveal-r">All Projects <span class="arr">→</span></a>
-  </div>
-  <div class="work-track">
-    @foreach($featured_portfolios as $project)
-    <a href="{{ route('portfolio.detail',$project->slug) }}" class="work-card" data-cursor="View">
-      @if($project->thumbnail)<img src="{{ asset('storage/'.$project->thumbnail) }}" alt="{{ $project->title }}" loading="lazy">@else<div class="work-ph">🎨</div>@endif
-      <div class="work-info">@if($project->category)<span>{{ $project->category }}</span>@endif<b>{{ $project->title }}</b></div>
-    </a>
-    @endforeach
+    <div class="project-grid">
+      @foreach($featured_portfolios as $project)
+      @include('frontend.partials.project-card', ['project' => $project])
+      @endforeach
+    </div>
   </div>
 </section>
 @endif
 
 {{-- CLIENT LOGOS --}}
 @if($client_logos->count())
-<section class="clients">
-  <div class="clients-label">Trusted by teams at</div>
-  <div class="clients-track">
-    @foreach($client_logos as $logo)
-      @if($logo->website_url)<a href="{{ $logo->website_url }}" target="_blank" rel="noopener"><img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}"></a>@else<img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}">@endif
-    @endforeach
+<section class="section" style="padding-top:40px">
+  <div class="container">
+    <div style="text-align:center;max-width:640px;margin:0 auto" class="reveal">
+      <div class="s-tag" style="justify-content:center">Our Clients</div>
+      <h2 class="s-h" style="margin-bottom:0">TRUSTED BY<br><span class="g">GREAT TEAMS.</span></h2>
+    </div>
+    <div class="clients-marquee">
+      <div class="clients-track">
+        @foreach($client_logos as $logo)
+        <a class="client-logo" @if($logo->website_url) href="{{ $logo->website_url }}" target="_blank" rel="noopener" @endif aria-label="{{ $logo->name }}"><img src="{{ asset('storage/'.$logo->logo) }}" alt="{{ $logo->name }}"></a>
+        @endforeach
+      </div>
+    </div>
   </div>
 </section>
 @endif
@@ -595,26 +599,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div class="price-wrap">
       @foreach($pricing_plans as $plan)
-      <div class="price-card {{ $plan->is_featured ? 'featured' : '' }}">
-        @if($plan->is_featured)<div class="price-hot">Most Popular</div>@endif
-        <div class="price-tier">{{ $plan->badge }}</div>
-        <div class="price-name">{{ strtoupper($plan->name) }}</div>
-        <div class="price-tagline">{{ $plan->description }}</div>
-        @if($plan->price)
-        <div class="price-amount">${{ number_format($plan->price, 0) }}<span style="font-size:14px;font-weight:400">{{ $plan->price_suffix }}</span></div>
-        @endif
-        <ul class="price-features">
-          @foreach($plan->features ?? [] as $f)
-          <li>{{ $f }}</li>
-          @endforeach
-          @foreach($plan->excluded_features ?? [] as $f)
-          <li style="opacity:.4;text-decoration:line-through">{{ $f }}</li>
-          @endforeach
-        </ul>
-        <a href="{{ $plan->cta_url && !in_array($plan->cta_url, ['/contact', route('contact')]) ? $plan->cta_url : route('contact', ['plan' => $plan->name]) }}" class="btn-price {{ $plan->is_featured ? 'btn-price-fill' : 'btn-price-out' }}">
-          {{ $plan->cta_label ?? 'Get Started' }} →
-        </a>
-      </div>
+      @include('frontend.partials.pricing-card', ['plan' => $plan])
       @endforeach
     </div>
   </div>

@@ -20,20 +20,18 @@
     @else
     <div class="team-grid">
       @foreach($team as $member)
-      <div class="team-card">
+      <div class="team-card" data-cursor="Profile">
         <div class="team-img">
-          @if($member->photo)<img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" loading="lazy">@else<div class="team-img-ph">👤</div>@endif
-          <div class="team-overlay"></div>
-          <div class="team-socials">
-            @if($member->linkedin)<a href="{{ $member->linkedin }}" class="team-soc" target="_blank" rel="noopener">LinkedIn</a>@endif
-            @if($member->instagram)<a href="{{ $member->instagram }}" class="team-soc" target="_blank" rel="noopener">IG</a>@endif
-            @if($member->twitter)<a href="{{ $member->twitter }}" class="team-soc" target="_blank" rel="noopener">X</a>@endif
-          </div>
+          @if($member->photo)<img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" loading="lazy">@else<div class="team-img-ph">{{ strtoupper(substr($member->name, 0, 1)) }}</div>@endif
         </div>
         <div class="team-info">
-          <div class="team-name">{{ $member->name }}</div>
+          <a href="{{ route('team.member', $member->slug) }}" class="team-link"><div class="team-name">{{ $member->name }}</div></a>
           <div class="team-pos">{{ $member->position }}</div>
-          @if($member->bio)<p style="font-size:13px;color:var(--dim);line-height:1.65;margin-top:10px;font-weight:300">{{ Str::limit($member->bio,100) }}</p>@endif
+          @if($member->bio)<p style="font-size:14px;color:var(--muted);line-height:1.65;margin-top:10px">{{ \Illuminate\Support\Str::limit($member->bio,100) }}</p>@endif
+          @if(count($member->socialLinks()))
+            @include('frontend.partials.social-links', ['links' => $member->socialLinks(), 'variant' => 'on-light'])
+          @endif
+          <span class="team-view">View full profile →</span>
         </div>
       </div>
       @endforeach

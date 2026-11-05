@@ -22,17 +22,9 @@
     @if($portfolios->isEmpty())
     <div class="empty-state reveal"><div class="ico">🎨</div><h3>NEW WORK LOADING</h3><p>We're putting the finishing touches on our case studies. Want to be our next one?</p><a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex"><span>Start a Project</span></a></div>
     @else
-    <div class="port-grid">
-      @foreach($portfolios as $i => $project)
-      @php $spans=['grid-column:span 7;grid-row:span 2','grid-column:span 5;grid-row:span 2','grid-column:span 5;grid-row:span 2','grid-column:span 7;grid-row:span 2','grid-column:span 4;grid-row:span 2','grid-column:span 4;grid-row:span 2','grid-column:span 4;grid-row:span 2']; @endphp
-      <a href="{{ route('portfolio.detail',$project->slug) }}" class="port-item" data-cursor="View" style="{{ $spans[$i%count($spans)] }}">
-        @if($project->thumbnail)<img src="{{ asset('storage/'.$project->thumbnail) }}" alt="{{ $project->title }}" loading="lazy">@else<div class="port-ph">🎨</div>@endif
-        <div class="port-overlay"></div>
-        <div class="port-info">
-          @if($project->category)<span class="port-cat">{{ $project->category }}</span>@endif
-          <div class="port-title">{{ $project->title }}</div>
-        </div>
-      </a>
+    <div class="project-grid">
+      @foreach($portfolios as $project)
+      @include('frontend.partials.project-card', ['project' => $project])
       @endforeach
     </div>
     @endif

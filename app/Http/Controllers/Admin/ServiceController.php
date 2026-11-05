@@ -110,8 +110,14 @@ class ServiceController extends Controller
 
         // ── Tech categories ──
         $techCats = $request->input('tech_categories', []);
-        foreach ($techCats as &$cat) {
-            $cat['items'] = array_values(array_filter($cat['items'] ?? [], fn($i) => !empty($i['name'])));
+        foreach ($techCats as $c => $cat) {
+            $items = $cat['items'] ?? [];
+            foreach ($items as $i => $item) {
+                if ($request->hasFile("tech_icons.$c.$i")) {
+                    $items[$i]['icon_image'] = $this->uploadFile($request->file("tech_icons.$c.$i"), 'services/tech');
+                }
+            }
+            $techCats[$c]['items'] = array_values(array_filter($items, fn($i) => !empty($i['name'])));
         }
         $data['tech_categories'] = array_values(array_filter($techCats, fn($c) => !empty($c['name'])));
 

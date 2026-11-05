@@ -27,8 +27,21 @@ class FrontendController extends Controller
         $settings = Setting::pluck('value', 'key')->toArray();
         $services_nav = Service::where('is_published', true)->orderBy('sort_order')->get();
         $menu_pages = Page::where('is_published', true)->where('show_in_menu', true)->orderBy('menu_order')->get();
+        $footer_partners = [
+            $this->footerPartner($settings, 'associate_partner', 'Associate Partner', 'Kuvvet'),
+            $this->footerPartner($settings, 'creative_partner', 'Creative Partner', 'Sindh Food Awards'),
+        ];
         // Page view tracking is handled globally by the TrackPageView middleware.
-        return compact('settings', 'services_nav', 'menu_pages');
+        return compact('settings', 'services_nav', 'menu_pages', 'footer_partners');
+    }
+
+    /** Uses the logo from Settings if uploaded, otherwise the matching Client Logo. */
+    protected function footerPartner(array $settings, string $key, string $label, string $defaultName): array
+    {
+        $name = ($settings[$key.'_name'] ?? '') ?: $defaultName;
+        $client = ClientLogo::where('name', 'like', '%'.$name.'%')->first();
+        $logo = !empty($settings[$key.'_logo']) ? asset($settings[$key.'_logo']) : ($client ? asset('storage/'.$client->logo) : null);
+        return ['label' => $label, 'name' => $name, 'logo' => $logo, 'url' => $client->website_url ?? null];
     }
 
     /** Drafts stay private; a logged-in admin may still preview them. */
@@ -85,6 +98,13 @@ class FrontendController extends Controller
         return view('frontend.about', array_merge($data, compact(
             'about', 'awards', 'values', 'founders', 'faqs', 'team'
         )));
+    }
+
+    public function teamMember($slug)
+    {
+        $data = $this->sharedData();
+        $member = $this->publishedOrPreview(TeamMember::where('slug', $slug))->firstOrFail();
+        return view('frontend.team-member', array_merge($data, compact('member')));
     }
 
     public function team()

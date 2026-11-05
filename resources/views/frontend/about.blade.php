@@ -130,14 +130,14 @@
 }
 .ab-award-item {
   display:flex; flex-direction:column; align-items:center; gap:10px;
-  flex:1; min-width:130px;
+  flex:1; min-width:210px;
   opacity:0; transform:translateY(18px);
 }
 .ab-award-item.ab-visible { animation:ab-fadeup .55s ease forwards; }
-.ab-award-trophy { font-size:2rem; }
-.ab-award-brand  { font-size:15px; font-weight:800; color:var(--ab-muted); letter-spacing:-.01em; }
-.ab-award-achiev { font-size:12px; font-weight:600; color:var(--ab-text); text-align:center; line-height:1.4; }
-.ab-award-year   { font-size:12px; color:var(--ab-muted); }
+.ab-award-logo { width:190px; max-width:100%; height:120px; padding:14px; object-fit:contain; background:#fff; border-radius:16px; border:1px solid var(--ab-border) }
+.ab-award-brand  { width:190px; max-width:100%; height:120px; display:flex; align-items:center; justify-content:center; text-align:center; padding:14px; font-size:20px; font-weight:800; color:var(--ab-text); background:var(--ab-bg); border-radius:16px; border:1px solid var(--ab-border); letter-spacing:-.01em; }
+.ab-award-achiev { font-size:15px; font-weight:700; margin-top:6px; color:var(--ab-text); text-align:center; line-height:1.4; }
+.ab-award-year   { font-size:13.5px; color:var(--ab-muted); }
 
 /* ======================================================
    4. CORE VALUES
@@ -407,9 +407,8 @@
     <div class="ab-awards-card">
       @forelse($awards ?? [] as $award)
         <div class="ab-award-item ab-anim">
-          <div class="ab-award-trophy">🏆</div>
           @if(!empty($award->logo_path))
-            <img src="{{ asset($award->logo_path) }}" alt="{{ $award->platform }}" style="height:26px;filter:grayscale(1);opacity:.55">
+            <img src="{{ asset($award->logo_path) }}" alt="{{ $award->platform }}" class="ab-award-logo" loading="lazy">
           @else
             <div class="ab-award-brand">{{ $award->platform }}</div>
           @endif
@@ -425,7 +424,6 @@
           ['GoodFirms','Enduring Excellence','2024'],
         ] as $i => $a)
         <div class="ab-award-item ab-anim" style="animation-delay:{{ $i * .1 }}s">
-          <div class="ab-award-trophy">🏆</div>
           <div class="ab-award-brand">{{ $a[0] }}</div>
           <div class="ab-award-achiev">{{ $a[1] }}</div>
           <div class="ab-award-year">{{ $a[2] }}</div>
@@ -550,7 +548,7 @@
           @endif
         </div>
         <div class="ab-team-body">
-          <div class="ab-team-name">{{ $member->name }}</div>
+          <a href="{{ route('team.member', $member->slug) }}" class="ab-team-name" style="display:block">{{ $member->name }}</a>
           <div class="ab-team-pos">{{ $member->position }}</div>
           @if($member->linkedin || ($member->instagram ?? false))
           <div class="ab-team-socs">

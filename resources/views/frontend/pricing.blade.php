@@ -16,24 +16,7 @@
     @endif
     <div class="price-wrap">
       @foreach($pricing_plans as $plan)
-      <div class="price-card {{ $plan->is_featured ? 'featured' : '' }}">
-        @if($plan->is_featured)<div class="price-hot">Most Popular</div>@endif
-        <div class="price-tier">{{ $plan->badge }}</div>
-        <div class="price-name">{{ strtoupper($plan->name) }}</div>
-        <div class="price-tagline">{{ $plan->description }}</div>
-        @if($plan->price)
-        <div class="price-amount">${{ number_format($plan->price, 0) }}<span style="font-size:14px;font-weight:400">{{ $plan->price_suffix }}</span></div>
-        @endif
-        <ul class="price-features">
-          @foreach($plan->features ?? [] as $f)
-          <li>{{ $f }}</li>
-          @endforeach
-          @foreach($plan->excluded_features ?? [] as $f)
-          <li style="opacity:.4;text-decoration:line-through">{{ $f }}</li>
-          @endforeach
-        </ul>
-        <a href="{{ $plan->cta_url && !in_array($plan->cta_url, ['/contact', route('contact')]) ? $plan->cta_url : route('contact', ['plan' => $plan->name]) }}" class="btn-price {{ $plan->is_featured ? 'btn-price-fill' : 'btn-price-out' }}">{{ $plan->cta_label ?? 'Get Started' }} →</a>
-      </div>
+      @include('frontend.partials.pricing-card', ['plan' => $plan])
       @endforeach
     </div>
     @if(isset($faqs) && $faqs->count())

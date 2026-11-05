@@ -212,6 +212,67 @@ it('renders each client logo once and lets the motion layer loop them', function
     expect(substr_count($this->get('/')->getContent(), 'clients/acme.png'))->toBe(1);
 });
 
+it('shows a full team profile and keeps drafts private', function () {
+    $member = TeamMember::create(['name' => 'Sultan Khan', 'position' => 'CEO', 'bio' => 'Founder story', 'is_published' => true,
+        'expertise' => ['Strategy'], 'education' => ['BS Computing'], 'achievements' => ['Certified PM'], 'gallery' => ['team/gallery/a.png'], 'instagram' => 'https://instagram.com/x']);
+    expect($member->slug)->toBe('sultan-khan');
+    $this->get('/meet-the-team')->assertSee('/meet-the-team/sultan-khan', false);
+    $this->get('/meet-the-team/sultan-khan')->assertOk()->assertSee('Founder story')->assertSee('Strategy')->assertSee('BS Computing')->assertSee('Certified PM')->assertSee('team/gallery/a.png')->assertSee('aria-label="Instagram"', false);
+    $member->update(['is_published' => false]);
+    $this->get('/meet-the-team/sultan-khan')->assertNotFound();
+});
+
+it('saves team profile fields and a gallery from the admin form', function () {
+    \Illuminate\Support\Facades\Storage::fake('public');
+    $image = \Illuminate\Http\UploadedFile::fake()->image('win.png');
+    $this->actingAs(admin())->post('/admin/team', ['name' => 'Sam Lee', 'position' => 'Dev', 'expertise_raw' => "Laravel\n\nGSAP", 'education_raw' => 'BS', 'achievements_raw' => 'Award', 'github' => 'https://github.com/sam', 'gallery' => [$image], 'is_published' => '1'])->assertRedirect();
+    $member = TeamMember::first();
+    expect($member->expertise)->toBe(['Laravel', 'GSAP'])->and($member->github)->toBe('https://github.com/sam')->and($member->gallery)->toHaveCount(1);
+    $path = $member->gallery[0];
+    \Illuminate\Support\Facades\Storage::disk('public')->assertExists($path);
+    $this->put("/admin/team/{$member->id}", ['name' => 'Sam Lee', 'position' => 'Dev', 'remove_gallery' => [$path, '../../.env'], 'is_published' => '1'])->assertRedirect();
+    expect($member->fresh()->gallery)->toBe([])->and($member->fresh()->slug)->toBe('sam-lee');
+    \Illuminate\Support\Facades\Storage::disk('public')->assertMissing($path);
+});
+
+it('uses the editable statement text on the home page', function () {
+    $this->get('/')->assertSee('obsessive attention to craft');
+    Setting::set('statement_text', 'A brand new statement');
+    $this->get('/')->assertSee('A brand new statement')->assertDontSee('obsessive attention to craft');
+});
+
+it('shows footer partners, trademark and google badges', function () {
+    ClientLogo::create(['name' => 'Kuvvet', 'logo' => 'clients/kuvvet.png', 'is_published' => true]);
+    $this->get('/')->assertSee('Associate Partner')->assertSee('Creative Partner')->assertSee('Sindh Food Awards')->assertSee('clients/kuvvet.png')->assertSee('Trademark')->assertSee('Reviews');
+});
+
+it('stores an uploaded tech logo and drops emojis from the service page', function () {
+    $this->actingAs(admin())->post('/admin/services', [
+        'title' => 'Tech Test',
+        'tech_categories' => [['name' => 'Frontend', 'items' => [['name' => 'React', 'emoji' => '⚛️'], ['name' => 'Vue']]]],
+        'tech_icons' => [[0 => \Illuminate\Http\UploadedFile::fake()->image('react.png')]],
+        'is_published' => '1',
+    ])->assertRedirect();
+    $service = Service::where('title', 'Tech Test')->first();
+    $path = $service->tech_categories[0]['items'][0]['icon_image'];
+    expect($path)->toStartWith('uploads/services/tech/');
+    if (file_exists(public_path($path))) unlink(public_path($path));
+    $this->get('/services/'.$service->slug)->assertOk()->assertSee($path)->assertDontSee('⚛️')->assertSee('Vue');
+});
+
+it('never shows an emoji icon on service cards', function () {
+    Service::create(['title' => 'Mobile Apps', 'slug' => 'mobile-apps', 'icon' => '📱', 'short_description' => 'x', 'is_published' => true]);
+    $this->get('/')->assertSee('Mobile Apps')->assertDontSee('📱');
+    $this->get('/services')->assertDontSee('📱');
+});
+
+it('shows a custom quote when a plan has no price', function () {
+    PricingPlan::create(['name' => 'Starter', 'features' => ['One'], 'is_published' => true]);
+    $this->get('/pricing')->assertSee('Custom Quote');
+    PricingPlan::first()->update(['price' => 500, 'price_suffix' => '/mo']);
+    $this->get('/pricing')->assertSee('$500')->assertDontSee('Custom Quote');
+});
+
 it('redirects bare /admin and guards the panel', function () {
     $this->get('/admin')->assertRedirect('/admin/dashboard');
     $this->get('/admin/dashboard')->assertRedirect('/admin/login');

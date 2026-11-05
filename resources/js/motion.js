@@ -241,7 +241,7 @@ function initCursor() {
         if (tagged && !nested && !onField) {
             label.textContent = tagged.dataset.cursor;
             root.classList.add('cur-label');
-            gsap.to(ring, { scale: 2.2, duration: 0.45 });
+            gsap.to(ring, { scale: 1, duration: 0.45 });
         } else {
             root.classList.remove('cur-label');
             gsap.to(ring, { scale: isHot ? 1.5 : 1, duration: 0.45 });
@@ -352,6 +352,12 @@ function initButtons() {
 /* ── Card spotlight + tilt ────────────────────────────────── */
 function initCards() {
     if (!fine) return;
+    // Purple sweep on service cards grows from where the pointer came in
+    $('.svc-cell').forEach((el) => el.addEventListener('pointerenter', (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--fx', `${e.clientX - r.left}px`);
+        el.style.setProperty('--fy', `${e.clientY - r.top}px`);
+    }));
     $$('.svc-cell,.price-card,.testi-block,.benefit-box,.info-card,.audit-item,.stat-box,.sv-offer-card,.ab-val-item,.team-card,.blog-card,.job-card,.cta-block,.form-card').forEach((el) => {
         el.classList.add('has-spot');
         const s = document.createElement('span');
@@ -365,7 +371,7 @@ function initCards() {
         }, { passive: true });
     });
 
-    $$('.svc-cell,.price-card,.team-card,.blog-card,.sv-offer-card,.port-item,.work-card').forEach((el) => {
+    $$('.svc-cell,.price-card,.team-card,.blog-card,.sv-offer-card,.project-card').forEach((el) => {
         let rx, ry, active = false;
         el.addEventListener('pointerenter', () => {
             if (gsap.isTweening(el)) return;
@@ -562,7 +568,7 @@ function initReveals() {
     batchReveal($$('.reveal-r, .sv-reveal-r').filter((el) => !el.matches(special)), { x: 70 });
 
     // Cards rise out of the page in 3D
-    batchReveal($$('.svc-cell,.blog-card,.team-card,.benefit-box,.audit-item,.info-card,.job-card,.port-item,.sv-offer-card,.sv-reveal-s,.ab-val-item,.ab-award-item,.ab-team-card,.ab-num-cell,.ab-photo-item'), { y: 70, rotateX: -14, scale: 0.96, transformPerspective: 1100 }, { stagger: 0.1 });
+    batchReveal($$('.svc-cell,.blog-card,.team-card,.benefit-box,.audit-item,.info-card,.job-card,.project-card,.sv-offer-card,.sv-reveal-s,.ab-val-item,.ab-award-item,.ab-team-card,.ab-num-cell,.ab-photo-item'), { y: 70, rotateX: -14, scale: 0.96, transformPerspective: 1100 }, { stagger: 0.1 });
     batchReveal($$('.faq-item,.ab-faq-item'), { y: 30 }, { stagger: 0.06, duration: 0.9 });
     batchReveal($$('.ab-founder-row'), { y: 60 });
     batchReveal($$('.sv-tech-pill'), { y: 16, scale: 0.85 }, { stagger: 0.025, duration: 0.7, start: 'top 94%' });
@@ -579,19 +585,12 @@ function initReveals() {
     });
 }
 
-/* ── Images: clip reveal + parallax ───────────────────────── */
+/* ── Images: clip reveal only. Nothing may zoom an image here, or it gets cropped ── */
 function initImages() {
-    $$('.port-item img,.blog-img img,.team-img img,.ab-photo-item img,.sv-work-img-wrap img,.work-card img,.ab-founder-photo img,.ab-team-thumb img').forEach((img) => {
-        img.classList.add('parallax-img');
-        const wrap = img.parentElement;
-        wrap.style.overflow = 'hidden';
-        gsap.fromTo(wrap, { clipPath: 'inset(14% 10% 14% 10% round 18px)' }, {
-            clipPath: 'inset(0% 0% 0% 0% round 0px)', duration: 1.5, clearProps: 'clipPath',
+    $$('.project-media,.blog-img,.team-img,.ab-photo-item,.sv-work-img-wrap,.ab-founder-photo,.ab-team-thumb').forEach((wrap) => {
+        gsap.fromTo(wrap, { clipPath: 'inset(10% 8% 10% 8% round 18px)' }, {
+            clipPath: 'inset(0% 0% 0% 0% round 0px)', duration: 1.4, clearProps: 'clipPath',
             scrollTrigger: { trigger: wrap, start: 'top 90%', once: true },
-        });
-        gsap.fromTo(img, { yPercent: -6, scale: 1.16 }, {
-            yPercent: 6, ease: 'none',
-            scrollTrigger: { trigger: wrap, start: 'top bottom', end: 'bottom top', scrub: 0.5 },
         });
     });
 }
@@ -625,13 +624,9 @@ function runMarquee(track, isLogos) {
     track.addEventListener('pointerleave', () => gsap.to(loop, { timeScale: 1, duration: 0.6, overwrite: true }));
 }
 
-// A few logos stay centred. Looping only reads as a marquee once the real set nearly fills the row.
 function setupLogoLoop(track) {
     const originals = Array.from(track.children);
-    // Measure the logos themselves: the row is full width however few it holds
-    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    const contentWidth = originals.reduce((sum, n) => sum + n.getBoundingClientRect().width + gap, -gap);
-    if (contentWidth < window.innerWidth * 0.75) return;
+    if (originals.length < 2) return; // a single logo just sits centred
     track.classList.add('is-loop');
     const addCopy = (nodes) => nodes.forEach((n) => {
         const c = n.cloneNode(true);
@@ -747,38 +742,8 @@ function initCtaAndFooter() {
         gsap.from(btns, { opacity: 0, y: 24, duration: 1, stagger: 0.1, clearProps: 'transform,opacity,visibility', scrollTrigger: { trigger: cta, start: 'top 62%', once: true } });
     });
 
-    const mark = $('.footer-wordmark');
-    if (mark) {
-        const letters = mark.textContent.trim().split('').map((c) => {
-            const s = document.createElement('span');
-            s.textContent = c;
-            return s;
-        });
-        mark.textContent = '';
-        mark.append(...letters);
-        gsap.fromTo(letters, { yPercent: 105 }, {
-            yPercent: 0, ease: 'none', stagger: 0.05,
-            scrollTrigger: { trigger: 'footer', start: 'bottom 118%', end: 'bottom bottom', scrub: 0.8 },
-        });
-    }
-    const cols = $$('.footer-top > div, .footer-bottom');
+    const cols = $('.footer-top > div, .f-badge, .footer-bottom');
     batchReveal(cols, { y: 40 }, { stagger: 0.09 });
-}
-
-/* ── Featured work: horizontal rail ───────────────────────── */
-function initWorkRail(mm) {
-    const section = $('.work-section'), track = $('.work-track');
-    if (!section || !track) return;
-    mm.add(PIN_QUERY, () => {
-        const dist = () => Math.max(0, track.scrollWidth - window.innerWidth);
-        if (dist() < 80) return undefined;
-        section.classList.add('is-pinned');
-        gsap.to(track, {
-            x: () => -dist(), ease: 'none',
-            scrollTrigger: { trigger: section, start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.8, invalidateOnRefresh: true, anticipatePin: 1 },
-        });
-        return () => section.classList.remove('is-pinned');
-    });
 }
 
 /* ── Forms ────────────────────────────────────────────────── */
@@ -864,7 +829,6 @@ function initPage() {
     safely('images', initImages);
     safely('odometers', initOdometers);
     safely('marquees', initMarquees);
-    safely('work rail', () => initWorkRail(mm));
     safely('process', () => initProcess(mm));
     safely('testimonials', () => initTestimonials(mm));
     safely('pricing', initPricing);

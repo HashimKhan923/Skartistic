@@ -38,13 +38,13 @@
           </div>
           @endif
         </div>
-        <div class="footer-socials">
-          @if(!empty($settings['social_instagram']))<a href="{{ $settings['social_instagram'] }}" class="f-soc" target="_blank" rel="noopener" style="color:var(--brand);border-color:var(--rim2)">Instagram</a>@endif
-          @if(!empty($settings['social_whatsapp']))<a href="{{ $settings['social_whatsapp'] }}" class="f-soc" target="_blank" rel="noopener" style="color:var(--brand);border-color:var(--rim2)">WhatsApp</a>@endif
-          @if(!empty($settings['social_youtube']))<a href="{{ $settings['social_youtube'] }}" class="f-soc" target="_blank" rel="noopener" style="color:var(--brand);border-color:var(--rim2)">YouTube</a>@endif
-          @if(!empty($settings['social_linkedin']))<a href="{{ $settings['social_linkedin'] }}" class="f-soc" target="_blank" rel="noopener" style="color:var(--brand);border-color:var(--rim2)">LinkedIn</a>@endif
-          @if(!empty($settings['social_twitter']))<a href="{{ $settings['social_twitter'] }}" class="f-soc" target="_blank" rel="noopener" style="color:var(--brand);border-color:var(--rim2)">X / Twitter</a>@endif
-        </div>
+        @include('frontend.partials.social-links', ['links' => [
+          'instagram' => $settings['social_instagram'] ?? null,
+          'whatsapp'  => $settings['social_whatsapp'] ?? null,
+          'youtube'   => $settings['social_youtube'] ?? null,
+          'linkedin'  => $settings['social_linkedin'] ?? null,
+          'twitter'   => $settings['social_twitter'] ?? null,
+        ], 'variant' => 'on-light'])
       </div>
       <div class="reveal-r">
         <div class="form-card">
