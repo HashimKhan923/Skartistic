@@ -4,9 +4,9 @@
   view()->share('adminMotion', is_file(public_path('hot')) || (is_file($adminManifest) && str_contains(file_get_contents($adminManifest), 'resources/js/admin-motion.js')));
 @endphp
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#6c2bd9" id="meta-theme">
+<meta name="theme-color" content="#6655e7" id="meta-theme">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script>
 (function(){
   var d=document.documentElement,t=null,rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -22,23 +22,23 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --p:#6c2bd9;--p-rgb:108,43,217;--s:#a855f7;--magenta:#a78bfa;--danger:#ef4444;--warn:#a855f7;--success:#6c2bd9;
-  --brand:var(--p);--accent:var(--s);--brand-rgb:var(--p-rgb);--accent-rgb:168,85,247;
+  --p:#6655e7;--p-rgb:102,85,231;--s:#8578ee;--magenta:#8578ee;--danger:#ef4444;--warn:#8578ee;--success:#6655e7;
+  --brand:var(--p);--accent:var(--s);--brand-rgb:var(--p-rgb);--accent-rgb:102,85,231;
   --a-bg:#faf8ff;--a-panel:#ffffff;--a-panel-rgb:255,255,255;--a-soft:#f6f3ff;--a-tint:#ede9fe;
-  --a-line:rgba(108,43,217,.14);--a-text:#1f2937;--a-muted:rgba(31,41,55,.68);--a-dim:rgba(31,41,55,.46);
-  --a-shadow:0 2px 24px rgba(108,43,217,.07);--a-shadow-lg:0 14px 44px rgba(108,43,217,.14);
-  --font-d:'Bebas Neue',sans-serif;--font-ui:'Inter',sans-serif;--font-b:'Space Grotesk',sans-serif;
+  --a-line:rgba(102,85,231,.14);--a-text:#2c2363;--a-muted:rgba(31,41,55,.68);--a-dim:rgba(31,41,55,.46);
+  --a-shadow:0 2px 24px rgba(102,85,231,.07);--a-shadow-lg:0 14px 44px rgba(102,85,231,.14);
+  --font-d:'Inter',sans-serif;--font-ui:'Inter',sans-serif;--font-b:'Inter',sans-serif;
   --ease-out:cubic-bezier(.16,1,.3,1);
-  --aurora-a:#a855f7;--aurora-b:#a78bfa;--aurora-c:#EAE6FF;--aurora-k:1;
+  --aurora-a:#6655e7;--aurora-b:#8578ee;--aurora-c:#EAE6FF;--aurora-k:1;
   --sidebar-w:264px;--top:72px;
 }
 html[data-theme="dark"]{
   color-scheme:dark;
-  --p:#8b5cf6;--p-rgb:139,92,246;--s:#a78bfa;--magenta:#c4b5fd;--accent-rgb:167,139,250;--warn:#a78bfa;--success:#8b5cf6;
-  --a-bg:#0d0a18;--a-panel:#1a1430;--a-panel-rgb:26,20,48;--a-soft:#151026;--a-tint:#2a1f4f;
-  --a-line:rgba(196,181,253,.14);--a-text:#f1eefc;--a-muted:rgba(226,219,250,.74);--a-dim:rgba(226,219,250,.52);
+  --p:#6655e7;--p-rgb:102,85,231;--s:#8578ee;--magenta:#b9b1f5;--accent-rgb:133,120,238;--warn:#8578ee;--success:#6655e7;
+  --a-bg:#100d29;--a-panel:#1e1947;--a-panel-rgb:26,20,48;--a-soft:#171339;--a-tint:#2a1f4f;
+  --a-line:rgba(185,177,245,.14);--a-text:#f1eefc;--a-muted:rgba(226,219,250,.74);--a-dim:rgba(226,219,250,.52);
   --a-shadow:0 2px 24px rgba(0,0,0,.35);--a-shadow-lg:0 14px 44px rgba(0,0,0,.5);
-  --aurora-a:#7c3aed;--aurora-b:#6d28d9;--aurora-c:#4c1d95;--aurora-k:1.25;
+  --aurora-a:#6655e7;--aurora-b:#6655e7;--aurora-c:#2c2363;--aurora-k:1.25;
 }
 body{font-family:var(--font-b);background:var(--a-bg);color:var(--a-text);min-height:100vh}
 a{text-decoration:none;color:inherit}

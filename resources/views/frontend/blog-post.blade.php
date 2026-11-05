@@ -7,7 +7,7 @@
   <div class="container">
     <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><a href="{{ route('blog') }}">Blog</a><span class="sep">/</span><span>{{ Str::limit($post->title,42) }}</span></div>
     @if($post->category && is_object($post->category))<div style="display:inline-block;background:var(--cyan);color:var(--void);font-family:var(--font-ui);font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;margin-bottom:20px">{{ $post->category->name }}</div>@elseif($post->category)<div style="display:inline-block;background:var(--cyan);color:var(--void);font-family:var(--font-ui);font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;margin-bottom:20px">{{ $post->category }}</div>@endif
-    <h1 style="font-size:clamp(3rem,7vw,7rem)">{{ strtoupper($post->title) }}</h1>
+    <h1>{{ $post->title }}</h1>
     <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:24px;animation:fade-up .8s .2s both">
       @if($post->author && is_object($post->author))<div style="display:flex;align-items:center;gap:10px">@if($post->author->photo)<img src="{{ asset('storage/'.$post->author->photo) }}" alt="{{ $post->author->name }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(var(--accent-rgb),.3)">@else<div style="width:36px;height:36px;border-radius:50%;background:rgba(var(--accent-rgb),.1);border:1px solid rgba(var(--accent-rgb),.2);display:flex;align-items:center;justify-content:center;font-size:.9rem">👤</div>@endif<span style="font-size:13px;color:var(--muted);font-weight:400">{{ $post->author->name }}</span></div><div style="width:4px;height:4px;background:var(--dim);border-radius:50%"></div>@elseif($post->author)<div style="display:flex;align-items:center;gap:10px"><span style="font-size:13px;color:var(--muted);font-weight:400">{{ $post->author }}</span></div><div style="width:4px;height:4px;background:var(--dim);border-radius:50%"></div>@endif
       <span style="font-size:11px;color:var(--dim);letter-spacing:1.5px">{{ ($post->published_at ?? $post->created_at)->format('F d, Y') }}</span>
@@ -37,8 +37,8 @@
       </article>
       <div class="reveal-r sticky-side">
         <div style="background:var(--panel);border:1px solid var(--rim);border-top:2px solid var(--cyan);padding:32px;margin-bottom:12px">
-          <h4 style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:1px;color:var(--text);margin-bottom:8px">WORK WITH US?</h4>
-          <p style="font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:20px;font-weight:300">Let's build your next big project together.</p>
+          <h4 style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:1px;color:var(--text);margin-bottom:8px">Work with us?</h4>
+          <p style="font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:20px;font-weight:400">Let's build your next big project together.</p>
           <a href="{{ route('contact') }}" class="btn-primary" style="display:flex;width:100%;justify-content:center"><span>Get In Touch</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
         @if(isset($related) && $related->count())

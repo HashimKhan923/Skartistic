@@ -293,15 +293,15 @@
 .ab-cta-box::after {
   content:''; position:absolute; bottom:-80px; right:-80px;
   width:300px; height:300px;
-  background:radial-gradient(circle,rgba(167,139,250,.15) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(133,120,238,.15) 0%,transparent 65%);
   pointer-events:none;
 }
 .ab-cta-box h2 {
   font-size:clamp(1.9rem,4vw,2.9rem); font-weight:800; color:#fff; margin:0 0 12px; position:relative;
 }
 .ab-cta-box h2 span {
-  background:linear-gradient(135deg,#c4b5fd,#7c3aed);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  background:linear-gradient(135deg,#b9b1f5,#6655e7);
+  
 }
 .ab-cta-box p { color:#9ca3af; font-size:15px; margin:0 0 30px; position:relative; }
 .ab-cta-btn {
@@ -572,7 +572,7 @@
   <div class="container">
     <div class="ab-faq-inner">
       <span class="ab-sec-tag ab-anim">{{ $about->faq_tag ?? 'FAQ' }}</span>
-      <h2 class="ab-sec-h ab-anim" style="font-size:clamp(1.9rem,5vw,3rem)">{{ $about->faq_title ?? 'Frequently Asked Questions About SK Artistic' }}</h2>
+      <h2 class="ab-sec-h ab-anim">{{ $about->faq_title ?? 'Frequently Asked Questions About SK Artistic' }}</h2>
       <p class="ab-sec-sub ab-anim">{{ $about->faq_subtitle ?? 'Learn more about our agency, our services, and how we can help bring your digital vision to life.' }}</p>
 
       <div class="ab-faq-list">
@@ -597,7 +597,7 @@
 <section class="ab-cta-wrap">
   <div class="container">
     <div class="ab-cta-box ab-anim">
-      <h2>READY TO START<br><span>YOUR PROJECT?</span></h2>
+      <h2>Ready to start <span>your project?</span></h2>
       <p>Let's build something extraordinary together.</p>
       <a href="{{ route('contact') }}" class="ab-cta-btn">
         Get In Touch

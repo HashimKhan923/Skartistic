@@ -6,7 +6,7 @@
   <div class="page-hero-grid"></div><div class="page-hero-orb"></div>
   <div class="container">
     <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><a href="{{ route('team') }}">Team</a><span class="sep">/</span><span>{{ $member->name }}</span></div>
-    <h1>{{ strtoupper($member->name) }}</h1>
+    <h1>{{ $member->name }}</h1>
     <p>{{ $member->position }}</p>
   </div>
 </div>

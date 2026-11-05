@@ -43,7 +43,6 @@ html.m-on .proc-pinned .proc-row { margin-top: 0 }
 html.m-on .proc-pinned .proc-item, html.m-on .proc-pinned .proc-item:hover { padding: 36px 40px }
 html.m-on .proc-pinned .proc-n { font-size: 3.6rem; margin-bottom: 12px }
 html.m-on .proc-pinned .proc-circle { margin-bottom: 18px }
-html.m-on .proc-pinned .s-h { font-size: clamp(2.6rem,5vw,5rem) }
 html.m-on .h-stat { transition: border-color .3s, box-shadow .3s }
 
 /* While cards reveal, the 1px-gap grids would expose their backing colour as a grey slab,
@@ -96,14 +95,9 @@ html.m-on .page-hero-orb { animation: none }
 /* ── Masked word reveal ── */
 .sw {
   display: inline-block; overflow: clip; vertical-align: top;
-  padding: .1em .05em .08em; margin: -.1em -.05em -.08em;
+  padding: .1em .05em .16em; margin: -.1em -.05em -.16em;
 }
 .si { display: inline-block; will-change: transform }
-.g .si, .g2 .si, .g3 .si, .ab-cta-box h2 span .si { -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-right: .04em; margin-right: -.04em }
-.g .si { background-image: linear-gradient(135deg, var(--brand), var(--accent)) }
-.g2 .si { background-image: linear-gradient(135deg, var(--accent), var(--magenta)) }
-.g3 .si { background-image: linear-gradient(135deg, var(--brand), #8b5cf6) }
-.cta-block .g .si, .cta-block .g2 .si, .ab-cta-box h2 span .si { background-image: linear-gradient(135deg, var(--light), var(--magenta)) }
 
 /* ── Scroll-driven statement text ── */
 [data-scrub-text] .w { color: rgba(var(--brand-rgb), .14); transition: color .1s linear }
@@ -180,11 +174,12 @@ html.m-on .proc-item.is-on .proc-circle { background: var(--brand); border-color
 html.m-on .proc-circle { transition: background .45s, border-color .45s, color .45s, box-shadow .45s }
 
 /* ── Odometer ── */
-.odo { display: inline-flex; align-items: baseline; -webkit-text-fill-color: currentcolor; background: none !important }
+.odo { display: inline-flex; align-items: baseline; background: none !important }
 .odo-col { display: inline-block; height: 1em; line-height: 1; overflow: clip }
 .odo-reel { display: block; will-change: transform }
 .odo-reel b { display: block; height: 1em; line-height: 1; font-weight: inherit }
-.odo-reel b, .odo-fix { background-image: linear-gradient(135deg, var(--brand), var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent }
+.odo-reel b, .odo-fix { color: var(--brand) }
+html[data-theme="dark"] .odo-reel b, html[data-theme="dark"] .odo-fix { color: var(--accent) }
 
 /* ── Form states ── */
 html.m-on .field-input { transition: border-color .3s, background .3s, box-shadow .35s var(--ease-out), transform .35s var(--ease-out) }

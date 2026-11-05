@@ -6,6 +6,8 @@ use App\Models\Setting;
 use App\Models\Service;
 use App\Models\Testimonial;
 use App\Models\Faq;
+use App\Models\GalleryImage;
+use App\Services\InstagramFeed;
 use App\Models\PricingPlan;
 use App\Models\BlogPost;
 use App\Models\TeamMember;
@@ -68,7 +70,8 @@ class FrontendController extends Controller
         $pricing_plans = PricingPlan::where('is_published', true)->orderBy('sort_order')->get();
         $featured_portfolios = Portfolio::where('is_published', true)->where('is_featured', true)->orderBy('sort_order')->take(6)->get();
         $client_logos = ClientLogo::where('is_published', true)->orderBy('sort_order')->get();
-        return view('frontend.home', array_merge($data, compact('services','testimonials','faqs','pricing_plans','featured_portfolios','client_logos')));
+        $instagram = app(InstagramFeed::class)->forHomepage($data['settings']);
+        return view('frontend.home', array_merge($data, compact('services','testimonials','faqs','pricing_plans','featured_portfolios','client_logos','instagram')));
     }
 
     public function services()
@@ -135,6 +138,13 @@ public function portfolio(Request $request)
 
     return view('frontend.portfolio', array_merge($data, compact('portfolios','categories')));
 }
+
+    public function gallery()
+    {
+        $data = $this->sharedData();
+        $images = GalleryImage::where('is_published', true)->orderBy('sort_order')->latest('id')->get();
+        return view('frontend.gallery', array_merge($data, compact('images')));
+    }
 
     public function portfolioDetail($slug)
     {

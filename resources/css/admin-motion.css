@@ -10,7 +10,6 @@ html.lenis, html.lenis body { height: auto }
 /* Masked word reveal */
 .sw { display: inline-block; overflow: clip; vertical-align: top; padding: .1em .05em .08em; margin: -.1em -.05em -.08em }
 .si { display: inline-block; will-change: transform }
-.g .si { background-image: linear-gradient(135deg, var(--p), var(--s)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-right: .04em; margin-right: -.04em }
 
 /* Aurora */
 .aurora { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0 }
@@ -59,7 +58,7 @@ html.m-on .has-fill:hover { color: #fff !important; border-color: var(--p) !impo
 .odo-col { display: inline-block; height: 1em; line-height: 1; overflow: clip }
 .odo-reel { display: block; will-change: transform }
 .odo-reel b { display: block; height: 1em; line-height: 1; font-weight: inherit }
-.odo-reel b, .odo-fix { background-image: linear-gradient(135deg, var(--p), var(--s)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent }
+.odo-reel b, .odo-fix { color: var(--p) }
 
 /* Cursor */
 #cur-dot, #cur-ring { display: none; position: fixed; left: 0; top: 0; pointer-events: none; border-radius: 50%; will-change: transform; z-index: 99998 }

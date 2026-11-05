@@ -182,11 +182,11 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label">Trusted Badge Label <span class="kb">hero_trust_text</span></label>
-      <input class="form-control" type="text" name="hero_trust_text"
-        value="{{ $settings['hero_trust_text'] ?? 'clients worldwide.' }}"
-        placeholder="clients worldwide.">
-      <small class="form-text">Badge shows: "Trusted by <strong>70+</strong> [your text]". The number comes from Stats → Clients.</small>
+      <label class="form-label">Hero Badge Text <span class="kb">hero_badge_text</span></label>
+      <input class="form-control" type="text" name="hero_badge_text"
+        value="{{ ($settings['hero_badge_text'] ?? '') ?: 'Creative Technology Company' }}"
+        placeholder="Creative Technology Company">
+      <small class="form-text">Small label above the main headline on the homepage.</small>
     </div>
 
   </div>
@@ -363,6 +363,23 @@
           value="{{ $settings['social_twitter'] ?? '' }}"
           placeholder="https://x.com/skartistic">
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="card full">
+  <div class="card-head"><div class="card-title">Instagram on Homepage</div></div>
+  <div class="card-body">
+    <div class="form-group">
+      <label class="form-label">Access Token <span class="kb">instagram_access_token</span></label>
+      <input class="form-control" type="password" name="instagram_access_token" autocomplete="off"
+        value="{{ $settings['instagram_access_token'] ?? '' }}">
+      <small class="form-text">Shows your 6 latest posts automatically. Create it in your Meta developer account using Instagram API with Instagram Login.</small>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Or Paste Post Links <span class="kb">instagram_posts</span></label>
+      <textarea class="form-control" name="instagram_posts" rows="4" placeholder="https://www.instagram.com/p/ABC123/">{{ $settings['instagram_posts'] ?? '' }}</textarea>
+      <small class="form-text">One link per line, up to 6. Used when no access token is set. The Follow button uses your Instagram link under Social Media.</small>
     </div>
   </div>
 </div>

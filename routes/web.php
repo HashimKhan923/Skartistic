@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\PortfolioController;
 use App\Http\Controllers\Admin\ClientLogoController;
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\AuditLeadController;
@@ -36,6 +37,7 @@ Route::get('/about-us', [FrontendController::class, 'about'])->name('about');
 Route::get('/meet-the-team', [FrontendController::class, 'team'])->name('team');
 Route::get('/meet-the-team/{slug}', [FrontendController::class, 'teamMember'])->name('team.member');
 Route::get('/portfolio', [FrontendController::class, 'portfolio'])->name('portfolio');
+Route::get('/portfolio/gallery', [FrontendController::class, 'gallery'])->name('gallery');
 Route::get('/portfolio/{slug}', [FrontendController::class, 'portfolioDetail'])->name('portfolio.detail');
 Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
 Route::get('/blog/{slug}', [FrontendController::class, 'blogPost'])->name('blog.post');
@@ -103,6 +105,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Portfolio
         Route::resource('portfolio', PortfolioController::class)->except(['show']);
         Route::get('/portfolio/{portfolio}/preview', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+        // Gallery (4:5 images)
+        Route::resource('gallery', GalleryController::class)->only(['index', 'store', 'update', 'destroy']);
 
         // Client Logos
         Route::resource('client-logos', ClientLogoController::class)->except(['show']);

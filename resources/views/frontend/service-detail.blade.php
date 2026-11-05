@@ -13,12 +13,12 @@
     --sv-purple: var(--accent);
     --sv-purple-light: rgba(var(--accent-rgb),.08);
     --sv-purple-mid: rgba(var(--accent-rgb),.15);
-    --sv-text: #0f0f0f;
-    --sv-text-2: #4b5563;
-    --sv-text-3: #9ca3af;
+    --sv-text: #2c2363;
+    --sv-text-2: #4f4a73;
+    --sv-text-3: #6d6990;
     --sv-border: #e5e7eb;
     --sv-bg: #ffffff;
-    --sv-bg-2: #f9fafb;
+    --sv-bg-2: #f6f5fe;
     --sv-radius: 16px;
     --sv-radius-sm: 10px;
 }
@@ -111,7 +111,7 @@
     text-decoration:none; border:none; cursor:pointer;
     transition:all .25s;
 }
-.sv-btn-primary:hover { background:#6d28d9; transform:translateY(-2px); box-shadow:0 8px 24px rgba(var(--accent-rgb),.35); }
+.sv-btn-primary:hover { background:#6655e7; transform:translateY(-2px); box-shadow:0 8px 24px rgba(var(--accent-rgb),.35); }
 .sv-btn-secondary {
     display:inline-flex; align-items:center; gap:8px;
     padding:14px 28px; border-radius:100px;
@@ -210,11 +210,11 @@
 .sv-vis-phone-check-dot { width:14px; height:14px; border-radius:50%; background:#22c55e; flex-shrink:0; }
 .sv-vis-phone-check-text { font-size:8px; color:#fff; font-weight:600; }
 .sv-vis-phone-row { display:flex; align-items:center; gap:6px; margin-bottom:7px; }
-.sv-vis-phone-avatar { width:18px; height:18px; border-radius:50%; background:#7c3aed; flex-shrink:0; }
+.sv-vis-phone-avatar { width:18px; height:18px; border-radius:50%; background:#6655e7; flex-shrink:0; }
 .sv-vis-phone-lines { flex:1; display:flex; flex-direction:column; gap:3px; }
 .sv-vis-phone-line { height:5px; border-radius:2px; background:#2d2d4e; }
 .sv-vis-phone-badges { display:flex; gap:4px; margin-bottom:10px; }
-.sv-vis-phone-badge-ip { padding:2px 7px; border-radius:4px; background:rgba(var(--accent-rgb),.3); color:#a78bfa; font-size:8px; font-weight:700; }
+.sv-vis-phone-badge-ip { padding:2px 7px; border-radius:4px; background:rgba(var(--accent-rgb),.3); color:#8578ee; font-size:8px; font-weight:700; }
 .sv-vis-phone-badge-lw { padding:2px 7px; border-radius:4px; background:rgba(34,197,94,.3); color:#4ade80; font-size:8px; font-weight:700; }
 .sv-vis-phone-desc { background:#252545; border-radius:6px; padding:7px 8px; margin-bottom:0; }
 .sv-vis-phone-desc-line { height:5px; border-radius:2px; background:#3d3d5e; margin-bottom:3px; }
@@ -232,7 +232,7 @@
 .sv-vis-perf-num sup { font-size:13px; font-weight:500; color:var(--sv-text-3); }
 .sv-vis-perf-badge { padding:3px 8px; border-radius:20px; background:#dcfce7; color:#16a34a; font-size:11px; font-weight:700; }
 .sv-vis-bars { display:flex; gap:4px; align-items:flex-end; height:56px; }
-.sv-vis-bar { flex:1; border-radius:3px 3px 0 0; background:linear-gradient(to top,var(--sv-purple),#a78bfa); }
+.sv-vis-bar { flex:1; border-radius:3px 3px 0 0; background:linear-gradient(to top,var(--sv-purple),#8578ee); }
 
 /* ── Score circles visual ── */
 .sv-vis-scores {
@@ -265,7 +265,7 @@
     font-size:18px; flex-shrink:0;
     box-shadow:0 4px 12px rgba(var(--accent-rgb),.3);
 }
-.sv-vis-sec-icon.mid { background:#5b21b6; width:52px; height:52px; font-size:22px; }
+.sv-vis-sec-icon.mid { background:#2c2363; width:52px; height:52px; font-size:22px; }
 .sv-vis-sec-line { flex:1; height:2px; background:var(--sv-border); }
 
 /* ════════════════════════════
@@ -405,7 +405,7 @@
     display:flex; align-items:center; justify-content:center;
     font-size:4rem; font-weight:800; color:var(--sv-purple);
 }
-.sv-work-no { font-family:var(--font-d); font-size:3.4rem; line-height:1; letter-spacing:1px; color:transparent; -webkit-text-stroke:1.5px var(--sv-purple); margin-bottom:8px; }
+.sv-work-no { font-family:var(--font-d); font-size:2.6rem; line-height:1; font-weight:800; color:transparent; -webkit-text-stroke:1.5px var(--sv-purple); margin-bottom:8px; }
 .sv-work-title { font-size:1.7rem; font-weight:900; color:var(--sv-text); margin-bottom:12px; letter-spacing:-.5px; }
 .sv-work-desc  { font-size:15px; color:var(--sv-text-2); line-height:1.75; margin-bottom:24px; }
 .sv-work-meta  { margin-bottom:20px; }
@@ -437,7 +437,7 @@
     text-decoration:none;
     transition:all .25s;
 }
-.sv-btn-live:hover { background:#6d28d9; transform:translateY(-2px); }
+.sv-btn-live:hover { background:#6655e7; transform:translateY(-2px); }
 .sv-btn-case {
     display:inline-flex; align-items:center; gap:7px;
     padding:11px 22px; border-radius:8px;

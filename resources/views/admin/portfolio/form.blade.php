@@ -96,17 +96,29 @@
         </div>
 
         <div class="card">
+            <style>
+            .pf-thumb{position:relative;display:block;cursor:pointer;overflow:hidden}
+            .pf-thumb input{position:absolute;opacity:0;width:0;height:0}
+            .pf-del{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;background:#dc2626;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+            .pf-note{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:700;color:#fff;background:rgba(220,38,38,.72)}
+            .pf-thumb input:checked ~ .pf-note{display:flex}
+            .pf-thumb input:checked ~ .pf-del{background:#fff;color:#dc2626;z-index:1}
+            .pf-thumb input:focus-visible ~ .pf-del{outline:3px solid var(--p);outline-offset:2px}
+            </style>
             <div class="card-head"><div class="card-title">📸 Gallery Images</div></div>
             <div class="card-body">
                 @if(isset($portfolio) && $portfolio->images && count($portfolio->images))
                 <div class="img-grid">
                     @foreach($portfolio->images as $img)
-                    <div class="img-thumb-wrap">
+                    <label class="img-thumb-wrap pf-thumb" title="Mark for deletion">
                         <img src="{{ asset('storage/'.$img) }}" alt="">
-                    </div>
+                        <input type="checkbox" name="remove_images[]" value="{{ $img }}" form="pForm" aria-label="Delete this image">
+                        <span class="pf-del" aria-hidden="true">✕</span>
+                        <span class="pf-note">Will be deleted</span>
+                    </label>
                     @endforeach
                 </div>
-                <div class="form-hint" style="margin-top:8px">{{ count($portfolio->images) }} image(s) uploaded</div>
+                <div class="form-hint" style="margin-top:8px">{{ count($portfolio->images) }} image(s). Click ✕ on any image, then save the project to delete it. Click again to keep it.</div>
                 @endif
                 <input type="file" name="images[]" accept="image/*" multiple class="form-control" style="{{ (isset($portfolio) && $portfolio->images) ? 'margin-top:10px' : '' }}" form="pForm">
                 <div class="form-hint">Select multiple images for the gallery</div>

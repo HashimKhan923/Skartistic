@@ -35,29 +35,20 @@
   animation: orb-breathe 6s ease-in-out infinite;
 }
 
-/* Trusted badge */
+/* Company badge */
 .hero-trust {
   display: inline-flex; align-items: center; gap: 10px;
   background: rgba(var(--brand-rgb),.05); border: 1.5px solid rgba(var(--brand-rgb),.11);
-  padding: 7px 20px 7px 10px; border-radius: 100px;
+  padding: 8px 20px; border-radius: 100px;
   margin-bottom: 40px; animation: fade-up .6s .1s both;
   position: relative; z-index: 2;
 }
-.hero-trust-avatars { display: flex }
-.hero-trust-av {
-  width: 28px; height: 28px; border-radius: 50%;
-  border: 2px solid var(--panel); background: var(--deep);
-  margin-left: -7px; display: flex; align-items: center; justify-content: center;
-  font-size: .75rem; overflow: hidden; flex-shrink: 0;
-}
-.hero-trust-av:first-child { margin-left: 0 }
-.hero-trust-txt { font-family: var(--font-ui); font-size: 12.5px; color: var(--muted); font-weight: 500 }
-.hero-trust-txt strong { color: var(--brand) }
+.hero-trust-txt { font-family: var(--font-ui); font-size: 13px; color: var(--text); font-weight: 600 }
 
 /* Static headline */
 .hero-static-line {
   font-family: var(--font-ui); font-weight: 700;
-  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-size: clamp(1rem, 2.4vw, 1.75rem);
   color: var(--text); letter-spacing: -.3px; line-height: 1;
   margin-bottom: 10px; animation: fade-up .6s .22s both;
   position: relative; z-index: 2;
@@ -74,34 +65,26 @@
 }
 .hero-ticker-word {
   font-family: var(--font-ui); font-weight: 800;
-  font-size: clamp(2.8rem, 4vw, 5.5rem);
   letter-spacing: -2px; line-height: 1.1;
   display: inline-block; text-align: center; padding: 4px 8px;
   white-space: nowrap; color: var(--accent);
 }
 @media (max-width: 640px) {
   .hero-c { padding: 130px 20px 110px }
-  .hero-ticker-word { white-space: normal; font-size: clamp(2.1rem, 10.5vw, 2.8rem); letter-spacing: -1px }
-  .hero-ticker-wrap { min-height: 2.5em; font-size: clamp(2.1rem, 10.5vw, 2.8rem) }
-  .device-section { padding: 0 16px 70px }
+    .device-section { padding: 0 16px 70px }
   .mock-card { padding: 10px; gap: 6px; border-radius: 10px }
   .mock-card-tag { font-size: 6px; letter-spacing: 1px; padding: 2px 6px }
   .mock-bar { height: 5px }
 }
 /* Nyntax letter spans — gradient applied per-letter so it actually renders */
 .nt-chunk { display: inline-block; white-space: nowrap }
-.nt-letter {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--magenta) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+.nt-letter { display: inline-block; color: var(--brand) }
+html[data-theme="dark"] .nt-letter { color: var(--accent) }
 .nt-space { display: inline-block; width: .28em; -webkit-text-fill-color: transparent }
 
 /* Subtext */
 .hero-sub-c {
-  font-size: clamp(15px, 1.5vw, 17px); font-weight: 300;
+  font-size: clamp(15px, 1.5vw, 17px); font-weight:400;
   color: var(--muted); line-height: 1.8; max-width: 580px;
   margin: 0 auto 44px; animation: fade-up .6s .46s both;
   position: relative; z-index: 2;
@@ -179,14 +162,10 @@ html.m-on .hero-chip { display: block }
   </div>
   <div class="hero-c-content">
 
-  {{-- Trusted badge --}}
+  {{-- Company badge --}}
   <div class="hero-trust">
-    <div class="hero-trust-avatars">
-      <div class="hero-trust-av">😊</div>
-      <div class="hero-trust-av">👩</div>
-      <div class="hero-trust-av">👨</div>
-    </div>
-    <span class="hero-trust-txt">Trusted by <strong>{{ $settings['stats_clients'] ?? '70+' }}</strong> {{ $settings['hero_trust_text'] ?? 'clients worldwide.' }}</span>
+    <span class="status-dot" aria-hidden="true"></span>
+    <span class="hero-trust-txt">{{ ($settings['hero_badge_text'] ?? '') ?: 'Creative Technology Company' }}</span>
   </div>
 
   {{-- Static headline --}}
@@ -383,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 .mock-card-img {
   flex: 1; min-height: 60px; border-radius: 12px;
-  background: linear-gradient(135deg, rgba(var(--accent-rgb),.12), rgba(167,139,250,.2));
+  background: linear-gradient(135deg, rgba(var(--accent-rgb),.12), rgba(133,120,238,.2));
   display: flex; align-items: center; justify-content: center; font-size: clamp(1.8rem, 5vw, 4.6rem);
 }
 .mock-bar { height: 8px; border-radius: 100px; background: var(--deep) }
@@ -482,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="split-end">
       <div class="reveal-l">
         <div class="s-tag">Our Expertise</div>
-        <h2 class="s-h">SERVICES<br>THAT <span class="g">HIT.</span></h2>
+        <h2 class="s-h">Services that <span class="g">hit.</span></h2>
       </div>
       <div class="reveal-r text-end-md" style="text-align:right">
         <a href="{{ route('services') }}" class="btn-ghost" style="display:inline-flex">View All Services <span class="arr">→</span></a>
@@ -504,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="split-end">
       <div class="reveal-l">
         <div class="s-tag">Selected Work</div>
-        <h2 class="s-h">WORK WE'RE<br><span class="g2">PROUD OF.</span></h2>
+        <h2 class="s-h">Work we're <span class="g2">proud of.</span></h2>
       </div>
       <div class="reveal-r text-end-md" style="text-align:right">
         <a href="{{ route('portfolio') }}" class="btn-ghost" style="display:inline-flex">All Projects <span class="arr">→</span></a>
@@ -523,9 +502,9 @@ document.addEventListener('DOMContentLoaded', function () {
 @if($client_logos->count())
 <section class="section" style="padding-top:40px">
   <div class="container">
-    <div style="text-align:center;max-width:640px;margin:0 auto" class="reveal">
+    <div style="text-align:center;margin:0 auto" class="reveal">
       <div class="s-tag" style="justify-content:center">Our Clients</div>
-      <h2 class="s-h" style="margin-bottom:0">TRUSTED BY<br><span class="g">GREAT TEAMS.</span></h2>
+      <h2 class="s-h" style="margin-bottom:0">Trusted by <span class="g">great teams.</span></h2>
     </div>
     <div class="clients-marquee">
       <div class="clients-track">
@@ -553,9 +532,9 @@ document.addEventListener('DOMContentLoaded', function () {
 {{-- PROCESS --}}
 <section class="section section-alt">
   <div class="container">
-    <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
+    <div style="text-align:center;margin:0 auto 64px" class="reveal">
       <div class="s-tag" style="justify-content:center">How It Works</div>
-      <h2 class="s-h">THREE STEPS.<br><span class="g">ZERO FLUFF.</span></h2>
+      <h2 class="s-h">Three steps. <span class="g">Zero fluff.</span></h2>
     </div>
     <div class="proc-row">
       <div class="proc-item reveal"><div class="proc-n">01</div><div class="proc-circle">I</div><h3>Discovery</h3><p>We deep-dive into your goals, audience, and competitive landscape before a single pixel is placed.</p></div>
@@ -569,9 +548,9 @@ document.addEventListener('DOMContentLoaded', function () {
 @if($testimonials->count())
 <section class="section">
   <div class="container">
-    <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
+    <div style="text-align:center;margin:0 auto 64px" class="reveal">
       <div class="s-tag" style="justify-content:center">Client Voices</div>
-      <h2 class="s-h">THEY SAID IT.<br><span class="g2">WE DID IT.</span></h2>
+      <h2 class="s-h">They said it. <span class="g2">We did it.</span></h2>
     </div>
     <div class="testi-wrap">
       @foreach($testimonials as $t)
@@ -592,9 +571,9 @@ document.addEventListener('DOMContentLoaded', function () {
 @if($pricing_plans->count())
 <section class="section section-alt">
   <div class="container">
-    <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
+    <div style="text-align:center;margin:0 auto 64px" class="reveal">
       <div class="s-tag" style="justify-content:center">Investment</div>
-      <h2 class="s-h">CLEAR<br><span class="g">PRICING.</span></h2>
+      <h2 class="s-h">Clear <span class="g">pricing.</span></h2>
       <p class="s-body" style="text-align:center;margin:16px auto 0">No surprises. Honest numbers for serious work.</p>
     </div>
     <div class="price-wrap">
@@ -610,9 +589,9 @@ document.addEventListener('DOMContentLoaded', function () {
 @if($faqs->count())
 <section class="section">
   <div class="container">
-    <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
+    <div style="text-align:center;margin:0 auto 64px" class="reveal">
       <div class="s-tag" style="justify-content:center">Questions</div>
-      <h2 class="s-h">GOT<br><span class="g2">QUESTIONS?</span></h2>
+      <h2 class="s-h">Got <span class="g2">questions?</span></h2>
     </div>
     <div class="faq-list">
       @foreach($faqs as $faq)
@@ -633,7 +612,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="cta-glow1"></div><div class="cta-glow2"></div>
       <div class="cta-corner tl"></div><div class="cta-corner tr"></div><div class="cta-corner bl"></div><div class="cta-corner br"></div>
       <div style="font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:20px;position:relative;z-index:1">Ready when you are →</div>
-      <h2>BUILD SOMETHING<br><span class="g">EXTRAORDINARY.</span></h2>
+      <h2>Build something <span class="g">extraordinary.</span></h2>
       <p>Join {{ $settings['stats_clients'] ?? '70+' }} businesses who trusted SK Artistic.</p>
       <div class="cta-btns">
         <a href="{{ route('contact') }}" class="btn-primary"><span>Start Your Project</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -642,5 +621,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
   </div>
 </section>
+
+@include('frontend.partials.instagram')
 
 @endsection

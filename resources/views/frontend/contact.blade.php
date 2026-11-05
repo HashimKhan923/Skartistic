@@ -5,17 +5,16 @@
   <div class="page-hero-grid"></div><div class="page-hero-orb"></div>
   <div class="container">
     <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><span>Contact</span></div>
-    <h1>LET'S <span class="g">TALK.</span></h1>
+    <h1>Let's <span class="g">talk.</span></h1>
     <p>Tell us about your project — we'll get back within 24 hours.</p>
   </div>
 </div>
 <section class="section">
   <div class="container">
+    <div class="reveal" style="margin-bottom:36px"><div class="s-tag">Get In Touch</div><h2 class="s-h">We'd love to hear <span class="g2">from you.</span></h2></div>
     <div class="split">
       <div class="reveal-l">
-        <div class="s-tag">Get In Touch</div>
-        <h2 class="s-h" style="font-size:clamp(2.5rem,4vw,4.5rem)">WE'D LOVE<br>TO HEAR <span class="g2">FROM YOU.</span></h2>
-        <p style="font-size:16px;color:var(--muted);line-height:1.85;font-weight:300;margin-bottom:48px">Whether you're starting a new project, looking to scale, or just exploring — let's have a real conversation.</p>
+<p style="font-size:16px;color:var(--muted);line-height:1.85;font-weight:400;margin-bottom:48px">Whether you're starting a new project, looking to scale, or just exploring — let's have a real conversation.</p>
         <div class="info-row" style="margin-bottom:48px">
           @if(!empty($settings['site_email']))
           <a href="mailto:{{ $settings['site_email'] }}" class="info-card">

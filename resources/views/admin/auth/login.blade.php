@@ -11,9 +11,9 @@
         .login-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(var(--p-rgb),.07) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--p-rgb),.07) 1px,transparent 1px);background-size:60px 60px;-webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,#000,transparent);mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,#000,transparent)}
         .login-wrap{position:relative;z-index:2;width:100%;max-width:440px}
         .login-top{position:fixed;top:20px;right:20px;z-index:3}
-        .login-title{font-family:var(--font-d);font-size:clamp(3.4rem,10vw,5.4rem);line-height:.9;letter-spacing:2px;text-align:center;margin-bottom:10px}
-        .login-title .g{background:linear-gradient(135deg,var(--p),var(--s));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-        .login-sub{text-align:center;color:var(--a-muted);font-size:15px;font-weight:300;margin-bottom:30px}
+        .login-title{font-family:var(--font-d);font-size:clamp(1.8rem,5vw,2.6rem);font-weight:800;line-height:1.15;letter-spacing:-.02em;text-align:center;margin-bottom:10px}
+        .login-title .g{color:var(--p)}
+        .login-sub{text-align:center;color:var(--a-muted);font-size:15px;font-weight:400;margin-bottom:30px}
         .login-box{background:rgba(var(--a-panel-rgb),.86);border:1px solid var(--a-line);border-radius:22px;padding:36px;box-shadow:var(--a-shadow-lg)}
         .login-box label.lbl{display:block;font-family:var(--font-ui);font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--p);margin-bottom:8px}
         .login-box input[type=email],.login-box input[type=password]{width:100%;padding:14px 16px;background:var(--a-soft);border:1.5px solid var(--a-line);border-radius:12px;color:var(--a-text);font-family:var(--font-b);font-size:14px;outline:none;margin-bottom:18px;transition:border-color .3s,box-shadow .35s var(--ease-out),transform .35s var(--ease-out)}

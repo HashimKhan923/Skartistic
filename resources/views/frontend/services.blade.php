@@ -6,7 +6,7 @@
   <div class="page-hero-grid"></div><div class="page-hero-orb"></div>
   <div class="container">
     <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><span>Services</span></div>
-    <h1>WHAT WE <span class="g">DO.</span></h1>
+    <h1>What we <span class="g">do.</span></h1>
     <p>End-to-end digital services — from strategy and design to development and growth.</p>
   </div>
 </div>
@@ -16,14 +16,14 @@
     <div class="split-end">
       <div class="reveal-l">
         <div class="s-tag">Our Expertise</div>
-        <h2 class="s-h">FULL-CYCLE<br><span class="g2">DIGITAL.</span></h2>
+        <h2 class="s-h">Full-cycle <span class="g2">digital.</span></h2>
       </div>
       <div class="reveal-r">
         <p class="s-body">Every service is delivered with obsessive attention to craft — from pixel-perfect design to production-grade code that actually performs.</p>
       </div>
     </div>
     @if($services->isEmpty())
-    <div class="empty-state reveal"><div class="ico">🛠️</div><h3>SERVICES COMING SOON</h3><p>We're polishing our service list. Tell us what you need in the meantime.</p><a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex"><span>Talk to Us</span></a></div>
+    <div class="empty-state reveal"><div class="ico">🛠️</div><h3>Services coming soon</h3><p>We're polishing our service list. Tell us what you need in the meantime.</p><a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex"><span>Talk to Us</span></a></div>
     @endif
     <div class="svc-grid">
       @foreach($services as $i => $service)
@@ -35,9 +35,9 @@
 
 <section class="section section-alt">
   <div class="container">
-    <div style="text-align:center;max-width:560px;margin:0 auto 64px" class="reveal">
+    <div style="text-align:center;margin:0 auto 64px" class="reveal">
       <div class="s-tag" style="justify-content:center">How We Work</div>
-      <h2 class="s-h">OUR<br><span class="g">PROCESS.</span></h2>
+      <h2 class="s-h">Our <span class="g">process.</span></h2>
     </div>
     <div class="proc-row">
       <div class="proc-item reveal"><div class="proc-n">01</div><div class="proc-circle">I</div><h3>Discovery</h3><p>We deep-dive into your goals, audience, and competitive landscape before a single pixel is placed.</p></div>
@@ -52,7 +52,7 @@
     <div class="cta-block reveal">
       <div class="cta-glow1"></div><div class="cta-glow2"></div>
       <div class="cta-corner tl"></div><div class="cta-corner tr"></div><div class="cta-corner bl"></div><div class="cta-corner br"></div>
-      <h2>READY TO BUILD<br><span class="g">SOMETHING GREAT?</span></h2>
+      <h2>Ready to build <span class="g">something great?</span></h2>
       <p>Tell us about your project — we'll respond within 24 hours.</p>
       <div class="cta-btns">
         <a href="{{ route('contact') }}" class="btn-primary"><span>Start a Project</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>

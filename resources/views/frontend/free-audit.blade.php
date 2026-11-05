@@ -5,17 +5,16 @@
   <div class="page-hero-grid"></div><div class="page-hero-orb"></div>
   <div class="container">
     <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><span>Free Audit</span></div>
-    <h1>FREE <span class="g">AUDIT.</span></h1>
+    <h1>Free <span class="g">audit.</span></h1>
     <p>We'll review your site and tell you exactly what's holding it back — for free, no strings.</p>
   </div>
 </div>
 <section class="section">
   <div class="container">
+    <div class="reveal" style="margin-bottom:36px"><div class="s-tag">What's Included</div><h2 class="s-h">Your digital presence, <span class="g2">reviewed.</span></h2></div>
     <div class="split">
       <div class="reveal-l">
-        <div class="s-tag">What's Included</div>
-        <h2 class="s-h" style="font-size:clamp(2.5rem,4vw,4.5rem)">A REAL LOOK AT<br>YOUR <span class="g2">DIGITAL PRESENCE.</span></h2>
-        <p style="font-size:16px;color:var(--muted);line-height:1.85;font-weight:300;margin-bottom:48px">Not an automated report — a real human reviews your site and gives you actionable, personalised feedback within 48 hours.</p>
+<p style="font-size:16px;color:var(--muted);line-height:1.85;font-weight:400;margin-bottom:48px">Not an automated report — a real human reviews your site and gives you actionable, personalised feedback within 48 hours.</p>
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:48px">
           <div class="audit-item"><div class="audit-item-icon">🎨</div><div><h4>Design & UX Review</h4><p>Is your site compelling? Does it guide users toward conversion effectively?</p></div></div>
           <div class="audit-item"><div class="audit-item-icon">⚡</div><div><h4>Performance Analysis</h4><p>Load speed, Core Web Vitals, and technical health checks that matter for rankings.</p></div></div>
@@ -25,14 +24,14 @@
         </div>
         <div style="background:rgba(var(--accent-rgb),.04);border:1px solid rgba(var(--accent-rgb),.15);padding:20px 24px;display:flex;gap:14px;align-items:flex-start">
           <span style="color:var(--cyan);font-size:1.2rem;flex-shrink:0">✦</span>
-          <p style="font-size:14px;color:var(--muted);line-height:1.7;font-weight:300"><strong style="color:var(--text)">100% free, zero obligation.</strong> Personalised report delivered within 48 hours. No sales pressure, no strings attached.</p>
+          <p style="font-size:14px;color:var(--muted);line-height:1.7;font-weight:400"><strong style="color:var(--text)">100% free, zero obligation.</strong> Personalised report delivered within 48 hours. No sales pressure, no strings attached.</p>
         </div>
       </div>
       <div class="reveal-r">
         <div class="form-card">
           @if(session('success'))<div class="flash-success"><span class="icon">✓</span><span class="msg">{{ session('success') }}</span></div>@endif
           <div style="font-family:var(--font-d);font-size:1.8rem;letter-spacing:1px;color:var(--text);margin-bottom:6px">REQUEST YOUR <span style="color:var(--accent)">FREE AUDIT</span></div>
-          <p style="font-size:13.5px;color:var(--dim);margin-bottom:32px;font-weight:300">Fill in your details — we'll respond within 48 hours.</p>
+          <p style="font-size:13.5px;color:var(--dim);margin-bottom:32px;font-weight:400">Fill in your details — we'll respond within 48 hours.</p>
           <form action="{{ route('audit.submit') }}" method="POST" class="m-form" data-busy="Submitting…">
             @csrf
             <div class="hp-field" aria-hidden="true"><label>Leave this empty<input type="text" name="company_site" tabindex="-1" autocomplete="off"></label></div>

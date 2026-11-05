@@ -5,7 +5,7 @@
   <div class="page-hero-grid"></div><div class="page-hero-orb"></div>
   <div class="container">
     <div class="breadcrumb"><a href="{{ route('home') }}">Home</a><span class="sep">/</span><span>Blog</span></div>
-    <h1>LATEST <span class="g">INSIGHTS.</span></h1>
+    <h1>Latest <span class="g">insights.</span></h1>
     <p>Design, development, and digital strategy — straight from the studio.</p>
   </div>
 </div>
@@ -18,7 +18,7 @@
     </div>
     @endif
     @if($posts->isEmpty())
-    <div class="empty-state reveal"><div class="ico">✍️</div><h3>FRESH INSIGHTS SOON</h3><p>Our first articles are on the way. In the meantime, ask us anything.</p><a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex"><span>Get In Touch</span></a></div>
+    <div class="empty-state reveal"><div class="ico">✍️</div><h3>Fresh insights soon</h3><p>Our first articles are on the way. In the meantime, ask us anything.</p><a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex"><span>Get In Touch</span></a></div>
     @else
     @php $featured=$posts->first(); @endphp
     <a href="{{ route('blog.post',$featured->slug) }}" class="reveal feat-post" data-cursor="Read" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rim);border:1px solid var(--rim);margin-bottom:1px">
@@ -29,7 +29,7 @@
       <div style="background:var(--panel);padding:52px 48px;display:flex;flex-direction:column;justify-content:center">
         <div style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;opacity:.8">Featured Post</div>
         <h2 style="font-family:var(--font-ui);font-size:1.7rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:16px;letter-spacing:.3px">{{ $featured->title }}</h2>
-        <p style="font-size:15px;color:var(--muted);line-height:1.78;font-weight:300;margin-bottom:28px">{{ Str::limit($featured->excerpt??strip_tags($featured->content),140) }}</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.78;font-weight:400;margin-bottom:28px">{{ Str::limit($featured->excerpt??strip_tags($featured->content),140) }}</p>
         <div style="font-size:11px;color:var(--dim);letter-spacing:1.5px">{{ ($featured->published_at ?? $featured->created_at)->format('M d, Y') }} · {{ $featured->read_time }}</div>
       </div>
     </a>

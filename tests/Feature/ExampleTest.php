@@ -16,8 +16,12 @@ use App\Models\Setting;
 use App\Models\TeamMember;
 use App\Models\Testimonial;
 use App\Models\User;
+use App\Models\GalleryImage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 uses(RefreshDatabase::class);
 
@@ -136,7 +140,7 @@ it('offers a dark mode toggle on public and error pages', function () {
 });
 
 it('uses the one fixed purple theme and has no theme panel', function () {
-    $this->get('/')->assertSee('--brand:   #6c2bd9;', false)->assertSee('--magenta: #a78bfa;', false);
+    $this->get('/')->assertSee('--brand:   #6655e7;', false)->assertSee('--magenta: #8578ee;', false);
     $this->actingAs(admin())->get('/admin/theme')->assertNotFound();
     $this->get('/admin/dashboard')->assertOk()->assertDontSee('Edit Theme');
 });
@@ -195,7 +199,7 @@ it('throttles contact and login abuse', function () {
 /* ── Admin ────────────────────────────────────────────────── */
 
 it('gives the admin panel and login the same theme and toggle', function () {
-    $this->get('/admin/login')->assertOk()->assertSee('id="theme-btn"', false)->assertSee('--p:#6c2bd9', false);
+    $this->get('/admin/login')->assertOk()->assertSee('id="theme-btn"', false)->assertSee('--p:#6655e7', false);
     $this->withSession(['error' => 'Access denied.'])->get('/admin/login')->assertSee('Access denied.');
     $this->actingAs(admin())->get('/admin/dashboard')->assertOk()
         ->assertSee('id="theme-btn"', false)->assertSee('id="menu-btn"', false)->assertDontSee('#06b6d4');
@@ -331,7 +335,7 @@ it('keeps a page URL stable when its title is edited', function () {
     seedSite();
     $page = Page::where('slug', 'terms-conditions')->first();
     $this->actingAs(admin())->put("/admin/pages/{$page->id}", ['title' => 'Legal Terms', 'is_published' => '1'])->assertRedirect();
-    $this->get('/terms-conditions')->assertOk()->assertSee('LEGAL TERMS');
+    $this->get('/terms-conditions')->assertOk()->assertSee('Legal Terms');
 });
 
 it('accepts blank optional fields on career, pricing and service forms', function () {
@@ -350,4 +354,108 @@ it('saves team sort order', function () {
 it('rejects executable uploads to public folders', function () {
     $file = \Illuminate\Http\UploadedFile::fake()->create('shell.php', 1);
     $this->actingAs(admin())->post('/admin/settings', ['site_logo' => $file])->assertStatus(422);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Gallery, Instagram, WhatsApp and portfolio image removal
+|--------------------------------------------------------------------------
+*/
+function adminUser(): User
+{
+    return User::create(['name' => 'Admin', 'email' => 'gallery-admin@example.com', 'password' => 'secret-pass-123', 'role' => 'admin']);
+}
+
+it('accepts 4:5 gallery images and rejects other sizes', function () {
+    Storage::fake('public');
+    $admin = adminUser();
+
+    $this->actingAs($admin)->post(route('admin.gallery.store'), ['images' => [UploadedFile::fake()->image('ok.jpg', 1080, 1350)]])->assertSessionHasNoErrors();
+    expect(GalleryImage::count())->toBe(1);
+    Storage::disk('public')->assertExists(GalleryImage::first()->image);
+
+    $this->actingAs($admin)->post(route('admin.gallery.store'), ['images' => [UploadedFile::fake()->image('wide.jpg', 1600, 900)]])->assertSessionHasErrors('images.0');
+    expect(GalleryImage::count())->toBe(1);
+});
+
+it('shows only published images on the gallery page and deletes the file with the record', function () {
+    Storage::fake('public');
+    seedSite();
+    Storage::disk('public')->put('gallery/a.jpg', 'x');
+    $shown = GalleryImage::create(['image' => 'gallery/a.jpg', 'caption' => 'Shown caption']);
+    GalleryImage::create(['image' => 'gallery/b.jpg', 'caption' => 'Hidden caption', 'is_published' => false]);
+
+    $this->get('/portfolio/gallery')->assertOk()->assertSee('Shown caption')->assertDontSee('Hidden caption');
+
+    $this->actingAs(adminUser())->delete(route('admin.gallery.destroy', $shown))->assertRedirect();
+    expect(GalleryImage::find($shown->id))->toBeNull();
+    Storage::disk('public')->assertMissing('gallery/a.jpg');
+});
+
+it('blocks guests from the gallery admin', function () {
+    $this->get(route('admin.gallery.index'))->assertRedirect();
+    $this->post(route('admin.gallery.store'))->assertRedirect();
+    expect(GalleryImage::count())->toBe(0);
+});
+
+it('removes only images that belong to the project', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('portfolio/gallery/a.jpg', 'x');
+    Storage::disk('public')->put('portfolio/gallery/b.jpg', 'x');
+    Storage::disk('public')->put('secret.txt', 'x');
+    $project = Portfolio::create(['title' => 'Atlas', 'slug' => 'atlas-x', 'is_published' => true, 'images' => ['portfolio/gallery/a.jpg', 'portfolio/gallery/b.jpg']]);
+
+    $this->actingAs(adminUser())->put(route('admin.portfolio.update', $project), [
+        'title' => 'Atlas', 'is_published' => 1,
+        'remove_images' => ['portfolio/gallery/a.jpg', 'secret.txt'],
+    ])->assertRedirect();
+
+    expect($project->fresh()->images)->toBe(['portfolio/gallery/b.jpg']);
+    Storage::disk('public')->assertMissing('portfolio/gallery/a.jpg');
+    Storage::disk('public')->assertExists('secret.txt');
+});
+
+it('keeps project images when nothing is removed', function () {
+    $project = Portfolio::create(['title' => 'Atlas', 'slug' => 'atlas-y', 'images' => ['portfolio/gallery/a.jpg']]);
+    $this->actingAs(adminUser())->put(route('admin.portfolio.update', $project), ['title' => 'Atlas'])->assertRedirect();
+    expect($project->fresh()->images)->toBe(['portfolio/gallery/a.jpg']);
+});
+
+it('shows Instagram API posts on the homepage without exposing the token', function () {
+    seedSite();
+    Setting::set('social_instagram', 'https://www.instagram.com/sk_artistic/');
+    Setting::set('instagram_access_token', 'SECRET-TOKEN');
+    Setting::set('instagram_token_refreshed_at', (string) now()->timestamp);
+    Http::fake(['graph.instagram.com/me/media*' => Http::response(['data' => [
+        ['id' => '1', 'media_type' => 'IMAGE', 'media_url' => 'https://cdn.example.com/1.jpg', 'permalink' => 'https://www.instagram.com/p/AAA/', 'caption' => 'Hello'],
+        ['id' => '2', 'media_type' => 'VIDEO', 'media_url' => 'https://cdn.example.com/2.mp4', 'thumbnail_url' => 'https://cdn.example.com/2.jpg', 'permalink' => 'https://www.instagram.com/p/BBB/'],
+    ]])]);
+
+    $this->get('/')->assertOk()->assertSee('@sk_artistic')->assertSee('https://cdn.example.com/1.jpg')->assertSee('https://cdn.example.com/2.jpg')->assertDontSee('SECRET-TOKEN');
+    $this->get('/')->assertOk();
+    Http::assertSentCount(1); // the second view comes from the cache
+});
+
+it('falls back to pasted post links when the Instagram API fails', function () {
+    seedSite();
+    Setting::set('instagram_access_token', 'BAD');
+    Setting::set('instagram_token_refreshed_at', (string) now()->timestamp);
+    Setting::set('instagram_posts', "https://www.instagram.com/p/ABC123/\nhttps://evil.example.com/x\nhttps://www.instagram.com/sk_artistic/reel/XYZ_9/");
+    Http::fake(['*' => Http::response(['error' => ['message' => 'bad token']], 400)]);
+
+    $this->get('/')->assertOk()
+        ->assertSee('https://www.instagram.com/p/ABC123/embed/')
+        ->assertSee('https://www.instagram.com/reel/XYZ_9/embed/')
+        ->assertDontSee('evil.example.com');
+});
+
+it('links the WhatsApp button to the business number', function () {
+    seedSite();
+    Setting::set('site_phone', '+92 334 2247807');
+    $this->get('/')->assertOk()->assertSee('https://wa.me/923342247807');
+});
+
+it('shows the new hero badge and no fake client claim', function () {
+    seedSite();
+    $this->get('/')->assertOk()->assertSee('Creative Technology Company')->assertDontSee('Trusted by <strong>', false);
 });

@@ -3,7 +3,7 @@
   var root=document.documentElement,btn=document.getElementById('theme-btn'),meta=document.getElementById('meta-theme');
   function paint(t){
     root.setAttribute('data-theme',t);
-    if(meta)meta.content=t==='dark'?'#0d0a18':'#6c2bd9';
+    if(meta)meta.content=t==='dark'?'#0d0a18':'#6655e7';
     if(btn)btn.setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode');
     window.dispatchEvent(new Event('sk-theme'));
   }

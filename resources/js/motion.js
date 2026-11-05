@@ -173,8 +173,8 @@ function initParticles() {
     if (!isDesktop() || lowEnd) { cvs.remove(); return; }
     const ctx = cvs.getContext('2d');
     const css = getComputedStyle(root);
-    let brand = css.getPropertyValue('--brand-rgb').trim() || '108,43,217';
-    let accent = css.getPropertyValue('--accent-rgb').trim() || '168,85,247';
+    let brand = css.getPropertyValue('--brand-rgb').trim() || '102,85,231';
+    let accent = css.getPropertyValue('--accent-rgb').trim() || '102,85,231';
     window.addEventListener('sk-theme', () => {
         brand = css.getPropertyValue('--brand-rgb').trim() || brand;
         accent = css.getPropertyValue('--accent-rgb').trim() || accent;
@@ -481,10 +481,10 @@ function initPageHeroes() {
         const heading = $('h1', hero);
         const words = heading ? splitWords(heading) : [];
         const rest = $$('.breadcrumb, .ab-hero-tag, .sv-hero-tag, p, .sv-hero-btns', hero);
-        gsap.set(words, { yPercent: 115, rotate: 5, transformOrigin: '0% 100%' });
+        gsap.set(words, { yPercent: 115 });
         gsap.set(rest, { opacity: 0, y: 26 });
         gsap.timeline({ delay: 0.45 })
-            .to(words, { yPercent: 0, rotate: 0, duration: 1.25, stagger: 0.075 }, 0)
+            .to(words, { yPercent: 0, duration: 1.25, stagger: 0.075, clearProps: 'transform' }, 0)
             .to(rest, { opacity: 1, y: 0, duration: 1, stagger: 0.1, clearProps: 'transform' }, 0.15);
 
         const content = $('.container, .sv-container', hero);
@@ -509,8 +509,8 @@ function initPageHeroes() {
 function initHeadings() {
     $$('.s-h, .cta-block h2, .ab-sec-h, .ab-mission-title, .ab-cta-box h2, .sv-section-title, .sv-cta h2, .ab-team-hd h2').forEach((el) => {
         const words = splitWords(el);
-        gsap.set(words, { yPercent: 118, rotate: 5, transformOrigin: '0% 100%' });
-        once(el, 'top 90%', () => gsap.to(words, { yPercent: 0, rotate: 0, duration: 1.2, stagger: 0.07 }));
+        gsap.set(words, { yPercent: 118 });
+        once(el, 'top 90%', () => gsap.to(words, { yPercent: 0, duration: 1.2, stagger: 0.07, clearProps: 'transform' }));
     });
 
     const GLYPHS = '!<>-_\\/[]{}—=+*^?#01';

@@ -10,26 +10,26 @@
         #spb{position:fixed;top:0;left:0;height:3px;width:0;z-index:9999;background:linear-gradient(90deg,var(--p),var(--s),var(--magenta))}
 
         /* ── SIDEBAR ── */
-        .sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:linear-gradient(180deg,#22104f 0%,#150b33 100%);z-index:200;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
-        html[data-theme="dark"] .sidebar{background:linear-gradient(180deg,#160d2e 0%,#0f0a20 100%);border-right:1px solid var(--a-line)}
+        .sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:linear-gradient(180deg,#2c2363 0%,#1c1745 100%);z-index:200;display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent}
+        html[data-theme="dark"] .sidebar{background:linear-gradient(180deg,#171339 0%,#100d29 100%);border-right:1px solid var(--a-line)}
         .sidebar-top{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
         .sidebar-brand{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
         .sidebar-brand img{height:38px;width:auto;max-width:190px;object-fit:contain;filter:brightness(0) invert(1)}
-        .brand-name{font-family:var(--font-d);font-size:1.7rem;letter-spacing:2px;line-height:1;color:#fff}
+        .brand-name{font-family:var(--font-d);font-size:1.35rem;font-weight:800;letter-spacing:-.01em;line-height:1;color:#fff}
         .brand-sub{font-family:var(--font-ui);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:500}
         .sidebar-nav{padding:14px 0;flex:1;position:relative}
         .nav-group{padding:12px 24px 6px;font-family:var(--font-ui);font-size:10px;font-weight:700;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:2px}
         .nav-item{display:flex;align-items:center;gap:10px;padding:8px 12px;color:rgba(255,255,255,.68);font-family:var(--font-ui);font-size:13.5px;font-weight:500;margin:1px 10px;border-radius:12px;cursor:pointer;position:relative;z-index:1;transition:color .2s,background .2s}
         .nav-item:hover{color:#fff;background:rgba(255,255,255,.07)}
-        .nav-item.active{color:#fff;background:linear-gradient(135deg,rgba(168,85,247,.4),rgba(108,43,217,.3))}
+        .nav-item.active{color:#fff;background:linear-gradient(135deg,rgba(102,85,231,.4),rgba(102,85,231,.3))}
         .nav-item-icon{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:transform .4s var(--ease-out),background .2s}
         .nav-item-icon,.stat-box-icon{filter:grayscale(1) sepia(1) hue-rotate(218deg) saturate(3.4) brightness(1.15)}
         .nav-item:hover .nav-item-icon{transform:scale(1.1) rotate(-5deg)}
-        .nav-item.active .nav-item-icon{background:linear-gradient(135deg,#6c2bd9,#a855f7)}
-        .nav-badge{margin-left:auto;background:#fff;color:#5b21b6;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px}
+        .nav-item.active .nav-item-icon{background:linear-gradient(135deg,#6655e7,#8578ee)}
+        .nav-badge{margin-left:auto;background:#fff;color:#2c2363;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px}
         .sidebar-footer{padding:14px;border-top:1px solid rgba(255,255,255,.08);flex-shrink:0}
         .sidebar-user{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.06);border-radius:12px}
-        .user-avatar{width:34px;height:34px;background:linear-gradient(135deg,#6c2bd9,#a855f7);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+        .user-avatar{width:34px;height:34px;background:linear-gradient(135deg,#6655e7,#8578ee);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
         .user-name{color:#fff;font-size:13px;font-weight:600}
         .user-role{font-size:11px;color:rgba(255,255,255,.5)}
         .sign-out{width:100%;margin-top:10px;padding:9px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.75);font-family:var(--font-ui);font-size:13px;font-weight:500;cursor:pointer;transition:background .2s,color .2s}
@@ -57,7 +57,7 @@
         .page-banner::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(var(--p-rgb),.06) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--p-rgb),.06) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000)}
         .banner-tag{position:relative;z-index:2;font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--p);display:flex;align-items:center;gap:12px;margin-bottom:8px}
         .banner-tag::before{content:'';width:26px;height:2px;background:var(--p);opacity:.5;border-radius:2px}
-        .page-banner h1{position:relative;z-index:2;font-family:var(--font-d);font-weight:400;font-size:clamp(2.4rem,5vw,4rem);letter-spacing:1.5px;line-height:1;color:var(--a-text)}
+        .page-banner h1{position:relative;z-index:2;font-family:var(--font-d);font-weight:800;font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:-.02em;letter-spacing:1.5px;line-height:1;color:var(--a-text)}
 
         /* ── ALERTS ── */
         .alert{padding:14px 18px;border-radius:14px;margin-bottom:22px;font-size:14px;display:flex;align-items:center;gap:10px;font-weight:500;flex-wrap:wrap}
@@ -80,7 +80,7 @@
         .stat-box::before{content:'';position:absolute;top:0;right:0;width:84px;height:84px;border-radius:50%;background:rgba(var(--p-rgb),.08);transform:translate(20px,-20px);transition:transform .5s var(--ease-out)}
         .stat-box:hover::before{transform:translate(14px,-26px) scale(1.2)}
         .stat-box-icon{font-size:1.6rem;margin-bottom:12px}
-        .stat-box-num{font-family:var(--font-d);font-size:3rem;font-weight:400;color:var(--p);letter-spacing:1px;line-height:1}
+        .stat-box-num{font-family:var(--font-d);font-size:2.4rem;font-weight:800;color:var(--p);letter-spacing:1px;line-height:1}
         .stat-box-lbl{font-size:13px;color:var(--a-muted);margin-top:6px;font-weight:500}
         .stat-box-change{font-size:12px;margin-top:8px;font-weight:600}
         .change-up,.change-down{color:var(--p)}
@@ -237,6 +237,9 @@
 
         <a href="{{ route('admin.portfolio.index') }}" class="nav-item {{ request()->routeIs('admin.portfolio.*') ? 'active' : '' }}">
             <div class="nav-item-icon">🎨</div> Portfolio
+        </a>
+        <a href="{{ route('admin.gallery.index') }}" class="nav-item {{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+            <div class="nav-item-icon">🖼️</div> Gallery
         </a>
         <a href="{{ route('admin.client-logos.index') }}" class="nav-item {{ request()->routeIs('admin.client-logos.*') ? 'active' : '' }}">
             <div class="nav-item-icon">🏢</div> Client Logos

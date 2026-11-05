@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Portfolio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PortfolioController extends Controller
@@ -81,13 +82,18 @@ class PortfolioController extends Controller
             $data['thumbnail'] = $request->file('thumbnail')->store('portfolio', 'public');
         }
 
-        if ($request->hasFile('images')) {
-            $images = $portfolio->images ?? [];
-            foreach ($request->file('images') as $img) {
-                $images[] = $img->store('portfolio/gallery', 'public');
-            }
-            $data['images'] = $images;
+        // Only paths already on this project can be removed
+        $images = $portfolio->images ?? [];
+        $remove = array_intersect($images, (array) $request->input('remove_images', []));
+        foreach ($remove as $path) {
+            Storage::disk('public')->delete($path);
         }
+        $images = array_values(array_diff($images, $remove));
+
+        foreach ($request->file('images', []) as $img) {
+            $images[] = $img->store('portfolio/gallery', 'public');
+        }
+        $data['images'] = $images;
 
         $portfolio->update($data);
         return redirect()->route('admin.portfolio.index')->with('success', 'Project updated!');
