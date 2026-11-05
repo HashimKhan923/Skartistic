@@ -1334,7 +1334,7 @@ a.client-logo:hover { transform:translateY(-5px) scale(1.04) }
 a:focus-visible,button:focus-visible,[role="button"]:focus-visible,select:focus-visible,summary:focus-visible { outline:2.5px solid var(--accent); outline-offset:3px; border-radius:4px }
 .cta-block h2 .g,.g-light { background:linear-gradient(135deg,var(--light),var(--magenta)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text }
 .lb-close { position:absolute; top:20px; right:20px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3); color:#fff; width:44px; height:44px; border-radius:50%; font-size:1.1rem; cursor:pointer }
-.gallery-btn { display:block; width:100%; padding:0; border:0; background:linear-gradient(135deg,var(--tint-1),var(--tint-2)); aspect-ratio:16/10; overflow:hidden; cursor:zoom-in; transition:box-shadow .3s }
+.gallery-btn { display:block; width:100%; padding:0; border:0; background:none; border-radius:14px; overflow:hidden; cursor:zoom-in; transition:transform .4s var(--ease-out), box-shadow .4s }
 .gallery-btn img { width:100%; height:auto; display:block }
 .gallery-btn:hover { transform:translateY(-4px); box-shadow:0 0 0 2px var(--brand), 0 20px 44px rgba(var(--brand-rgb),.28) }
 @media(hover:none){ .svc-link { opacity:1!important; transform:none!important } .port-overlay,.port-info { opacity:1!important; transform:none!important } }
